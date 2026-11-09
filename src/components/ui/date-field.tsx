@@ -66,7 +66,7 @@ export function DateField({
           if (text && !dmyToIso(text)) onValueChange("");
           rest.onBlur?.(e);
         }}
-        className={cn(controlBase, "num h-9 pr-10", className)}
+        className={cn(controlBase, "num h-11 pr-10", className)}
       />
       <button
         type="button"

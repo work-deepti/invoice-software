@@ -13,6 +13,7 @@ import {
   Search,
   Trash2,
   X,
+  SlidersHorizontal,
 } from "lucide-react";
 import Link from "next/link";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
@@ -67,6 +68,7 @@ export function Ledger() {
   const [cancelTarget, setCancelTarget] = useState<SavedInvoice | null>(null);
   const [deleteTarget, setDeleteTarget] = useState<Row | null>(null);
   const [reload, setReload] = useState(0);
+  const [filtersOpen, setFiltersOpen] = useState(false);
 
   const setParams = useCallback(
     (patch: Partial<Record<FilterKey | "page", string | null>>) => {
@@ -108,13 +110,14 @@ export function Ledger() {
   const monthStart = `${today.slice(0, 7)}-01`;
   const activeChips = (["purity", "mode", "phone"] as const).filter((k) => get(k));
   const anyFilter = FILTER_KEYS.some((k) => get(k));
+  const filterCount = FILTER_KEYS.filter((k) => k !== "q" && get(k)).length;
 
   return (
     <div className="flex flex-col gap-4 pb-10">
       <div className="flex flex-wrap items-end justify-between gap-3">
         <div>
-          <h1 className="tight text-[22px] font-semibold text-ink">Transactions</h1>
-          <p className="mt-0.5 text-[13.5px] text-muted">Every saved invoice, newest first. Filters stay in the address bar, so you can bookmark a view.</p>
+          <h1 className="tight text-[26px] font-extrabold text-ink tab:text-[30px]">Transactions</h1>
+          <p className="mt-1 text-[14px] text-muted">Every saved invoice, newest first. Filters stay in the address bar, so you can bookmark a view.</p>
         </div>
         <div className="flex flex-wrap gap-2">
           <ExportMenu qs={qs} isOwner={capabilities.isOwner} />
@@ -123,22 +126,28 @@ export function Ledger() {
       </div>
 
       {/* TXN-01..03 filters — one row above what they scope */}
-      <Card className="p-3 tab:p-4">
+      <Card className="p-4 tab:p-5">
         <div className="flex flex-wrap items-end gap-2.5">
           <SearchBox value={get("q")} onChange={(v) => setParams({ q: v })} />
+          {/* phones: filters fold away behind one pill so the list starts sooner */}
+          <Button className="h-11 tab:hidden" variant={filtersOpen ? "primary" : "secondary"} aria-expanded={filtersOpen} onClick={() => setFiltersOpen((o) => !o)}>
+            <SlidersHorizontal className="size-4" aria-hidden />
+            Filters{filterCount ? <span className="num grid size-5 place-items-center rounded-full bg-lav text-[11px] text-white">{filterCount}</span> : null}
+          </Button>
+          <div className={cn("contents", !filtersOpen && "max-tab:hidden")}>
           <label className="flex w-[calc(50%-5px)] flex-col gap-1 tab:w-[148px]">
-            <span className="text-[12px] font-medium text-ink-3">From</span>
+            <span className="text-[13px] font-semibold text-ink-3">From</span>
             <DateField value={get("from")} max={today} onValueChange={(v) => setParams({ from: v })} aria-label="From date" />
           </label>
           <label className="flex w-[calc(50%-5px)] flex-col gap-1 tab:w-[148px]">
-            <span className="text-[12px] font-medium text-ink-3">To</span>
+            <span className="text-[13px] font-semibold text-ink-3">To</span>
             <DateField value={get("to")} max={today} onValueChange={(v) => setParams({ to: v })} aria-label="To date" />
           </label>
           <FilterSelect label="Metal" value={get("metal")} onChange={(v) => setParams({ metal: v })} options={[["", "All"], ["gold", "Gold"], ["silver", "Silver"]]} />
           <FilterSelect label="GST" value={get("gst")} onChange={(v) => setParams({ gst: v })} options={[["", "All"], ["with", "With GST"], ["without", "Without GST"]]} />
           <FilterSelect label="Payment" value={get("due") ? "1" : ""} onChange={(v) => setParams({ due: v })} options={[["", "All"], ["1", "Balance due"]]} />
           <FilterSelect label="Status" value={get("status")} onChange={(v) => setParams({ status: v })} options={[["", "All"], ["active", "Active"], ["cancelled", "Cancelled"]]} />
-          <div className="flex gap-1.5 pb-px">
+          <div className="flex gap-1.5 pb-1.5">
             <Button size="sm" variant={get("from") === today && get("to") === today ? "primary" : "secondary"} onClick={() => setParams({ from: today, to: today })}>
               Today
             </Button>
@@ -149,6 +158,7 @@ export function Ledger() {
               Clear
             </Button>
           </div>
+          </div>
         </div>
         {activeChips.length ? (
           <div className="mt-3 flex flex-wrap gap-1.5 border-t border-line pt-3">
@@ -156,7 +166,7 @@ export function Ledger() {
               <button
                 key={k}
                 onClick={() => setParams({ [k]: null })}
-                className="inline-flex items-center gap-1.5 rounded-full border border-line bg-sunken px-2.5 py-1 text-[12.5px] text-ink-3 transition-colors hover:border-line-strong"
+                className="inline-flex items-center gap-1.5 rounded-full bg-lav-fill px-3 py-1.5 text-[12.5px] font-medium text-lav-deep transition-colors hover:bg-[#e3ddfb]"
               >
                 {k === "purity" ? "Purity" : k === "mode" ? "Mode" : "Phone"}: <span className="font-medium text-ink">{get(k)}</span>
                 <X className="size-3" aria-label="Remove filter" />
@@ -170,7 +180,7 @@ export function Ledger() {
       <SummaryStrip summary={data?.summary} />
 
       {error ? (
-        <p role="alert" className="rounded-lg bg-danger-fill px-4 py-3 text-[13.5px] text-danger-deep">
+        <p role="alert" className="rounded-[16px] bg-danger-fill px-4 py-3 text-[13.5px] text-danger-deep">
           {error}
         </p>
       ) : null}
@@ -179,7 +189,7 @@ export function Ledger() {
         {!data ? (
           <div className="space-y-2 p-4">
             {Array.from({ length: 6 }, (_, i) => (
-              <div key={i} className="h-10 animate-pulse rounded-md bg-line/40" />
+              <div key={i} className="h-12 animate-pulse rounded-[14px] bg-line/40" />
             ))}
           </div>
         ) : data.rows.length === 0 ? (
@@ -193,7 +203,7 @@ export function Ledger() {
                 Clear filters
               </Button>
             ) : capabilities.canBill ? (
-              <Link href="/invoices/new" className="mt-4 inline-flex h-9 items-center rounded-lg bg-ink px-3.5 text-sm font-medium text-white">
+              <Link href="/invoices/new" className="mt-4 inline-flex h-10 items-center rounded-full bg-ink px-5 text-[14px] font-semibold text-white">
                 Make the first invoice
               </Link>
             ) : null}
@@ -257,8 +267,8 @@ function SearchBox({ value, onChange }: { value: string; onChange: (v: string) =
   }
   const timer = useRef<ReturnType<typeof setTimeout> | undefined>(undefined);
   return (
-    <label className="flex min-w-[220px] flex-[1_1_260px] flex-col gap-1">
-      <span className="text-[12px] font-medium text-ink-3">Search</span>
+    <label className="flex min-w-[170px] flex-[1_1_170px] tab:flex-[1_1_260px] flex-col gap-1">
+      <span className="text-[13px] font-semibold text-ink-3">Search</span>
       <span className="relative">
         <Search className="pointer-events-none absolute top-1/2 left-3 size-4 -translate-y-1/2 text-faint" aria-hidden />
         <TextInput
@@ -281,7 +291,7 @@ function SearchBox({ value, onChange }: { value: string; onChange: (v: string) =
 function FilterSelect({ label, value, onChange, options }: { label: string; value: string; onChange: (v: string) => void; options: [string, string][] }) {
   return (
     <label className="flex w-[calc(50%-5px)] flex-col gap-1 tab:w-[128px]">
-      <span className="text-[12px] font-medium text-ink-3">{label}</span>
+      <span className="text-[13px] font-semibold text-ink-3">{label}</span>
       <Select value={value} onChange={(e) => onChange(e.target.value)}>
         {options.map(([v, l]) => (
           <option key={v} value={v}>
@@ -296,39 +306,70 @@ function FilterSelect({ label, value, onChange, options }: { label: string; valu
 /* ── summary tiles ───────────────────────────────────────────────────── */
 
 function SummaryStrip({ summary }: { summary?: LedgerSummary }) {
-  const tiles: { label: string; value: string; exact?: string; tone?: string }[] = summary
-    ? [
-        { label: "Invoices", value: formatIndianNumber(summary.invoices, 0) },
-        { label: "Total billed", value: formatINR(summary.totalBilled) },
-        { label: "GST collected", value: formatINR(summary.gstCollected) },
-        { label: "Gold sold", value: formatWeight(summary.goldG), tone: "text-gold-deep" },
-        { label: "Silver sold", value: formatWeight(summary.silverG), tone: "text-silver" },
-        { label: "Exchange taken", value: formatINR(summary.exchange) },
-        { label: "Balance due", value: formatINR(summary.balanceDue), tone: toDec(summary.balanceDue).gt(0) ? "text-danger-deep" : undefined },
-      ]
-    : [];
+  if (!summary)
+    return (
+      <section aria-label="Totals for these filters" aria-busy className="grid gap-3 tab:grid-cols-2 desk:grid-cols-[1.5fr_repeat(4,minmax(0,1fr))]">
+        <div className="h-[132px] animate-pulse rounded-[24px] bg-ink/85" />
+        {Array.from({ length: 4 }, (_, i) => (
+          <div key={i} className="h-[132px] animate-pulse rounded-[24px] bg-line/50" />
+        ))}
+      </section>
+    );
+  const due = toDec(summary.balanceDue).gt(0);
+  const tiles: { label: string; value: string; tone: string; ink: string; note?: string }[] = [
+    { label: "Gold sold", value: formatWeight(summary.goldG), tone: "bg-gold-fill", ink: "text-gold-deep" },
+    { label: "Silver sold", value: formatWeight(summary.silverG), tone: "bg-silver-fill", ink: "text-silver-deep" },
+    { label: "Old metal taken", value: formatINR(summary.exchange), tone: "bg-peach-fill", ink: "text-[#a64b1e]" },
+    due
+      ? { label: "Balance due", value: formatINR(summary.balanceDue), tone: "bg-rose-fill", ink: "text-danger-deep" }
+      : { label: "Balance due", value: formatINR(summary.balanceDue), tone: "bg-mint-fill", ink: "text-ok-deep", note: "All paid" },
+  ];
   return (
-    <section aria-label="Totals for these filters" className="grid grid-cols-2 gap-px overflow-hidden rounded-xl border border-line bg-line shadow-hair tab:grid-cols-4 desk:grid-cols-7">
-      {summary
-        ? tiles.map((t) => (
-            <div key={t.label} className="bg-surface px-4 py-3" title={t.exact}>
-              <p className="text-[12px] font-medium text-muted">{t.label}</p>
-              {/* reconciliation screen: exact figures; the data step at 1200–1499 px keeps 7 tiles on one row */}
-              <p className={cn("num tight mt-1 truncate text-[17px] font-semibold text-ink desk:text-[14px] min-[1500px]:text-[17px]", t.tone)}>{t.value}</p>
-            </div>
-          ))
-        : Array.from({ length: 7 }, (_, i) => (
-            <div key={i} className="bg-surface px-4 py-3">
-              <div className="h-3 w-16 animate-pulse rounded bg-line/60" />
-              <div className="mt-2 h-5 w-24 animate-pulse rounded bg-line/50" />
-            </div>
-          ))}
-      {summary && summary.cancelled ? (
-        <p className="col-span-full bg-surface px-4 py-2 text-[12.5px] text-muted">
+    <section aria-label="Totals for these filters" className="grid grid-cols-2 gap-3 desk:grid-cols-[1.5fr_repeat(4,minmax(0,1fr))]">
+      {/* hero: the wallet-style balance card */}
+      <div className="col-span-2 flex flex-col justify-between rounded-[24px] bg-ink p-5 text-white shadow-dock desk:col-span-1">
+        <p className="text-[13px] font-semibold text-white/60">Total billed</p>
+        <p className="num tight mt-1 truncate text-[30px] font-extrabold tracking-[-0.025em] desk:text-[26px] min-[1500px]:text-[30px]">{formatINR(summary.totalBilled)}</p>
+        <div className="mt-3 flex flex-wrap gap-2 text-[12.5px]">
+          <span className="rounded-full bg-white/10 px-2.5 py-1 font-semibold">
+            <span className="num">{formatIndianNumber(summary.invoices, 0)}</span> {summary.invoices === 1 ? "invoice" : "invoices"}
+          </span>
+          <span className="rounded-full bg-white/10 px-2.5 py-1 font-semibold">
+            GST <span className="num">{formatINR(summary.gstCollected)}</span>
+          </span>
+        </div>
+      </div>
+      {tiles.map((t) => (
+        <div key={t.label} className={cn("flex min-w-0 flex-col justify-between rounded-[24px] p-4 tab:p-5", t.tone)}>
+          <p className={cn("text-[13px] font-semibold", t.ink)}>{t.label}</p>
+          <div>
+            <p className="num tight mt-3 truncate text-[19px] font-extrabold text-ink tab:text-[22px] desk:text-[18px] min-[1500px]:text-[22px]">{t.value}</p>
+            {t.note ? <p className={cn("mt-0.5 text-[12.5px] font-semibold", t.ink)}>{t.note}</p> : null}
+          </div>
+        </div>
+      ))}
+      {summary.cancelled ? (
+        <p className="col-span-full px-1 text-[12.5px] text-muted">
           {summary.cancelled === 1 ? "1 cancelled invoice in this view is" : `${summary.cancelled} cancelled invoices in this view are`} listed but left out of the totals.
         </p>
       ) : null}
     </section>
+  );
+}
+
+/** Two little coins: which metals are on the bill, echoing the Coin B mark. */
+function MetalAvatar({ gold, silver, cancelled }: { gold: boolean; silver: boolean; cancelled?: boolean }) {
+  return (
+    <span aria-hidden className={cn("relative grid size-10 shrink-0 place-items-center rounded-full", cancelled ? "bg-sunken" : gold ? "bg-gold-fill" : silver ? "bg-silver-fill" : "bg-sunken")}>
+      {gold && silver ? (
+        <span className="relative block h-3.5 w-5">
+          <span className="absolute top-0 left-0 size-3.5 rounded-full bg-gold ring-2 ring-gold-fill" />
+          <span className="absolute top-0 right-0 size-3.5 rounded-full bg-silver ring-2 ring-gold-fill" />
+        </span>
+      ) : (
+        <span className={cn("size-3.5 rounded-full", cancelled ? "bg-line-strong" : gold ? "bg-gold" : silver ? "bg-silver" : "bg-line-strong")} />
+      )}
+    </span>
   );
 }
 
@@ -352,8 +393,8 @@ function LedgerTable({
       {/* computers: one row per invoice */}
       <table className="hidden w-full border-collapse text-[13.5px] desk:table">
         <thead>
-          <tr className="border-b border-line bg-sunken/60 text-left text-[11.5px] font-medium text-muted">
-            <th className="py-2.5 pr-3 pl-4 font-medium">Date</th>
+          <tr className="border-b border-line text-left text-[12px] font-semibold text-muted">
+            <th className="py-3.5 pr-3 pl-5 font-semibold">Date</th>
             <th className="py-2.5 pr-3 font-medium">Invoice</th>
             <th className="py-2.5 pr-3 font-medium">Customer</th>
             <th className="py-2.5 pr-3 text-right font-medium">Gold (g)</th>
@@ -364,7 +405,7 @@ function LedgerTable({
             <th className="py-2.5 pr-3 text-right font-medium">Total</th>
             <th className="py-2.5 pr-3 text-right font-medium">Balance</th>
             <th className="py-2.5 pr-3 font-medium">Mode</th>
-            <th className="py-2.5 pr-4 text-right font-medium">
+            <th className="py-3.5 pr-5 text-right font-medium">
               <span className="sr-only">Actions</span>
             </th>
           </tr>
@@ -374,17 +415,22 @@ function LedgerTable({
             const cancelled = r.status === "cancelled";
             const balance = toDec(r.balance);
             return (
-              <tr key={r.id} className={cn("group border-b border-line last:border-b-0 hover:bg-canvas/80", cancelled && "text-muted")}>
-                <td className="num py-2.5 pr-3 pl-4 whitespace-nowrap">{formatDateDMY(r.invoiceDate)}</td>
+              <tr key={r.id} className={cn("group border-b border-line last:border-b-0 hover:bg-canvas", cancelled && "text-muted")}>
+                <td className="num py-3 pr-3 pl-5 whitespace-nowrap">{formatDateDMY(r.invoiceDate)}</td>
                 <td className="py-2.5 pr-3 whitespace-nowrap">
                   <button onClick={() => onView(r)} className={cn("num font-medium text-ink underline-offset-4 hover:underline", cancelled && "text-muted line-through decoration-muted/60")}>
                     {r.number}
                   </button>
                   {cancelled ? <span className="ml-2 rounded-full bg-danger-fill px-1.5 py-0.5 text-[11.5px] font-medium text-danger-deep">Cancelled</span> : null}
                 </td>
-                <td className="max-w-[220px] py-2.5 pr-3">
-                  <p className="truncate font-medium text-ink">{r.customerName || "Cash customer"}</p>
-                  {r.customerPhone ? <p className="num text-[12.5px] text-muted">{r.customerPhone}</p> : null}
+                <td className="max-w-[240px] py-2.5 pr-3">
+                  <div className="flex min-w-0 items-center gap-3">
+                    <MetalAvatar gold={!toDec(r.goldNetG).isZero()} silver={!toDec(r.silverNetG).isZero()} cancelled={cancelled} />
+                    <div className="min-w-0">
+                      <p className="truncate font-semibold text-ink">{r.customerName || "Cash customer"}</p>
+                      {r.customerPhone ? <p className="num text-[12.5px] text-muted">{r.customerPhone}</p> : null}
+                    </div>
+                  </div>
                 </td>
                 <td className="num py-2.5 pr-3 text-right">{toDec(r.goldNetG).isZero() ? <span className="text-faint">—</span> : formatIndianNumber(r.goldNetG, 3)}</td>
                 <td className="num py-2.5 pr-3 text-right">{toDec(r.silverNetG).isZero() ? <span className="text-faint">—</span> : formatIndianNumber(r.silverNetG, 3)}</td>
@@ -393,7 +439,7 @@ function LedgerTable({
                 <td className="num py-2.5 pr-3 text-right font-semibold text-ink">{formatINR(toDec(r.grandTotal).abs())}</td>
                 <td className="py-2.5 pr-3 text-right">
                   {balance.gt(0) && !cancelled ? (
-                    <span className="num rounded-md bg-danger-fill px-1.5 py-0.5 text-[12.5px] font-medium text-danger-deep">{money(r.balance)}</span>
+                    <span className="num rounded-full bg-rose-fill px-2 py-0.5 text-[12.5px] font-semibold text-danger-deep">{money(r.balance)}</span>
                   ) : (
                     <span className="text-faint">—</span>
                   )}
@@ -402,7 +448,7 @@ function LedgerTable({
                   <p className="text-ink-3">{r.payMode}</p>
                   {r.payDetails ? <p className="truncate text-[12.5px] text-muted" title={r.payDetails}>{r.payDetails}</p> : null}
                 </td>
-                <td className="py-2 pr-4">
+                <td className="py-2 pr-5">
                   <RowActions row={r} onView={onView} onPrint={onPrint} onCancel={onCancel} onDelete={onDelete} />
                 </td>
               </tr>
@@ -417,9 +463,10 @@ function LedgerTable({
           const cancelled = r.status === "cancelled";
           const balance = toDec(r.balance);
           return (
-            <li key={r.id} className={cn("px-4 py-4", cancelled && "text-muted")}>
-              <div className="flex items-start justify-between gap-3">
-                <div className="min-w-0">
+            <li key={r.id} className={cn("px-4 py-4 tab:px-5", cancelled && "text-muted")}>
+              <div className="flex items-start gap-3">
+                <MetalAvatar gold={!toDec(r.goldNetG).isZero()} silver={!toDec(r.silverNetG).isZero()} cancelled={cancelled} />
+                <div className="min-w-0 flex-1">
                   <p className="num text-[14px] font-semibold text-ink">
                     {r.number}
                     {cancelled ? <span className="ml-2 rounded-full bg-danger-fill px-1.5 py-0.5 font-sans text-[11.5px] font-medium text-danger-deep">Cancelled</span> : null}
@@ -434,7 +481,7 @@ function LedgerTable({
                   </p>
                 </div>
                 <div className="shrink-0 text-right">
-                  <p className="num text-[15px] font-semibold text-ink">{formatINR(toDec(r.grandTotal).abs())}</p>
+                  <p className="num text-[16px] font-extrabold text-ink">{formatINR(toDec(r.grandTotal).abs())}</p>
                   {balance.gt(0) && !cancelled ? <p className="num mt-0.5 text-[12.5px] font-medium text-danger-deep">Due {money(r.balance)}</p> : null}
                   {!r.gstOn ? (
                     <p className="mt-1">
@@ -443,7 +490,7 @@ function LedgerTable({
                   ) : null}
                 </div>
               </div>
-              <div className="mt-2 flex flex-wrap gap-x-4 gap-y-1 text-[12.5px] text-muted">
+              <div className="mt-2 flex flex-wrap gap-x-4 gap-y-1 pl-[52px] text-[12.5px] text-muted">
                 {!toDec(r.goldNetG).isZero() ? (
                   <span>
                     Gold <span className="num text-gold-deep">{formatWeight(r.goldNetG)}</span>
@@ -451,7 +498,7 @@ function LedgerTable({
                 ) : null}
                 {!toDec(r.silverNetG).isZero() ? (
                   <span>
-                    Silver <span className="num text-silver">{formatWeight(r.silverNetG)}</span>
+                    Silver <span className="num text-silver-deep">{formatWeight(r.silverNetG)}</span>
                   </span>
                 ) : null}
                 {r.gstOn ? (
@@ -464,12 +511,12 @@ function LedgerTable({
                 <CardAction icon={<Eye className="size-4" aria-hidden />} label="View" onClick={() => onView(r)} />
                 <CardAction icon={<Printer className="size-4" aria-hidden />} label="Print" onClick={() => onPrint(r)} />
                 {r.permissions.canEdit ? (
-                  <Link href={`/invoices/${r.id}/edit`} className="flex h-11 flex-col items-center justify-center gap-0.5 rounded-lg border border-line bg-surface text-[12px] font-medium text-ink transition-colors hover:bg-canvas">
+                  <Link href={`/invoices/${r.id}/edit`} className="flex h-10 items-center justify-center gap-1.5 rounded-full bg-sunken text-[12.5px] font-semibold text-ink transition-colors hover:bg-line">
                     <Pencil className="size-4" aria-hidden />
                     Edit
                   </Link>
                 ) : (
-                  <span className="flex h-11 flex-col items-center justify-center gap-0.5 rounded-lg border border-dashed border-line text-[12px] text-faint">
+                  <span className="flex h-10 items-center justify-center gap-1.5 rounded-full text-[12.5px] font-semibold text-faint ring-1 ring-line ring-inset">
                     <Pencil className="size-4" aria-hidden />
                     Edit
                   </span>
@@ -491,7 +538,7 @@ function LedgerTable({
 }
 
 function NoGstTag() {
-  return <span className="rounded-md bg-sunken px-1.5 py-0.5 text-[11.5px] font-medium text-muted">No GST</span>;
+  return <span className="rounded-full bg-sunken px-2 py-0.5 text-[11.5px] font-semibold text-muted">No GST</span>;
 }
 
 function CardAction({ icon, label, onClick, danger }: { icon: React.ReactNode; label: string; onClick: () => void; danger?: boolean }) {
@@ -499,8 +546,8 @@ function CardAction({ icon, label, onClick, danger }: { icon: React.ReactNode; l
     <button
       onClick={onClick}
       className={cn(
-        "flex h-11 flex-col items-center justify-center gap-0.5 rounded-lg border border-line bg-surface text-[12px] font-medium transition-colors hover:bg-canvas",
-        danger ? "text-danger-deep hover:bg-danger-fill" : "text-ink",
+        "flex h-10 items-center justify-center gap-1.5 rounded-full text-[12.5px] font-semibold transition-colors",
+        danger ? "bg-rose-fill text-danger-deep hover:bg-[#f9d5dc]" : "bg-sunken text-ink hover:bg-line",
       )}
     >
       {icon}
@@ -522,7 +569,7 @@ function RowActions({
   onCancel: (r: Row) => void;
   onDelete: (r: Row) => void;
 }) {
-  const iconBtn = "grid size-8 place-items-center rounded-md text-muted transition-colors hover:bg-sunken hover:text-ink";
+  const iconBtn = "grid size-9 place-items-center rounded-full text-muted transition-colors hover:bg-sunken hover:text-ink";
   return (
     <div className="flex items-center justify-end gap-0.5">
       <button className={iconBtn} onClick={() => onView(r)} aria-label={`View ${r.number}`} title="View">
