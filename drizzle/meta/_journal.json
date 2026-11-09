@@ -22,6 +22,20 @@
       "when": 1794224521366,
       "tag": "0002_pay_details",
       "breakpoints": true
+    },
+    {
+      "idx": 3,
+      "version": "7",
+      "when": 1794224834283,
+      "tag": "0003_summary_function",
+      "breakpoints": true
+    },
+    {
+      "idx": 4,
+      "version": "7",
+      "when": 1794224963668,
+      "tag": "0004_b2c_limit",
+      "breakpoints": true
     }
   ]
 }

@@ -1,0 +1,1 @@
+ALTER TABLE "shop_settings" ADD COLUMN "b2c_large_limit" numeric(14, 2) DEFAULT '100000' NOT NULL;

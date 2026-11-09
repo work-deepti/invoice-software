@@ -212,6 +212,9 @@ export function ShopSettings() {
           <Field label="Cash payout limit ₹ (s.40A(3))" field="cashPayoutLimit" error={errorFor("cashPayoutLimit")}>
             {(p) => <TextInput {...p} inputMode="decimal" value={form.cashPayoutLimit} onChange={(e) => set({ cashPayoutLimit: sanitizeDecimalText(e.target.value) })} className="num" />}
           </Field>
+          <Field label="B2C large invoice limit ₹ (GSTR-1)" field="b2cLargeLimit" error={errorFor("b2cLargeLimit")} hint="Inter-state B2C bills above this are flagged in the GST dashboard">
+            {(p) => <TextInput {...p} inputMode="decimal" value={form.b2cLargeLimit} onChange={(e) => set({ b2cLargeLimit: sanitizeDecimalText(e.target.value) })} className="num" />}
+          </Field>
           <Field label="Bill above the PAN limit with no PAN" field="panMissingPolicy">
             {(p) => (
               <Select {...p} value={form.panMissingPolicy} onChange={(e) => set({ panMissingPolicy: e.target.value as "block" | "warn" })}>

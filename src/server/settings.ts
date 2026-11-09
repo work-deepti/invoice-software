@@ -22,6 +22,7 @@ export interface SettingsDTO extends ShopSettings {
   panLimit: string;
   cashPayoutLimit: string;
   panMissingPolicy: "block" | "warn";
+  b2cLargeLimit: string;
 }
 
 /** Reads the single settings row, creating it with defaults on first use. */
@@ -60,6 +61,7 @@ export function toSettingsDTO(r: ShopSettingsRow): SettingsDTO {
     panLimit: r.panLimit,
     cashPayoutLimit: r.cashPayoutLimit,
     panMissingPolicy: r.panMissingPolicy === "warn" ? "warn" : "block",
+    b2cLargeLimit: r.b2cLargeLimit,
   };
 }
 
@@ -106,11 +108,12 @@ export async function saveSettings(body: unknown, user: SessionUser): Promise<Se
     panLimit: String(b.panLimit ?? DEFAULT_LIMITS.panLimit).trim(),
     cashPayoutLimit: String(b.cashPayoutLimit ?? DEFAULT_LIMITS.cashPayoutLimit).trim(),
     panMissingPolicy: b.panMissingPolicy ?? "block",
+    b2cLargeLimit: String(b.b2cLargeLimit ?? "100000").trim(),
   };
 
   // Inputs are normalised exactly as the UI does (VAL-02/03/04) before S-01..S-10 run.
   const { errors } = validateSettings(next);
-  const limitErrors: Issue[] = (["cashLimit", "panLimit", "cashPayoutLimit"] as const)
+  const limitErrors: Issue[] = (["cashLimit", "panLimit", "cashPayoutLimit", "b2cLargeLimit"] as const)
     .filter((k) => !POSITIVE_MONEY.test(next[k]) || Number(next[k]) <= 0)
     .map((k) => ({ id: "S-11", field: k, message: "Compliance limits must be amounts greater than 0." }));
   const all = [...errors, ...limitErrors];

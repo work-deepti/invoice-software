@@ -184,44 +184,9 @@ async function allocateNumber(tx: Tx, s: ShopSettingsRow, gstOn: boolean, date: 
  * saving at once can't race each other into a duplicate-key error.
  */
 export async function rebuildDailySummary(tx: Tx, date: string): Promise<void> {
-  await tx.execute(sql`select pg_advisory_xact_lock(hashtext(${"gsb:summary:" + date}))`);
-  await tx.execute(sql`delete from daily_summary where date = ${date}::date`);
-  await tx.execute(sql`
-    insert into daily_summary (date, metal, purity_key, gst_on, pay_mode, invoices, sales, taxable, cgst, sgst, igst,
-                               net_g, metal_value, making, stone, discount, exchange_value, exchange_g, exchange_fine_g, paid)
-    select ${date}::date, metal, purity_key, gst_on, pay_mode,
-           sum(invoices), sum(sales), sum(taxable), sum(cgst), sum(sgst), sum(igst),
-           sum(net_g), sum(metal_value), sum(making), sum(stone), sum(discount),
-           sum(exchange_value), sum(exchange_g), sum(exchange_fine_g), sum(paid)
-    from (
-      select 'ALL' as metal, '' as purity_key, i.gst_on, i.pay_mode::text as pay_mode,
-             1 as invoices, i.grand_total as sales, i.taxable, i.cgst, i.sgst, i.igst,
-             0::numeric as net_g,
-             coalesce((select sum(l.metal_value) from invoice_lines l where l.invoice_id = i.id), 0) as metal_value,
-             coalesce((select sum(l.making_amt)  from invoice_lines l where l.invoice_id = i.id), 0) as making,
-             coalesce((select sum(l.stone_amt)   from invoice_lines l where l.invoice_id = i.id), 0) as stone,
-             i.discount, i.exchange_total as exchange_value,
-             coalesce((select sum(x.weight_g) from invoice_exchange x where x.invoice_id = i.id), 0) as exchange_g,
-             coalesce((select sum(x.fine_g)   from invoice_exchange x where x.invoice_id = i.id), 0) as exchange_fine_g,
-             i.paid
-      from invoices i
-      where i.invoice_date = ${date}::date and i.status = 'active'
-      union all
-      select l.metal::text, l.purity_label, i.gst_on, i.pay_mode::text,
-             count(distinct i.id), sum(l.amount), 0, 0, 0, 0,
-             sum(l.net_g), sum(l.metal_value), sum(l.making_amt), sum(l.stone_amt), 0, 0, 0, 0, 0
-      from invoices i join invoice_lines l on l.invoice_id = i.id
-      where i.invoice_date = ${date}::date and i.status = 'active'
-      group by l.metal, l.purity_label, i.gst_on, i.pay_mode
-      union all
-      select x.metal::text, '~exchange', i.gst_on, i.pay_mode::text,
-             count(distinct i.id), 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-             sum(x.value), sum(x.weight_g), sum(x.fine_g), 0
-      from invoices i join invoice_exchange x on x.invoice_id = i.id
-      where i.invoice_date = ${date}::date and i.status = 'active'
-      group by x.metal, i.gst_on, i.pay_mode
-    ) s
-    group by metal, purity_key, gst_on, pay_mode`);
+  // Logic lives in the database function gsb_rebuild_daily_summary (drizzle/0003), shared
+  // with restore; it takes a per-date advisory lock so concurrent saves can't collide.
+  await tx.execute(sql`select gsb_rebuild_daily_summary(${date}::date)`);
 }
 
 /* ────────────────────────────────────────────────────────────────────────── */
@@ -229,7 +194,7 @@ export async function rebuildDailySummary(tx: Tx, date: string): Promise<void> {
 /* ────────────────────────────────────────────────────────────────────────── */
 
 /** INV-08: one customers row per phone, holding the latest non-blank details. */
-async function upsertCustomer(tx: Tx, input: InvoiceInput, userId: string): Promise<string | null> {
+export async function upsertCustomer(tx: Tx, input: InvoiceInput, userId: string): Promise<string | null> {
   const c = input.customer;
   if (!c.phone || !/^\d{10}$/.test(c.phone)) return null;
   const res = await tx.execute<{ id: string }>(sql`
@@ -249,7 +214,7 @@ async function upsertCustomer(tx: Tx, input: InvoiceInput, userId: string): Prom
   return res.rows[0]?.id ?? null;
 }
 
-function searchTextFor(number: string, input: InvoiceInput): string {
+export function searchTextFor(number: string, input: InvoiceInput): string {
   const c = input.customer;
   return [number, c.name, c.phone, c.gstin, c.pan, input.payDetails, input.notes, ...input.lines.map((l) => l.description)]
     .filter(Boolean)
@@ -601,7 +566,7 @@ export function parseLedgerFilters(url: URL): LedgerFilters {
 
 const escapeLike = (s: string) => s.replace(/[\\%_]/g, (c) => `\\${c}`);
 
-function ledgerWhere(f: LedgerFilters): SQL | undefined {
+export function ledgerWhere(f: LedgerFilters): SQL | undefined {
   const conds: (SQL | undefined)[] = [];
   if (f.q) conds.push(ilike(invoices.searchText, `%${escapeLike(f.q.toLowerCase())}%`));
   if (f.from) conds.push(gte(invoices.invoiceDate, f.from));
@@ -615,7 +580,7 @@ function ledgerWhere(f: LedgerFilters): SQL | undefined {
   if (f.phone) conds.push(eq(invoices.customerPhone, f.phone));
   if (f.purity)
     conds.push(
-      sql`exists (select 1 from invoice_lines l where l.invoice_id = ${invoices.id} and lower(l.purity_label) = lower(${f.purity}))`,
+      sql`exists (select 1 from invoice_lines l where l.invoice_id = "invoices"."id" and lower(l.purity_label) = lower(${f.purity}))`,
     );
   return and(...conds);
 }

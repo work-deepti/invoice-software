@@ -81,6 +81,7 @@ export const settingsBodySchema = z.object({
   panLimit: z.union([z.string().max(20), z.number()]).optional(),
   cashPayoutLimit: z.union([z.string().max(20), z.number()]).optional(),
   panMissingPolicy: z.enum(["block", "warn"]).optional(),
+  b2cLargeLimit: z.union([z.string().max(20), z.number()]).optional(),
 });
 
 export const ratesBodySchema = z.object({

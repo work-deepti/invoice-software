@@ -102,6 +102,8 @@ export const shopSettings = pgTable(
     panLimit: money("pan_limit").notNull().default("200000"),
     cashPayoutLimit: money("cash_payout_limit").notNull().default("10000"),
     panMissingPolicy: text("pan_missing_policy").notNull().default("block"),
+    /** Dashboard E: inter-state B2C invoices above this value are flagged (GSTR-1 B2C large). */
+    b2cLargeLimit: money("b2c_large_limit").notNull().default("100000"),
     ...auditColumns(),
   },
   (t) => [check("shop_settings_singleton", sql`${t.id} = 1`)],
@@ -322,7 +324,8 @@ export const auditLog = pgTable(
  * transaction as every invoice save / edit / cancel / delete.
  *
  * Grain: (date, metal, purity_key, gst_on, pay_mode).
- *  - metal = 'ALL', purity_key = ''   → invoice-level row (sales, tax, discount, exchange, paid)
+ *  - metal = 'ALL', purity_key = 'mix:gold' | 'mix:silver' | 'mix:mixed' | 'mix:none'
+ *      → invoice-level row (sales, tax, discount, exchange, paid), keyed by the bill's metal mix
  *  - metal = Gold…, purity_key = label → line-level row for that purity (grams, metal value, making, stone)
  *  - metal = Gold…, purity_key = '~exchange' → old metal taken in for that metal
  * Cancelled invoices are excluded.
