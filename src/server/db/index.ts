@@ -9,21 +9,36 @@ export type Tx = Parameters<Parameters<DB["transaction"]>[0]>[0] | DB;
 
 const globalForDb = globalThis as unknown as { __gsbPool?: Pool; __gsbDb?: DB };
 
+function isLocalhost(urlStr: string): boolean {
+  try {
+    const parsed = new URL(urlStr);
+    const host = parsed.hostname.toLowerCase();
+    return host === "localhost" || host === "127.0.0.1" || host === "::1";
+  } catch {
+    return /localhost|127\.0\.0\.1|::1/.test(urlStr);
+  }
+}
+
 function createPool(): Pool {
   const url = process.env.DATABASE_URL;
   if (!url) throw new Error("DATABASE_URL is not set — see .env.example");
+  const isLocal = isLocalhost(url);
   return new Pool({
     connectionString: url,
-    // Serverless: keep each function instance's pool small; use the provider's pooler URL.
-    max: Number(process.env.DATABASE_POOL_MAX ?? 5),
+    // Serverless (Supabase transaction pooler on port 6543):
+    // Keep per-instance pool small (1-3) to avoid exhausting pooler backend slots across lambdas.
+    max: Number(process.env.DATABASE_POOL_MAX ?? 2),
     idleTimeoutMillis: 10_000,
-    ssl: /sslmode=require|supabase\.co|neon\.tech/.test(url) ? { rejectUnauthorized: false } : undefined,
+    // Enable SSL for all non-localhost URLs (Supabase, Neon, etc.); localhost dev stays unencrypted.
+    ssl: !isLocal || /sslmode=require/.test(url) ? { rejectUnauthorized: false } : undefined,
   });
 }
 
 export function getDb(): DB {
   if (!globalForDb.__gsbDb) {
     globalForDb.__gsbPool = createPool();
+    // pg (node-postgres) executes queries unnamed by default (extended query protocol without statement name),
+    // which is fully compatible with PgBouncer transaction mode.
     globalForDb.__gsbDb = drizzle(globalForDb.__gsbPool, { schema });
   }
   return globalForDb.__gsbDb;
