@@ -1,6 +1,6 @@
 "use client";
 import { DropdownMenu } from "radix-ui";
-import { AlertTriangle, ChevronsUpDown, Cloud, CloudOff, Coins, LayoutGrid, LogOut, Plus, ReceiptText, Store } from "lucide-react";
+import { AlertTriangle, ArrowLeft, ChevronsUpDown, Cloud, CloudOff, Coins, LayoutGrid, LogOut, Plus, ReceiptText, Store } from "lucide-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useSyncExternalStore, type ComponentType } from "react";
@@ -205,11 +205,20 @@ function UserMenu({ compact }: { compact?: boolean }) {
 
 export function MobileHeader() {
   const { settings, rates } = useSession();
+  const pathname = usePathname();
+  const onInvoice = pathname.startsWith("/invoices");
   const priced = rates.rows.filter((r) => r.rate !== "");
   return (
     <header className="print:hidden lg:hidden">
       <div className="flex items-center gap-3 px-4 pt-4 tab:px-6">
-        <LogoMark className="size-9 shrink-0" />
+        {onInvoice ? (
+          // The bottom bar gives way to the totals dock here, so offer the way back.
+          <Link href="/transactions" aria-label="Back to transactions" className="grid size-10 shrink-0 place-items-center rounded-full bg-surface text-ink shadow-hair transition-colors hover:bg-sunken">
+            <ArrowLeft className="size-5" aria-hidden />
+          </Link>
+        ) : (
+          <LogoMark className="size-9 shrink-0" />
+        )}
         <div className="min-w-0 flex-1">
           <p className="tight truncate text-[16px] font-bold text-ink">{settings.name || "Gold & Silver Billing"}</p>
           <OnlineStatus className="flex px-0" />
@@ -268,6 +277,8 @@ export function BottomBar() {
       </Link>
     );
   };
+  // On the invoice screen the totals dock takes the bottom edge instead.
+  if (pathname.startsWith("/invoices")) return null;
   return (
     <nav
       aria-label="Main"
