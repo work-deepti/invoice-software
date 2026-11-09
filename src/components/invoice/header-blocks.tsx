@@ -42,7 +42,7 @@ export function DetailsCard({
               id={p.id}
               className="num flex h-9 items-center rounded-lg border border-dashed border-line-strong bg-sunken/60 px-3 text-[14px] font-medium text-ink"
             >
-              {number ?? "—"}
+              {number ?? <span aria-label="Loading the next number" className="block h-3 w-32 animate-pulse rounded bg-line" />}
             </output>
           )}
         </Field>
@@ -58,6 +58,18 @@ export function DetailsCard({
                 <option key={m}>{m}</option>
               ))}
             </Select>
+          )}
+        </Field>
+        <Field label="Payment details" field="payDetails" className="col-span-2" hint="Bank name, cheque or UPI reference">
+          {(p) => (
+            <TextInput
+              {...p}
+              value={form.payDetails}
+              maxLength={120}
+              onChange={(e) => onChange({ payDetails: e.target.value })}
+              placeholder="e.g. HDFC Bank"
+              autoComplete="off"
+            />
           )}
         </Field>
         <div className="col-span-2 mt-1 flex flex-wrap gap-x-6 gap-y-2.5">

@@ -88,7 +88,7 @@ export function InvoiceDocument({
             <dt className="text-muted">Date</dt>
             <dd className="font-mono">{formatDateDMY(inv.invoiceDate)}</dd>
             <dt className="text-muted">Payment</dt>
-            <dd>{inv.payMode}</dd>
+            <dd className="max-w-[200px]">{inv.payDetails ? `${inv.payMode} · ${inv.payDetails}` : inv.payMode}</dd>
           </dl>
         </div>
       </header>

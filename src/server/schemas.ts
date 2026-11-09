@@ -33,6 +33,7 @@ export const exchangeSchema = z.object({
 export const invoiceBodySchema = z.object({
   date: z.string().max(10),
   payMode: z.enum(PAY_MODES),
+  payDetails: str(120),
   gstOn: z.boolean(),
   interState: z.boolean().optional().default(false),
   customer: z

@@ -133,6 +133,8 @@ export interface InvoiceInput {
   /** ISO date YYYY-MM-DD (Asia/Kolkata calendar day). */
   date: string;
   payMode: PayMode;
+  /** Free-text payment details (bank name, cheque or UPI reference). Not used in any calculation. */
+  payDetails?: string;
   gstOn: boolean;
   interState: boolean;
   gstRate: NumLike;

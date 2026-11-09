@@ -146,7 +146,7 @@ function InvoicePdf({ inv, copyLabel }: { inv: Inv; copyLabel?: string }) {
               {[
                 ["Invoice no.", inv.number, true],
                 ["Date", formatDateDMY(inv.invoiceDate), true],
-                ["Payment", inv.payMode, false],
+                ["Payment", inv.payDetails ? `${inv.payMode} · ${inv.payDetails}` : inv.payMode, false],
               ].map(([k, v, mono]) => (
                 <View key={String(k)} style={[s.row, { justifyContent: "flex-end" }]}>
                   <Text style={{ color: C.muted, marginRight: 8 }}>{k}</Text>

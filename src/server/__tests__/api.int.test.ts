@@ -71,6 +71,7 @@ const body = (p: Record<string, unknown> = {}) => ({
 const WORKED = () =>
   body({
     payMode: "Mixed",
+    payDetails: "  HDFC Bank · UPI ref 4321  ",
     received: "150000",
     discount: "1500",
     customer: { name: "Asha Patil", phone: "9123456780", state: "Maharashtra", pan: "abcde1234f", address: "Kothrud" },
@@ -296,6 +297,7 @@ describe.skipIf(!run)("API (PostgreSQL integration)", () => {
         placeOfSupply: "Maharashtra (27)",
         createdByName: "staff",
         status: "active",
+        payDetails: "HDFC Bank · UPI ref 4321", // trimmed free text beside the mode
       });
       expect(inv.lines.map((l: any) => l.amount)).toEqual(["206308.50", "45051.66", "6869.30"]);
       expect(inv.lines[0]).toMatchObject({ netG: "24.250", chargeableG: "26.190", makingInput: "600.00", makingAmt: "14550.00", hsn: "7113" });
@@ -487,6 +489,9 @@ describe.skipIf(!run)("API (PostgreSQL integration)", () => {
       expect(byPhone.body.rows.map((r: any) => r.number)).toEqual([`INV/${FY}/001`]);
       const byItem = await call(invoicesRoute.GET, { token: viewer, path: "/api/invoices?q=diamond" });
       expect(byItem.body.total).toBe(1);
+      // payment details are searchable and returned with each ledger row
+      const byBank = await call(invoicesRoute.GET, { token: viewer, path: "/api/invoices?q=hdfc" });
+      expect(byBank.body.rows.map((r: any) => [r.number, r.payMode, r.payDetails])).toEqual([[`INV/${FY}/001`, "Mixed", "HDFC Bank · UPI ref 4321"]]);
       const byNumber = await call(invoicesRoute.GET, { token: viewer, path: `/api/invoices?q=${encodeURIComponent(`BILL/${FY}`)}` });
       expect(byNumber.body.total).toBe(1);
 

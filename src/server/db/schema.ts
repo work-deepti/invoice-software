@@ -202,6 +202,8 @@ export const invoices = pgTable(
     placeOfSupply: text("place_of_supply").notNull().default(""),
     placeCode: text("place_code"),
     payMode: payModeEnum("pay_mode").notNull(),
+    /** Free text beside the payment mode, e.g. "HDFC Bank", "SBI cheque 004512", a UPI reference. */
+    payDetails: text("pay_details").notNull().default(""),
     // inputs + computed totals (DATA-01)
     discountInput: money("discount_input").notNull().default("0"),
     discount: money("discount").notNull(),

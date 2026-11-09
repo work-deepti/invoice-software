@@ -57,6 +57,7 @@ async function toEngineInput(tx: Tx, body: InvoiceBody, s: ShopSettingsRow, gstR
   return {
     date: body.date,
     payMode: body.payMode,
+    payDetails: body.payDetails.trim(),
     gstOn: body.gstOn,
     interState: body.gstOn && body.interState,
     gstRate,
@@ -250,7 +251,7 @@ async function upsertCustomer(tx: Tx, input: InvoiceInput, userId: string): Prom
 
 function searchTextFor(number: string, input: InvoiceInput): string {
   const c = input.customer;
-  return [number, c.name, c.phone, c.gstin, c.pan, input.notes, ...input.lines.map((l) => l.description)]
+  return [number, c.name, c.phone, c.gstin, c.pan, input.payDetails, input.notes, ...input.lines.map((l) => l.description)]
     .filter(Boolean)
     .join(" ")
     .toLowerCase();
@@ -275,6 +276,7 @@ function headerValues(input: InvoiceInput, t: InvoiceTotals, s: ShopSettingsRow)
     placeOfSupply: pos.label,
     placeCode: pos.code,
     payMode: input.payMode,
+    payDetails: input.payDetails ?? "",
     discountInput: t.discountEntered,
     discount: t.discount,
     itemsTotal: t.itemsTotal,
@@ -633,6 +635,7 @@ export interface LedgerRow {
   grandTotal: string;
   balance: string;
   payMode: string;
+  payDetails: string;
   status: "active" | "cancelled";
   permissions: { canEdit: boolean; canCancel: boolean; canDelete: boolean };
 }
@@ -676,6 +679,7 @@ export async function listInvoices(
         grandTotal: invoices.grandTotal,
         balance: invoices.balance,
         payMode: invoices.payMode,
+        payDetails: invoices.payDetails,
         status: invoices.status,
       })
       .from(invoices)

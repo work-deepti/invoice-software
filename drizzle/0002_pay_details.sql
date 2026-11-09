@@ -1,0 +1,1 @@
+ALTER TABLE "invoices" ADD COLUMN "pay_details" text DEFAULT '' NOT NULL;

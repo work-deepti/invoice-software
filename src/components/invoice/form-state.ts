@@ -52,6 +52,8 @@ export interface CustomerForm {
 export interface FormState {
   date: string;
   payMode: PayMode;
+  /** Free text: bank name, cheque / UPI reference. */
+  payDetails: string;
   gstOn: boolean;
   interState: boolean;
   /** The user ticked/unticked IGST by hand — auto-detect stops overriding it (GST-02). */
@@ -138,6 +140,7 @@ export function blankForm(rates: RatesDTO, settings: SettingsDTO, today: string)
   return {
     date: today,
     payMode: "Cash",
+    payDetails: "",
     gstOn: settings.gstDefault,
     interState: false,
     interStateManual: false,
@@ -155,6 +158,7 @@ export function formFromSaved(inv: SavedInvoice): FormState {
   return {
     date: inv.invoiceDate,
     payMode: inv.payMode,
+    payDetails: inv.payDetails,
     gstOn: inv.gstOn,
     interState: inv.interState,
     interStateManual: true,
@@ -204,6 +208,7 @@ export function toEngineInput(f: FormState, gstRate: string): InvoiceInput {
   return {
     date: f.date,
     payMode: f.payMode,
+    payDetails: f.payDetails,
     gstOn: f.gstOn,
     interState: f.gstOn && f.interState,
     gstRate,
@@ -228,6 +233,7 @@ export function toBody(f: FormState, acceptWarnings = false) {
   return {
     date: f.date,
     payMode: f.payMode,
+    payDetails: f.payDetails,
     gstOn: f.gstOn,
     interState: f.gstOn && f.interState,
     customer: f.customer,

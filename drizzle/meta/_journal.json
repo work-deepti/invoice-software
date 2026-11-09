@@ -15,6 +15,13 @@
       "when": 1794220745227,
       "tag": "0001_init",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "7",
+      "when": 1794224521366,
+      "tag": "0002_pay_details",
+      "breakpoints": true
     }
   ]
 }
