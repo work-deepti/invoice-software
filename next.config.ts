@@ -1,9 +1,13 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
-  /* config options here */
   cacheComponents: true,
   partialPrefetching: true,
+  // The PDF renderer runs as a plain Node dependency; its fonts ship with the function.
+  serverExternalPackages: ["@react-pdf/renderer"],
+  outputFileTracingIncludes: {
+    "/api/invoices/[id]/pdf": ["./src/server/pdf/fonts/**"],
+  },
   turbopack: {
     rules: {
       "*.css": {

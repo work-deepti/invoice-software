@@ -1,26 +1,198 @@
 @import "tailwindcss";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
+/* ──────────────────────────────────────────────────────────────────────────
+   Design tokens — Gold & Silver Billing
+   Slate canvas, white hairline surfaces, Slate 900 ink; metallic amber only
+   where gold or attention is meant; cool slate for silver.
+   ────────────────────────────────────────────────────────────────────────── */
+@theme {
+  --font-sans: var(--font-geist-sans), ui-sans-serif, system-ui, sans-serif;
+  --font-mono: var(--font-geist-mono), ui-monospace, "SFMono-Regular", monospace;
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
+  --color-canvas: #f8fafc;
+  --color-surface: #ffffff;
+  --color-sunken: #f1f5f9;
+  --color-line: #e2e8f0;
+  --color-line-strong: #cbd5e1;
+  --color-ink: #0f172a;
+  --color-ink-2: #1e293b;
+  --color-ink-3: #334155;
+  --color-muted: #64748b;
+  --color-faint: #94a3b8;
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+  --color-gold: #d97706;
+  --color-gold-deep: #b45309;
+  --color-gold-fill: #fef3c7;
+  --color-gold-soft: #fffbeb;
+  --color-silver: #475569;
+  --color-silver-fill: #f1f5f9;
+
+  --color-danger: #dc2626;
+  --color-danger-deep: #b91c1c;
+  --color-danger-fill: #fef2f2;
+  --color-ok: #16a34a;
+  --color-ok-deep: #15803d;
+  --color-ok-fill: #f0fdf4;
+  --color-warn: #d97706;
+  --color-warn-fill: #fffbeb;
+
+  --shadow-hair: 0 1px 2px rgba(15, 23, 42, 0.04);
+  --shadow-pop: 0 12px 32px -8px rgba(15, 23, 42, 0.18), 0 2px 6px rgba(15, 23, 42, 0.06);
+  --shadow-dock: 0 -8px 24px -12px rgba(15, 23, 42, 0.35);
+
+  --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
+  --default-transition-duration: 150ms;
+  --default-transition-timing-function: cubic-bezier(0.16, 1, 0.3, 1);
+
+  /* UX-02 / UX-03: the item table switches from cards to one row at 1200 px */
+  --breakpoint-desk: 75rem;
+  /* UX-04: phone rules apply up to 700 px */
+  --breakpoint-tab: 43.75rem;
+
+  --animate-flash: flash 650ms var(--ease-out-expo);
+  --animate-enter: enter 150ms var(--ease-out-expo);
+  --animate-overlay: overlay 150ms var(--ease-out-expo);
+  --animate-toast: toast 180ms var(--ease-out-expo);
+
+  @keyframes flash {
+    0% { background-color: var(--color-gold-fill); color: var(--color-gold-deep); }
+    100% { background-color: transparent; }
+  }
+  @keyframes enter {
+    from { opacity: 0; transform: translateY(4px) scale(0.995); }
+    to { opacity: 1; transform: none; }
+  }
+  @keyframes overlay {
+    from { opacity: 0; }
+    to { opacity: 1; }
+  }
+  @keyframes toast {
+    from { opacity: 0; transform: translateY(8px); }
+    to { opacity: 1; transform: none; }
   }
 }
 
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+/* ── base ─────────────────────────────────────────────────────────────── */
+@layer base {
+  html {
+    background: var(--color-canvas);
+    color: var(--color-ink);
+    -webkit-text-size-adjust: 100%;
+    text-rendering: optimizeLegibility;
+  }
+  body {
+    background: var(--color-canvas);
+    color: var(--color-ink);
+    font-family: var(--font-sans);
+    font-feature-settings: "ss01", "cv11";
+    overflow-x: clip; /* UX-05: never a sideways page scroll */
+  }
+  ::selection {
+    background: var(--color-gold-fill);
+    color: var(--color-ink);
+  }
+  input,
+  textarea,
+  select {
+    caret-color: var(--color-gold-deep);
+  }
+  /* UX-04: 16 px inputs on phones so iOS never zooms */
+  @media (max-width: 43.75rem) {
+    input,
+    select,
+    textarea {
+      font-size: 16px !important;
+    }
+  }
+  :focus-visible {
+    outline: 2px solid color-mix(in srgb, var(--color-ink) 70%, transparent);
+    outline-offset: 2px;
+  }
+  /* UX-02: no spin arrows anywhere */
+  input[type="number"]::-webkit-outer-spin-button,
+  input[type="number"]::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+  }
+  input[type="number"] {
+    -moz-appearance: textfield;
+  }
+  a {
+    text-underline-offset: 3px;
+  }
+  * {
+    scrollbar-width: thin;
+    scrollbar-color: var(--color-line-strong) transparent;
+  }
+}
+
+@utility num {
+  font-family: var(--font-mono);
+  font-variant-numeric: tabular-nums slashed-zero;
+  font-feature-settings: "tnum", "zero";
+  letter-spacing: -0.01em;
+}
+
+/* Native <select> with a drawn chevron (kept in CSS: the data URL has spaces) */
+@utility select-chevron {
+  background-color: var(--color-surface);
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%2364748b' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m7 10 5 5 5-5'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-size: 16px;
+  background-position: right 8px center;
+}
+
+@utility tight {
+  letter-spacing: -0.02em;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 1ms !important;
+    transition-duration: 1ms !important;
+  }
+}
+
+/* ── print (PRT-01..04): only the invoice, on A4 portrait ──────────────── */
+@page {
+  size: A4 portrait;
+  margin: 12mm 12mm 16mm;
+}
+
+#print-root {
+  display: none;
+}
+
+@media print {
+  html,
+  body {
+    background: #fff !important;
+  }
+  body > *:not(#print-root) {
+    display: none !important;
+  }
+  #print-root {
+    display: block !important;
+  }
+  .print-doc {
+    width: auto !important;
+    box-shadow: none !important;
+    border: 0 !important;
+    padding: 0 !important;
+    transform: none !important;
+  }
+  .print-doc thead {
+    display: table-header-group;
+  }
+  .print-doc tr,
+  .print-keep {
+    break-inside: avoid;
+    page-break-inside: avoid;
+  }
+  * {
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
 }

@@ -16,6 +16,7 @@
   },
   "dependencies": {
     "@react-pdf/renderer": "^4.9.0",
+    "clsx": "^2.1.1",
     "decimal.js": "^10.6.0",
     "drizzle-orm": "^0.45.4",
     "geist": "^1.9.2",
@@ -23,9 +24,11 @@
     "lucide-react": "^1.70.0",
     "next": "16.4.5",
     "pg": "^8.23.1",
+    "radix-ui": "^1.8.1",
     "react": "19.3.0",
     "react-dom": "19.3.0",
     "server-only": "^0.0.1",
+    "tailwind-merge": "^3.7.0",
     "zod": "^4.6.7"
   },
   "devDependencies": {
@@ -39,6 +42,7 @@
     "eslint": "^9",
     "eslint-config-next": "16.4.5",
     "tailwindcss": "^4",
+    "tsx": "^4.23.15",
     "typescript": "^5",
     "vitest": "^5.1.0"
   }
