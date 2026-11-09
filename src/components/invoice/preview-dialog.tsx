@@ -77,7 +77,7 @@ export function InvoicePreviewDialog({
               <a
                 href={`/api/invoices/${invoice.id}/pdf${duplicate ? "?copy=duplicate" : ""}`}
                 download={pdfFileName(invoice.number)}
-                className="inline-flex h-8 items-center gap-1.5 rounded-md border border-line bg-surface px-3 text-[13px] font-medium text-ink shadow-hair transition-colors hover:border-line-strong hover:bg-canvas"
+                className="inline-flex h-9 items-center gap-1.5 rounded-full bg-sunken px-3.5 text-[13px] font-semibold text-ink transition-colors hover:bg-line"
               >
                 <Download className="size-4" aria-hidden />
                 PDF
@@ -86,7 +86,7 @@ export function InvoicePreviewDialog({
                 <Link
                   href={`/invoices/${invoice.id}/edit`}
                   onClick={() => onOpenChange(false)}
-                  className="inline-flex h-8 items-center gap-1.5 rounded-md border border-line bg-surface px-3 text-[13px] font-medium text-ink shadow-hair transition-colors hover:border-line-strong hover:bg-canvas"
+                  className="inline-flex h-9 items-center gap-1.5 rounded-full bg-sunken px-3.5 text-[13px] font-semibold text-ink transition-colors hover:bg-line"
                 >
                   <Pencil className="size-4" aria-hidden />
                   Edit
@@ -98,7 +98,7 @@ export function InvoicePreviewDialog({
                   Cancel invoice
                 </Button>
               ) : null}
-              <D.Close className="grid size-8 place-items-center rounded-md text-muted transition-colors hover:bg-sunken hover:text-ink" aria-label="Close preview">
+              <D.Close className="grid size-9 place-items-center rounded-full text-muted transition-colors hover:bg-sunken hover:text-ink" aria-label="Close preview">
                 <X className="size-4" aria-hidden />
               </D.Close>
             </div>

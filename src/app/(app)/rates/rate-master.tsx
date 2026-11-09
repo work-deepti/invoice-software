@@ -1,5 +1,5 @@
 "use client";
-import { ArrowDown, ArrowUp, Plus, Sparkles, X } from "lucide-react";
+import { ArrowDown, ArrowUp, Coins, History, Plus, Sparkles, X } from "lucide-react";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import {
   autoFillFromFineRate,
@@ -104,8 +104,8 @@ export function RateMaster() {
     <div className="flex flex-col gap-4 pb-10">
       <div className="flex flex-wrap items-end justify-between gap-3">
         <div>
-          <h1 className="tight text-[22px] font-semibold text-ink">Rate master</h1>
-          <p className={cn("mt-0.5 text-[13.5px]", rates.status === "current" ? "text-muted" : "font-medium text-gold-deep")}>{statusLine}</p>
+          <h1 className="tight text-[26px] font-extrabold text-ink tab:text-[30px]">Rate master</h1>
+          <p className={cn("mt-1 text-[14px]", rates.status === "current" ? "text-muted" : "font-medium text-gold-deep")}>{statusLine}</p>
         </div>
         {canEdit ? (
           <div className="flex flex-wrap gap-2">
@@ -129,6 +129,8 @@ export function RateMaster() {
 
       <Card aria-labelledby="rates-h">
         <CardHeader
+          icon={<Coins />}
+          tone="gold"
           title={<span id="rates-h">Today&apos;s rates</span>}
           description={canEdit ? "Rate per gram for each purity. Gold shows the 10 g price, silver the 1 kg price." : "Only the owner can change rates."}
           actions={
@@ -140,7 +142,7 @@ export function RateMaster() {
             ) : null
           }
         />
-        <div className="px-3 pt-3 pb-4 tab:px-5">
+        <div className="px-3 pt-4 pb-5 tab:px-6">
           <div aria-hidden className={cn("hidden border-b border-line pb-2 text-[11.5px] font-medium text-muted desk:grid desk:gap-x-2", GRID)}>
             <span className="pl-2">Metal</span>
             <span className="pl-2">Purity name (printed)</span>
@@ -218,7 +220,7 @@ export function RateMaster() {
                       type="button"
                       onClick={() => setRows((rs) => rs.filter((_, j) => j !== i))}
                       aria-label={`Remove ${r.label || `row ${i + 1}`}`}
-                      className="absolute top-3 right-0 grid size-8 place-items-center rounded-md text-faint transition-colors hover:bg-danger-fill hover:text-danger desk:static desk:size-7 desk:justify-self-center"
+                      className="absolute top-3 right-0 grid size-8 place-items-center rounded-full text-faint transition-colors hover:bg-danger-fill hover:text-danger desk:static desk:size-7 desk:justify-self-center"
                     >
                       <X className="size-4" aria-hidden />
                     </button>
@@ -230,7 +232,7 @@ export function RateMaster() {
             })}
           </ol>
           {errors.length ? (
-            <ul role="alert" className="mt-3 space-y-1 rounded-lg bg-danger-fill px-3.5 py-2.5 text-[13px] text-danger-deep">
+            <ul role="alert" className="mt-3 space-y-1 rounded-[14px] bg-danger-fill px-3.5 py-2.5 text-[13px] text-danger-deep">
               {errors.map((e, i) => (
                 <li key={i}>{e.message}</li>
               ))}
@@ -240,17 +242,17 @@ export function RateMaster() {
       </Card>
 
       <Card aria-labelledby="hist-h">
-        <CardHeader title={<span id="hist-h">Rate history</span>} description="Last 30 saved days, newest first. Saving twice in a day keeps the latest." />
-        <div className="px-3 pt-3 pb-4 tab:px-5">
+        <CardHeader icon={<History />} tone="lav" title={<span id="hist-h">Rate history</span>} description="Last 30 saved days, newest first. Saving twice in a day keeps the latest." />
+        <div className="px-3 pt-4 pb-5 tab:px-6">
           {!history ? (
-            <div className="h-32 animate-pulse rounded-lg bg-line/40" />
+            <div className="h-32 animate-pulse rounded-[16px] bg-line/40" />
           ) : history.dates.length === 0 ? (
-            <p className="rounded-lg border border-dashed border-line px-4 py-6 text-center text-[13.5px] text-muted">
+            <p className="rounded-[16px] bg-sunken px-4 py-6 text-center text-[13.5px] text-muted">
               No saved rates yet. Each time you save, that day&apos;s rates are kept here.
             </p>
           ) : (
             // UX-05: wide reference tables scroll inside their own box only
-            <div className="overflow-x-auto rounded-lg border border-line">
+            <div className="overflow-x-auto rounded-[16px] ring-1 ring-line ring-inset">
               <table className="w-full min-w-max border-collapse text-[13px]">
                 <thead>
                   <tr className="bg-sunken/70 text-left text-[11.5px] font-medium text-muted">

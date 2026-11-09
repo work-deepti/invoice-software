@@ -156,7 +156,7 @@ function LineRow({
           onClick={() => onRemove(i)}
           aria-label={removeLabel}
           title={removeLabel}
-          className="grid size-8 place-items-center rounded-md text-faint transition-colors hover:bg-danger-fill hover:text-danger desk:hidden"
+          className="grid size-8 place-items-center rounded-full text-faint transition-colors hover:bg-danger-fill hover:text-danger desk:hidden"
         >
           <X className="size-4" aria-hidden />
         </button>
@@ -417,7 +417,7 @@ export function ExchangeCard({
                       type="button"
                       onClick={() => onRemove(i)}
                       aria-label={`Remove exchange item ${i + 1}`}
-                      className="absolute top-3 right-0 grid size-8 place-items-center rounded-md text-faint transition-colors hover:bg-danger-fill hover:text-danger desk:static desk:size-7 desk:justify-self-center"
+                      className="absolute top-3 right-0 grid size-8 place-items-center rounded-full text-faint transition-colors hover:bg-danger-fill hover:text-danger desk:static desk:size-7 desk:justify-self-center"
                     >
                       <X className="size-4" aria-hidden />
                     </button>

@@ -1,5 +1,6 @@
 "use client";
 import { useRouter, useSearchParams } from "next/navigation";
+import { LogoMark } from "@/components/shell/logo";
 import { useEffect, useState, type FormEvent } from "react";
 import { Button } from "@/components/ui/button";
 import { Field, TextInput } from "@/components/ui/field";
@@ -38,25 +39,19 @@ export function LoginForm() {
     router.replace(mode === "setup" ? "/settings" : next.startsWith("/") ? next : "/invoices/new");
   }
 
-  if (mode === "checking") return <div className="h-80 w-full max-w-[380px] animate-pulse rounded-2xl bg-line/50" />;
+  if (mode === "checking") return <div className="h-80 w-full max-w-[380px] animate-pulse rounded-[28px] bg-line/50" />;
 
   return (
     <form onSubmit={submit} className="w-full max-w-[380px] animate-enter">
-      <div className="mb-7 flex items-center gap-3">
-        <span aria-hidden className="grid size-10 place-items-center rounded-xl bg-ink shadow-hair">
-          <span className="grid size-5 place-items-center rounded-[5px] bg-gold">
-            <span className="size-1.5 rounded-[2px] bg-ink/85" />
-          </span>
-        </span>
-        <div>
-          <h1 className="tight text-[20px] font-semibold text-ink">{mode === "setup" ? "Set up your shop" : "Sign in"}</h1>
-          <p className="text-[13.5px] text-muted">
-            {mode === "setup" ? "Create the owner account. You can add staff later." : "Gold & Silver Billing"}
-          </p>
-        </div>
+      <div className="mb-6">
+        <LogoMark className="h-14 w-11 lg:hidden" />
+        <h1 className="tight mt-5 text-[28px] font-extrabold text-ink lg:mt-0">{mode === "setup" ? "Set up your shop" : "Welcome back"}</h1>
+        <p className="mt-1 text-[14.5px] text-muted">
+          {mode === "setup" ? "Create the owner account. You can add staff later." : "Sign in to Gold & Silver Billing."}
+        </p>
       </div>
 
-      <div className="space-y-4 rounded-2xl border border-line bg-surface p-5 shadow-hair">
+      <div className="space-y-4 rounded-[28px] bg-surface p-6 shadow-card">
         {mode === "setup" ? (
           <Field label="Your name">
             {(p) => <TextInput {...p} value={name} onChange={(e) => setName(e.target.value)} autoComplete="name" required autoFocus />}
@@ -88,7 +83,7 @@ export function LoginForm() {
           )}
         </Field>
         {error ? (
-          <p role="alert" className="animate-enter rounded-lg bg-danger-fill px-3 py-2 text-[13px] text-danger-deep">
+          <p role="alert" className="animate-enter rounded-[14px] bg-danger-fill px-3.5 py-2.5 text-[13px] text-danger-deep">
             {error}
           </p>
         ) : null}

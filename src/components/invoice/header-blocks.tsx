@@ -40,7 +40,7 @@ export function DetailsCard({
           {(p) => (
             <output
               id={p.id}
-              className="num flex h-9 items-center rounded-lg border border-dashed border-line-strong bg-sunken/60 px-3 text-[14px] font-medium text-ink"
+              className="num flex h-9 items-center rounded-[16px] bg-sunken-strong bg-sunken/60 px-3 text-[14px] font-medium text-ink"
             >
               {number ?? <span aria-label="Loading the next number" className="block h-3 w-32 animate-pulse rounded bg-line" />}
             </output>
@@ -290,7 +290,7 @@ function PhoneRecall({
             <ul
               id="phone-recall"
               role="listbox"
-              className="absolute top-[calc(100%+6px)] right-0 left-0 z-30 max-h-72 animate-enter overflow-y-auto rounded-xl border border-line bg-surface p-1 shadow-pop"
+              className="absolute top-[calc(100%+6px)] right-0 left-0 z-30 max-h-72 animate-enter overflow-y-auto rounded-[18px] bg-surface p-1.5 shadow-pop"
             >
               {items.map((s, i) => (
                 <li

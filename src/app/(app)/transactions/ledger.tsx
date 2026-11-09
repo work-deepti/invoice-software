@@ -591,7 +591,7 @@ function RowActions({
             <MoreHorizontal className="size-4" aria-hidden />
           </DropdownMenu.Trigger>
           <DropdownMenu.Portal>
-            <DropdownMenu.Content align="end" sideOffset={4} className="z-50 min-w-48 animate-enter rounded-xl border border-line bg-surface p-1 shadow-pop">
+            <DropdownMenu.Content align="end" sideOffset={4} className="z-50 min-w-48 animate-enter rounded-[18px] bg-surface p-1.5 shadow-pop">
               {r.permissions.canCancel ? (
                 <DropdownMenu.Item onSelect={() => onCancel(r)} className="flex cursor-pointer items-center gap-2 rounded-lg px-2.5 py-2 text-[13.5px] text-ink outline-none data-[highlighted]:bg-sunken">
                   <Ban className="size-4 text-muted" aria-hidden />
@@ -664,9 +664,9 @@ function ExportMenu({ qs, isOwner }: { qs: string; isOwner: boolean }) {
         </Button>
       </DropdownMenu.Trigger>
       <DropdownMenu.Portal>
-        <DropdownMenu.Content align="end" sideOffset={6} className="z-50 w-72 animate-enter rounded-xl border border-line bg-surface p-1 shadow-pop">
+        <DropdownMenu.Content align="end" sideOffset={6} className="z-50 w-72 animate-enter rounded-[18px] bg-surface p-1.5 shadow-pop">
           <DropdownMenu.Item asChild>
-            <a href={href(false)} className="flex flex-col rounded-lg px-3 py-2 outline-none data-[highlighted]:bg-sunken">
+            <a href={href(false)} className="flex flex-col rounded-[12px] px-3 py-2.5 outline-none data-[highlighted]:bg-sunken">
               <span className="flex items-center gap-2 text-[13.5px] font-medium text-ink">
                 <Download className="size-4 text-muted" aria-hidden />
                 These invoices
@@ -675,7 +675,7 @@ function ExportMenu({ qs, isOwner }: { qs: string; isOwner: boolean }) {
             </a>
           </DropdownMenu.Item>
           <DropdownMenu.Item asChild>
-            <a href={href(true)} className="flex flex-col rounded-lg px-3 py-2 outline-none data-[highlighted]:bg-sunken">
+            <a href={href(true)} className="flex flex-col rounded-[12px] px-3 py-2.5 outline-none data-[highlighted]:bg-sunken">
               <span className="flex items-center gap-2 text-[13.5px] font-medium text-ink">
                 <Download className="size-4 text-muted" aria-hidden />
                 With full phone and PAN

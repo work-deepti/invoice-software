@@ -342,9 +342,9 @@ export function InvoiceWorkspace({ editId }: { editId?: string }) {
   if (editing && !source)
     return (
       <div className="space-y-4" aria-busy>
-        <div className="h-8 w-64 animate-pulse rounded-md bg-line/70" />
-        <div className="h-48 animate-pulse rounded-xl bg-line/50" />
-        <div className="h-72 animate-pulse rounded-xl bg-line/40" />
+        <div className="h-8 w-64 animate-pulse rounded-full bg-line/70" />
+        <div className="h-48 animate-pulse rounded-[24px] bg-line/50" />
+        <div className="h-72 animate-pulse rounded-[24px] bg-line/40" />
       </div>
     );
 
@@ -563,7 +563,7 @@ export function CancelInvoiceDialog({
 
 function Notice({ title, text, back }: { title: string; text: string; back?: boolean }) {
   return (
-    <div className="mx-auto mt-10 max-w-md rounded-xl border border-line bg-surface p-6 text-center shadow-hair">
+    <div className="mx-auto mt-10 max-w-md rounded-[24px] bg-surface p-7 text-center shadow-card">
       <h1 className="tight text-[17px] font-semibold text-ink">{title}</h1>
       <p className="mt-1.5 text-[14px] text-muted">{text}</p>
       {back ? (

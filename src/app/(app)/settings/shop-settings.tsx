@@ -1,5 +1,5 @@
 "use client";
-import { KeyRound, UserPlus } from "lucide-react";
+import { Hash, KeyRound, Landmark, Printer, ShieldCheck, Store, UserPlus, Users, Eye } from "lucide-react";
 import { useCallback, useEffect, useMemo, useState, type ReactNode } from "react";
 import {
   formatInvoiceNumber,
@@ -16,7 +16,7 @@ import { api } from "@/lib/api-client";
 import { cn } from "@/lib/cn";
 import type { SettingsDTO } from "@/server/settings";
 import { Button } from "@/components/ui/button";
-import { Card, CardHeader } from "@/components/ui/card";
+import { Card, CardHeader, type Tone } from "@/components/ui/card";
 import { Dialog } from "@/components/ui/dialog";
 import { Field, Select, TextArea, TextInput } from "@/components/ui/field";
 import { Switch } from "@/components/ui/switch";
@@ -50,7 +50,7 @@ export function ShopSettings() {
 
   if (!capabilities.isOwner)
     return (
-      <div className="mx-auto mt-10 max-w-md rounded-xl border border-line bg-surface p-6 text-center shadow-hair">
+      <div className="mx-auto mt-10 max-w-md rounded-[24px] bg-surface p-7 text-center shadow-card">
         <h1 className="tight text-[17px] font-semibold">Owner only</h1>
         <p className="mt-1.5 text-[14px] text-muted">Only the shop owner can change shop settings.</p>
       </div>
@@ -95,13 +95,13 @@ export function ShopSettings() {
     >
       <div className="flex flex-wrap items-end justify-between gap-3">
         <div>
-          <h1 className="tight text-[22px] font-semibold text-ink">Shop settings</h1>
-          <p className="mt-0.5 text-[13.5px] text-muted">Printed on every invoice. Old invoices keep the details they were saved with.</p>
+          <h1 className="tight text-[26px] font-extrabold text-ink tab:text-[30px]">Shop settings</h1>
+          <p className="mt-1 text-[14px] text-muted">Printed on every invoice. Old invoices keep the details they were saved with.</p>
         </div>
       </div>
 
       <div className="grid items-start gap-4 lg:grid-cols-2">
-        <Section title="Business" description="Name, contact and address at the top of the invoice.">
+        <Section icon={<Store />} tone="peach" title="Business" description="Name, contact and address at the top of the invoice.">
           <Field label="Shop / business name" field="name" error={errorFor("name")} className="tab:col-span-2">
             {(p) => <TextInput {...p} value={form.name} onChange={(e) => set({ name: e.target.value })} autoComplete="organization" />}
           </Field>
@@ -116,7 +116,7 @@ export function ShopSettings() {
           </Field>
         </Section>
 
-        <Section title="GST" description="Your registration, default GST and HSN codes.">
+        <Section icon={<Landmark />} tone="mint" title="GST" description="Your registration, default GST and HSN codes.">
           <Field label="GSTIN" field="gstin" error={errorFor("gstin")} className="tab:col-span-2">
             {(p) => (
               <TextInput
@@ -169,7 +169,7 @@ export function ShopSettings() {
           </Field>
         </Section>
 
-        <Section title="Invoice numbering" description={`At most 16 characters. With yearly numbering the prefix can be ${maxPrefixLength(true)} characters.`}>
+        <Section icon={<Hash />} tone="lav" title="Invoice numbering" description={`At most 16 characters. With yearly numbering the prefix can be ${maxPrefixLength(true)} characters.`}>
           <Field label="Prefix – GST invoices" field="prefixGst" error={errorFor("prefixGst")} hint={<>Numbers look like <span className="num text-ink-3">{sample(form.prefixGst)}</span></>}>
             {(p) => <TextInput {...p} value={form.prefixGst} maxLength={10} onChange={(e) => set({ prefixGst: e.target.value.replace(/[^A-Za-z0-9-]/g, "") })} className="num" />}
           </Field>
@@ -190,7 +190,7 @@ export function ShopSettings() {
           </div>
         </Section>
 
-        <Section title="Printing" description="Terms, payment details and signature on the invoice.">
+        <Section icon={<Printer />} tone="neutral" title="Printing" description="Terms, payment details and signature on the invoice.">
           <Field label="Terms" field="terms" className="tab:col-span-2">
             {(p) => <TextArea {...p} value={form.terms} onChange={(e) => set({ terms: e.target.value })} rows={3} />}
           </Field>
@@ -202,7 +202,7 @@ export function ShopSettings() {
           </Field>
         </Section>
 
-        <Section title="Compliance limits" description="Tax limits change. Confirm these values with your CA every year.">
+        <Section icon={<ShieldCheck />} tone="rose" title="Compliance limits" description="Tax limits change. Confirm these values with your CA every year.">
           <Field label="Cash receipt limit ₹ (s.269ST)" field="cashLimit" error={errorFor("cashLimit")}>
             {(p) => <TextInput {...p} inputMode="decimal" value={form.cashLimit} onChange={(e) => set({ cashLimit: sanitizeDecimalText(e.target.value) })} className="num" />}
           </Field>
@@ -225,7 +225,7 @@ export function ShopSettings() {
           </Field>
         </Section>
 
-        <Section title="Access" description="What billing staff can see.">
+        <Section icon={<Eye />} tone="silver" title="Access" description="What billing staff can see.">
           <Switch
             checked={form.staffCanSeeDashboard}
             onCheckedChange={(v) => set({ staffCanSeeDashboard: v })}
@@ -238,11 +238,11 @@ export function ShopSettings() {
       <TeamCard selfId={user.id} />
 
       {/* Save bar */}
-      <div className={cn("pointer-events-none fixed inset-x-0 bottom-0 z-30 px-2 pb-[max(8px,env(safe-area-inset-bottom))] transition-transform duration-150 ease-out-expo tab:px-6 tab:pb-4", !dirty && "translate-y-[calc(100%+16px)]")}>
-        <div className="pointer-events-auto mx-auto flex max-w-[1680px] items-center justify-between gap-3 rounded-2xl bg-ink px-4 py-3 text-white shadow-dock">
-          <p className="text-[13.5px] text-white/75">
+      <div className={cn("pointer-events-none fixed inset-x-0 bottom-[calc(76px+env(safe-area-inset-bottom))] z-30 px-3 transition-[transform,opacity] duration-150 ease-out-expo tab:px-6 lg:bottom-0 lg:left-[76px] lg:pb-4 wide:left-[264px] wide:px-8", !dirty && "pointer-events-none translate-y-[calc(100%+96px)] opacity-0")}>
+        <div className={cn("mx-auto flex max-w-[1456px] items-center justify-between gap-3 rounded-[24px] bg-ink py-2.5 pr-2.5 pl-5 text-white shadow-dock", dirty && "pointer-events-auto")}>
+          <p className="text-[14px] font-semibold text-white/75">
             {submitted && validation.errors.length ? (
-              <span className="text-red-300">{validation.errors.length === 1 ? "1 field needs fixing" : `${validation.errors.length} fields need fixing`}</span>
+              <span className="text-[#ff9aa8]">{validation.errors.length === 1 ? "1 field needs fixing" : `${validation.errors.length} fields need fixing`}</span>
             ) : (
               "You have unsaved changes"
             )}
@@ -251,7 +251,7 @@ export function ShopSettings() {
             <Button variant="dock" onClick={() => setForm(settings)} disabled={busy}>
               Discard
             </Button>
-            <Button onClick={() => void save()} loading={busy} className="bg-white text-ink hover:bg-slate-100">
+            <Button onClick={() => void save()} loading={busy} className="bg-white text-ink shadow-none hover:bg-sunken">
               Save settings
             </Button>
           </div>
@@ -261,11 +261,11 @@ export function ShopSettings() {
   );
 }
 
-function Section({ title, description, children }: { title: string; description: string; children: ReactNode }) {
+function Section({ title, description, icon, tone, children }: { title: string; description: string; icon: ReactNode; tone: Tone; children: ReactNode }) {
   return (
-    <Card className="pb-5">
-      <CardHeader title={title} description={description} />
-      <div className="grid grid-cols-1 gap-3.5 px-4 pt-4 tab:grid-cols-2 tab:px-5">{children}</div>
+    <Card className="pb-6">
+      <CardHeader icon={icon} tone={tone} title={title} description={description} />
+      <div className="grid grid-cols-1 gap-3.5 px-5 pt-5 tab:grid-cols-2 tab:px-6">{children}</div>
     </Card>
   );
 }
@@ -305,8 +305,10 @@ function TeamCard({ selfId }: { selfId: string }) {
   }
 
   return (
-    <Card className="pb-4">
+    <Card className="pb-5">
       <CardHeader
+        icon={<Users />}
+        tone="gold"
         title="Team"
         description="Everyone signs in with their own login. Staff bill; viewers only look and export."
         actions={
@@ -316,11 +318,11 @@ function TeamCard({ selfId }: { selfId: string }) {
           </Button>
         }
       />
-      <div className="px-4 pt-3 tab:px-5">
+      <div className="px-5 pt-4 tab:px-6">
         {!users ? (
-          <div className="h-24 animate-pulse rounded-lg bg-line/40" />
+          <div className="h-24 animate-pulse rounded-[16px] bg-line/40" />
         ) : (
-          <ul className="divide-y divide-line rounded-lg border border-line">
+          <ul className="divide-y divide-line rounded-[16px] ring-1 ring-line ring-inset">
             {users.map((u) => (
               <li key={u.id} className={cn("flex flex-wrap items-center gap-x-4 gap-y-2 px-3.5 py-3", !u.active && "opacity-55")}>
                 <div className="min-w-0 flex-1">
@@ -435,7 +437,7 @@ function AddUserDialog({ open, onClose, onAdded }: { open: boolean; onClose: () 
           {(p) => <TextInput {...p} type="password" value={password} onChange={(e) => setPassword(e.target.value)} autoComplete="new-password" />}
         </Field>
       </div>
-      {error ? <p className="mt-3 rounded-lg bg-danger-fill px-3 py-2 text-[13px] text-danger-deep">{error}</p> : null}
+      {error ? <p className="mt-3 rounded-[14px] bg-danger-fill px-3 py-2 text-[13px] text-danger-deep">{error}</p> : null}
     </Dialog>
   );
 }
