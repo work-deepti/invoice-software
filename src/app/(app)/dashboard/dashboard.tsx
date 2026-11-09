@@ -129,7 +129,7 @@ export function Dashboard() {
 
       {/* DSH-01 global filter bar */}
       <div className="flex flex-col gap-4 rounded-[24px] bg-surface p-4 shadow-card print:hidden tab:p-5">
-        <div role="radiogroup" aria-label="Period" className="flex w-fit max-w-full gap-1 overflow-x-auto rounded-full bg-sunken p-1 [scrollbar-width:none]">
+        <div role="radiogroup" aria-label="Period" className="flex w-fit max-w-full flex-wrap gap-1 rounded-[20px] bg-sunken p-1 tab:flex-nowrap tab:overflow-x-auto tab:rounded-full tab:[scrollbar-width:none]">
           {PERIODS.map((p) => (
             <button
               key={p}

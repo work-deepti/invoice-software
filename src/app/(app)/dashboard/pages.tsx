@@ -47,12 +47,12 @@ export function OverviewPage({ res, drill }: { res: Res<typeof overview>; drill:
     <>
       <KpiGrid>
         <KpiTile tone="hero" label="Sales" value={k.sales.value} previous={k.sales.previous} previousLabel={prevLabel} onClick={() => drill()} />
-        <KpiTile tone="lav" label="Invoices" value={k.invoices.value} previous={k.invoices.previous} kind="count" previousLabel={prevLabel} onClick={() => drill()} />
+        <KpiTile label="Invoices" value={k.invoices.value} previous={k.invoices.previous} kind="count" previousLabel={prevLabel} onClick={() => drill()} />
         <KpiTile label="Average bill" value={k.avgBill.value} previous={k.avgBill.previous} previousLabel={prevLabel} />
         <KpiTile label="Gold sold" value={k.goldG.value} previous={k.goldG.previous} kind="grams" accent="gold" previousLabel={prevLabel} onClick={() => drill({ params: { metal: "gold" } })} />
         <KpiTile label="Silver sold" value={k.silverG.value} previous={k.silverG.previous} kind="grams" accent="silver" previousLabel={prevLabel} onClick={() => drill({ params: { metal: "silver" } })} />
-        <KpiTile tone="mint" label="GST collected" value={k.gst.value} previous={k.gst.previous} previousLabel={prevLabel} onClick={() => drill({ params: { gst: "with" } })} />
-        <KpiTile tone="peach" label="Making earned" value={k.making.value} previous={k.making.previous} previousLabel={prevLabel} />
+        <KpiTile label="GST collected" value={k.gst.value} previous={k.gst.previous} previousLabel={prevLabel} onClick={() => drill({ params: { gst: "with" } })} />
+        <KpiTile label="Making earned" value={k.making.value} previous={k.making.previous} previousLabel={prevLabel} />
         <KpiTile label="Outstanding dues" value={k.dues.value} previous={k.dues.previous} upIsGood={false} accent="danger" previousLabel="then" onClick={() => drill({ allDates: true, params: { due: "1" } })} />
       </KpiGrid>
 

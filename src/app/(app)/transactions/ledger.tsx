@@ -400,7 +400,7 @@ function LedgerTable({
             <th className="py-2.5 pr-3 text-right font-medium">Gold (g)</th>
             <th className="py-2.5 pr-3 text-right font-medium">Silver (g)</th>
             {/* UX-06: Taxable hides between 1200 and 1299 px */}
-            <th className="hidden py-2.5 pr-3 text-right font-medium min-[1300px]:table-cell">Taxable</th>
+            <th className="hidden py-2.5 pr-3 text-right font-medium min-[1600px]:table-cell">Taxable</th>
             <th className="py-2.5 pr-3 text-right font-medium">GST</th>
             <th className="py-2.5 pr-3 text-right font-medium">Total</th>
             <th className="py-2.5 pr-3 text-right font-medium">Balance</th>
@@ -434,7 +434,7 @@ function LedgerTable({
                 </td>
                 <td className="num py-2.5 pr-3 text-right">{toDec(r.goldNetG).isZero() ? <span className="text-faint">—</span> : formatIndianNumber(r.goldNetG, 3)}</td>
                 <td className="num py-2.5 pr-3 text-right">{toDec(r.silverNetG).isZero() ? <span className="text-faint">—</span> : formatIndianNumber(r.silverNetG, 3)}</td>
-                <td className="num hidden py-2.5 pr-3 text-right min-[1300px]:table-cell">{money(r.taxable)}</td>
+                <td className="num hidden py-2.5 pr-3 text-right min-[1600px]:table-cell">{money(r.taxable)}</td>
                 <td className="py-2.5 pr-3 text-right">{r.gstOn ? <span className="num">{money(r.gst)}</span> : <NoGstTag />}</td>
                 <td className="num py-2.5 pr-3 text-right font-semibold text-ink">{formatINR(toDec(r.grandTotal).abs())}</td>
                 <td className="py-2.5 pr-3 text-right">

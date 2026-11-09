@@ -187,6 +187,12 @@ export function Dock({
             {balance.gt(0) ? <Metric dot="bg-danger" label="Balance due" value={formatINR(balance)} danger /> : null}
           </dl>
 
+          {/* phones: compact grams so the flash has a figure to land on */}
+          <dl className="flex min-w-0 flex-col gap-1 text-[12px] leading-none lg:hidden">
+            <Metric dot="bg-gold" tone="text-gold" label="Gold" value={formatWeight(totals.goldNetG)} dim={totals.goldNetG === "0.000"} compact />
+            <Metric dot="bg-silver" tone="text-[#c9d4e4]" label="Silver" value={formatWeight(totals.silverNetG)} dim={totals.silverNetG === "0.000"} compact />
+          </dl>
+
           <div className="ml-auto flex min-w-0 flex-col items-end leading-none">
             <span className="text-[12px] font-semibold text-white/55">{totals.payableToCustomer ? "Payable to customer" : "Grand total"}</span>
             <Ticker value={formatINR(grand.abs())} className="mt-1 text-[22px] font-extrabold tracking-[-0.02em] tab:text-[26px]" />
@@ -240,11 +246,11 @@ export function Dock({
   );
 }
 
-function Metric({ dot, tone, label, value, dim, danger }: { dot: string; tone?: string; label: string; value: string; dim?: boolean; danger?: boolean }) {
+function Metric({ dot, tone, label, value, dim, danger, compact }: { dot: string; tone?: string; label: string; value: string; dim?: boolean; danger?: boolean; compact?: boolean }) {
   return (
-    <div className={cn("flex items-center gap-2", dim && "opacity-45")}>
-      <span aria-hidden className={cn("size-1.5 rounded-full", dot)} />
-      <dt className="text-white/55">{label}</dt>
+    <div className={cn("flex items-center gap-2", compact && "gap-1.5", dim && "opacity-45")}>
+      <span aria-hidden className={cn("size-1.5 shrink-0 rounded-full", dot)} />
+      <dt className={cn("text-white/55", compact && "sr-only")}>{label}</dt>
       <dd className={cn("num font-semibold", danger ? "text-[#ff9aa8]" : (tone ?? "text-white"))}>
         <Flash value={value}>{value}</Flash>
       </dd>

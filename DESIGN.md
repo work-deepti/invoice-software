@@ -200,7 +200,7 @@ Three layers do all the work:
 | Silver | `#e6edf7` | `#4c5f80` | Silver metal, old-metal exchange |
 | Lavender | `#eeeafd` | `#5b3fd0` | Focus, active navigation, invoice details, counts |
 | Mint | `#e2f4ea` | `#1d7a4e` | Paid, GST collected, good change |
-| Peach | `#fdebe1` | `#a64b1e` | People (customer, business), making charges, old metal taken |
+| Peach | `#fdebe1` | `#a64b1e` | People (customer, business), old metal taken in |
 | Rose | `#fce6ea` | `#b4232f` | Money still owed, compliance limits |
 
 ### Bold accents
@@ -262,13 +262,13 @@ White, 24 px, no border. Header: a round pastel **icon chip** (36 px) + 16 px bo
 A floating ink bar, 24 px corners, aligned to the content column. Gold and silver grams on the left, the rolling grand total in 26 px extrabold, and white "Save" pill on the right. Errors collect in a white tray above it as rose chips that jump to the field.
 
 ### Wallet tiles (ledger and dashboards)
-An **ink hero tile** for the headline money figure (Total billed / Sales), then **pastel tiles** for the rest (gold sold, silver sold, old metal, dues; invoices, GST, making). Big 22–30 px extrabold figure, coloured label, change chip.
+An **ink hero tile** for the headline money figure (Total billed / Sales), then **pastel tiles** only where a tint has a meaning (gold sold, silver sold, old metal, dues). Figures without a metal or money-owed meaning (invoices, average bill, GST, making) sit on white tiles. Big 22–30 px extrabold figure, coloured label, change chip.
 
 ### Coin avatars
 40 px circles in the ledger: a gold coin, a silver coin, or both overlapping, so the metal on a bill is visible at a glance. They echo the logo.
 
 ### Tabs
-- **Segmented control** (period, ₹/grams): sunken track, the active option a white pill.
+- **Segmented control** (period, ₹/grams): sunken track, the active option a white pill. On phones the period control wraps onto two rows instead of scrolling out of sight.
 - **Page tabs** (dashboard pages): pills, the active one ink.
 
 ### Logo

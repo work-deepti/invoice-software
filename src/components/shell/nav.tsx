@@ -67,7 +67,6 @@ export function Sidebar() {
           title="New invoice"
           className={cn(
             "mx-auto mt-6 flex size-12 items-center justify-center gap-2 rounded-full bg-ink text-[14.5px] font-semibold text-white shadow-[0_10px_24px_-10px_rgba(28,27,34,0.7)] transition-transform hover:bg-ink-2 active:scale-[0.98] wide:mx-0 wide:h-12 wide:w-full",
-            onInvoice && "ring-4 ring-lav/25",
           )}
         >
           <Plus className="size-5" strokeWidth={2.4} aria-hidden />
@@ -294,7 +293,6 @@ export function BottomBar() {
             aria-label="New invoice"
             className={cn(
               "mx-1 grid h-12 w-16 shrink-0 place-items-center rounded-full bg-white text-ink shadow-[0_4px_12px_-4px_rgba(0,0,0,0.4)] transition-transform active:scale-95",
-              pathname.startsWith("/invoices") && "ring-4 ring-white/25",
             )}
           >
             <Plus className="size-6" strokeWidth={2.4} aria-hidden />
