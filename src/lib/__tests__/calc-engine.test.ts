@@ -161,10 +161,14 @@ describe("§16.1 calculation test vectors", () => {
       { key: "sgst", label: "SGST 1.5%", amount: "3850.94" },
     ]);
 
-    // Validation: balance due with name+phone → no errors; ₹2L+ without PAN → W-01
-    const v = validateInvoice(WORKED_EXAMPLE, ctx(), t);
+    // Validation: ₹2L+ without PAN → E-20 (D-02 block); W-01 under the "warn" policy
+    expect(ids(validateInvoice(WORKED_EXAMPLE, ctx(), t).errors)).toEqual(["E-20"]);
+    const v = validateInvoice(WORKED_EXAMPLE, ctx({ limits: { panMissingPolicy: "warn" } }), t);
     expect(v.errors).toEqual([]);
     expect(ids(v.warnings)).toEqual(["W-01"]);
+    // Form 60 declaration ticked → clean
+    const declared = { ...WORKED_EXAMPLE, customer: { ...WORKED_EXAMPLE.customer, panDeclaration: true } };
+    expect(validateInvoice(declared, ctx())).toEqual({ errors: [], warnings: [] });
   });
 
   const T02 = invoice({ lines: [line({ gross: "10", rate: "7150", makingType: "per_g", makingValue: "450" })] });
@@ -551,7 +555,7 @@ describe("§8.2 invoice errors", () => {
   });
 
   it("E-11 wastage > 100 / E-12 making % > 100 (live)", () => {
-    const v = validateInvoice(invoice({ lines: [line({ gross: "10", rate: "7150", wastagePct: "101", makingType: "pct", makingValue: "100.01" })] }), ctx());
+    const v = validateInvoice(invoice({ customer: { pan: "ABCDE1234F" }, lines: [line({ gross: "10", rate: "7150", wastagePct: "101", makingType: "pct", makingValue: "100.01" })] }), ctx());
     expect(ids(v.errors)).toEqual(["E-11", "E-12"]);
     expect(v.errors.every((e) => e.live)).toBe(true);
     // 100 itself is allowed; ₹/g making above 100 is not a percentage
@@ -591,12 +595,21 @@ describe("§8.2 invoice errors", () => {
 describe("§8.3 invoice warnings", () => {
   const big = () => invoice({ customer: { name: "A", phone: "9123456780" }, lines: [line({ gross: "30", rate: "7150" })] });
 
-  it("T-25 UPI bill ≥ ₹2,00,000 without PAN → W-01 (warning only, no errors)", () => {
-    const v = validateInvoice(big(), ctx());
+  it("T-25 (D-02) UPI bill ≥ ₹2,00,000 without PAN → E-20 blocks unless Form 60 is ticked", () => {
+    const b = validateInvoice(big(), ctx());
+    expect(b.errors).toEqual([
+      { id: "E-20", field: "customer.pan", message: 'This bill is ₹2 lakh or more: enter the customer\'s PAN, or tick "No-PAN declaration (Form 60) received".', live: false },
+    ]);
+    expect(b.warnings).toEqual([]);
+    expect(validateInvoice({ ...big(), customer: { ...big().customer, panDeclaration: true } }, ctx())).toEqual({ errors: [], warnings: [] });
+  });
+
+  it("T-25 (warn policy) UPI bill ≥ ₹2,00,000 without PAN → W-01 (warning only, no errors)", () => {
+    const v = validateInvoice(big(), ctx({ limits: { panMissingPolicy: "warn" } }));
     expect(v.errors).toEqual([]);
     expect(ids(v.warnings)).toEqual(["W-01"]);
     expect(v.warnings[0].field).toBe("customer.pan");
-    expect(validateInvoice({ ...big(), customer: { ...big().customer, pan: "ABCDE1234F" } }, ctx()).warnings).toEqual([]);
+    expect(validateInvoice({ ...big(), customer: { ...big().customer, pan: "ABCDE1234F" } }, ctx({ limits: { panMissingPolicy: "warn" } })).warnings).toEqual([]);
   });
 
   it("W-02 Mixed with received ≥ ₹2,00,000", () => {
@@ -649,7 +662,7 @@ describe("§8.3 invoice warnings", () => {
 
   it("limits are configuration (§13)", () => {
     const v = validateInvoice(big(), ctx({ limits: { panLimit: "300000" } }));
-    expect(v.warnings).toEqual([]);
+    expect(v).toEqual({ errors: [], warnings: [] });
   });
 });
 

@@ -10,7 +10,7 @@
  *   §7.3  GST-01..04             → detectInterState, placeOfSupply, invoiceHeading, taxRows
  *   §7.4  NUM-01..07             → financialYear, seriesKey, formatInvoiceNumber, maxPrefixLength
  *   §8.1  VAL-01..07             → sanitize* / roundOnBlur / isBlockedNumberKey
- *   §8.2  E-01..E-19             → validateInvoice (errors)
+ *   §8.2  E-01..E-19, E-20 (D-02) → validateInvoice (errors)
  *   §8.3  W-01..W-08             → validateInvoice (warnings)
  *   §8.4  S-01..S-10, R-01..R-05 → validateSettings, validateRates
  *   §5.2  RATE-03/05/09          → rateEquivalent, autoFillFromFineRate, fineRateFor, applyRateMaster
@@ -125,6 +125,8 @@ export interface CustomerInput {
   pan?: string;
   state?: string;
   address?: string;
+  /** D-02: "No-PAN declaration (Form 60) received" tick box. */
+  panDeclaration?: boolean;
 }
 
 export interface InvoiceInput {
@@ -153,6 +155,12 @@ export interface ComplianceLimits {
   heavyGoldG: NumLike; // W-07
   heavyOtherG: NumLike; // W-07
   oldBillDays: number; // W-05
+  /**
+   * D-02 (owner decision 9 Nov 2026): a bill ≥ panLimit with no PAN is
+   * "block" → error E-20 unless the Form 60 declaration is ticked;
+   * "warn" → the original W-01 "Save anyway" warning.
+   */
+  panMissingPolicy: "block" | "warn";
 }
 
 export const DEFAULT_LIMITS: ComplianceLimits = {
@@ -164,6 +172,7 @@ export const DEFAULT_LIMITS: ComplianceLimits = {
   heavyGoldG: "5000",
   heavyOtherG: "100000",
   oldBillDays: 30,
+  panMissingPolicy: "block",
 };
 
 /* ────────────────────────────────────────────────────────────────────────── */
@@ -911,8 +920,17 @@ export function validateInvoice(
       true,
     );
 
+  // D-02: PAN on ₹2 lakh+ bills — block (E-20) or warn (W-01) per policy
+  const panMissing = grand.gte(toDec(L.panLimit)) && pan === "" && !c.panDeclaration;
+  if (panMissing && L.panMissingPolicy === "block")
+    err(
+      "E-20",
+      "customer.pan",
+      'This bill is ₹2 lakh or more: enter the customer\'s PAN, or tick "No-PAN declaration (Form 60) received".',
+    );
+
   // ── Warnings ──────────────────────────────────────────────────────────────
-  if (grand.gte(toDec(L.panLimit)) && pan === "")
+  if (panMissing && L.panMissingPolicy === "warn")
     warn(
       "W-01",
       "customer.pan",
@@ -1040,7 +1058,7 @@ export function validateSettings(s: ShopSettings, limits: Partial<ComplianceLimi
 /* ────────────────────────────────────────────────────────────────────────── */
 
 export interface PurityRateRow {
-  id?: string;
+  id?: string | null;
   metal: Metal;
   label: string;
   purityPct: NumLike;
