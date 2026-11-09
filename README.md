@@ -12,6 +12,7 @@ GST-compliant billing for an Indian gold & silver jewellery shop. Full spec: [`d
 | 2 | Database schema, auth & roles, atomic REST API + integration tests | ✅ Done |
 | 3 | Core screens: sign-in, rate master, settings, invoice, print/PDF | ✅ Done |
 | 4 | Transactions ledger, CSV export, backup/restore, dashboards A–F | ✅ Done |
+| — | Redesign: new design system, Figtree font, Coin B logo, sidebar + phone bottom bar | ✅ Done |
 
 ## Owner decisions recorded (9 Nov 2026)
 
@@ -68,7 +69,7 @@ npm run dev
 
 Open http://localhost:3000. The first visit asks you to create the owner account, then takes you to Shop settings. After that: Rate master → enter today's rates → New invoice.
 
-Design system: [`DESIGN.md`](DESIGN.md) ("The Trading Desk").
+Design system: [`DESIGN.md`](DESIGN.md) ("The friendly counter": Figtree, pastel cards, ink accents, Coin B logo in `design/logo/`).
 
 ## Architecture
 

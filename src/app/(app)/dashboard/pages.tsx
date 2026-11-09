@@ -274,7 +274,7 @@ export function CustomersPage({ res, drill }: { res: Res<typeof customers>; dril
           rows={d.ageing.some((a) => a.count) ? d.ageing.map((a) => ({ age: a.label, bills: a.count, dues: a.dues })) : []}
           empty="No dues — every bill is paid"
         >
-          <BarList items={d.ageing.map((a) => ({ key: a.label, label: a.label, sub: `${a.count} ${a.count === 1 ? "bill" : "bills"}`, value: a.dues, color: "#dc2626" }))} onClick={() => drill({ allDates: true, params: { due: "1" } })} />
+          <BarList items={d.ageing.map((a) => ({ key: a.label, label: a.label, sub: `${a.count} ${a.count === 1 ? "bill" : "bills"}`, value: a.dues, color: "#d93a45" }))} onClick={() => drill({ allDates: true, params: { due: "1" } })} />
         </ChartCard>
       </div>
 

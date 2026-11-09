@@ -564,7 +564,7 @@ export function CancelInvoiceDialog({
 function Notice({ title, text, back }: { title: string; text: string; back?: boolean }) {
   return (
     <div className="mx-auto mt-10 max-w-md rounded-[24px] bg-surface p-7 text-center shadow-card">
-      <h1 className="tight text-[17px] font-semibold text-ink">{title}</h1>
+      <h1 className="tight text-[18px] font-bold text-ink">{title}</h1>
       <p className="mt-1.5 text-[14px] text-muted">{text}</p>
       {back ? (
         <Link href="/invoices/new" className="mt-4 inline-block text-[14px] font-medium text-ink underline">

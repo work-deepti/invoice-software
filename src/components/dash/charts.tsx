@@ -461,7 +461,7 @@ export function Columns({
             <YAxis {...axisProps} width={64} tickFormatter={tickF} />
           </>
         )}
-        <Tooltip content={(p) => <Tip {...(p as TooltipContentProps)} format={f} />} cursor={{ fill: "rgba(148,163,184,0.12)" }} />
+        <Tooltip content={(p) => <Tip {...(p as TooltipContentProps)} format={f} />} cursor={{ fill: "rgba(28,27,34,0.05)" }} />
         {series.map((s, i) => (
           <Bar
             key={s.key}

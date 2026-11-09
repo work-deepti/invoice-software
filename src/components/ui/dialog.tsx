@@ -39,7 +39,7 @@ export function Dialog({
         >
           <div className="flex items-start justify-between gap-4 px-6 pt-6 pb-2">
             <div className="min-w-0">
-              <D.Title className="tight text-[19px] font-bold text-ink">{title}</D.Title>
+              <D.Title className="tight text-[18px] font-bold text-ink">{title}</D.Title>
               {description ? <D.Description className="mt-1 text-[14px] leading-relaxed text-muted">{description}</D.Description> : null}
             </div>
             <D.Close className="-mt-1 -mr-2 grid size-10 shrink-0 place-items-center rounded-full bg-sunken text-ink-3 transition-colors hover:bg-line hover:text-ink" aria-label="Close">

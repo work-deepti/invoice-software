@@ -343,7 +343,7 @@ function SummaryStrip({ summary }: { summary?: LedgerSummary }) {
         <div key={t.label} className={cn("flex min-w-0 flex-col justify-between rounded-[24px] p-4 tab:p-5", t.tone)}>
           <p className={cn("text-[13px] font-semibold", t.ink)}>{t.label}</p>
           <div>
-            <p className="num tight mt-3 truncate text-[19px] font-extrabold text-ink tab:text-[22px] desk:text-[18px] min-[1500px]:text-[22px]">{t.value}</p>
+            <p className="num tight mt-3 truncate text-[20px] font-extrabold text-ink tab:text-[22px] desk:text-[18px] min-[1500px]:text-[22px]">{t.value}</p>
             {t.note ? <p className={cn("mt-0.5 text-[12.5px] font-semibold", t.ink)}>{t.note}</p> : null}
           </div>
         </div>

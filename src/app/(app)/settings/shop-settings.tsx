@@ -51,7 +51,7 @@ export function ShopSettings() {
   if (!capabilities.isOwner)
     return (
       <div className="mx-auto mt-10 max-w-md rounded-[24px] bg-surface p-7 text-center shadow-card">
-        <h1 className="tight text-[17px] font-semibold">Owner only</h1>
+        <h1 className="tight text-[18px] font-bold">Owner only</h1>
         <p className="mt-1.5 text-[14px] text-muted">Only the shop owner can change shop settings.</p>
       </div>
     );

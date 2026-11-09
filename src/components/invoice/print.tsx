@@ -55,7 +55,7 @@ export function PrintProvider({ children }: { children: ReactNode }) {
       {mounted && job
         ? createPortal(
             <div id="print-root" key={job.n}>
-              <style>{`@page { @bottom-right { content: "${footer.replace(/"/g, "")}" counter(page) " of " counter(pages); font: 8pt ui-monospace, monospace; color: #64748b; } }`}</style>
+              <style>{`@page { @bottom-right { content: "${footer.replace(/"/g, "")}" counter(page) " of " counter(pages); font: 8pt Figtree, sans-serif; color: #6b6a73; } }`}</style>
               <InvoiceDocument invoice={job.invoice} copyLabel={job.duplicate ? "DUPLICATE FOR SUPPLIER" : undefined} />
             </div>,
             document.body,

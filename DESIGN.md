@@ -1,285 +1,292 @@
 ---
 name: Gold & Silver Billing
-description: GST billing for Indian gold and silver jewellery — a precise, calm counter tool where the numbers lead.
+description: GST billing for Indian gold and silver jewellery — a counter tool as friendly as a wallet app, with numbers you can trust at a glance.
 colors:
-  canvas: "#f8fafc"
+  canvas: "#f6f5f2"
   surface: "#ffffff"
-  sunken: "#f1f5f9"
-  line: "#e2e8f0"
-  line-strong: "#cbd5e1"
-  ink: "#0f172a"
-  ink-2: "#1e293b"
-  ink-3: "#334155"
-  muted: "#64748b"
-  faint: "#94a3b8"
-  gold: "#d97706"
-  gold-deep: "#b45309"
-  gold-fill: "#fef3c7"
-  gold-soft: "#fffbeb"
-  silver: "#475569"
-  silver-fill: "#f1f5f9"
-  danger: "#dc2626"
-  danger-deep: "#b91c1c"
-  danger-fill: "#fef2f2"
-  ok: "#16a34a"
-  ok-deep: "#15803d"
-  ok-fill: "#f0fdf4"
+  sunken: "#f1f0ec"
+  line: "#ebe9e3"
+  line-strong: "#dad7cf"
+  ink: "#1c1b22"
+  ink-2: "#2c2b33"
+  ink-3: "#47464f"
+  muted: "#6b6a73"
+  faint: "#77767f"
+  gold: "#e9a23b"
+  gold-deep: "#94590a"
+  gold-fill: "#fdecc8"
+  gold-soft: "#fff6e6"
+  silver: "#8296b3"
+  silver-deep: "#4c5f80"
+  silver-fill: "#e6edf7"
+  lav: "#7b61e8"
+  lav-deep: "#5b3fd0"
+  lav-fill: "#eeeafd"
+  mint: "#2f9e6a"
+  mint-fill: "#e2f4ea"
+  peach-fill: "#fdebe1"
+  rose: "#e0556b"
+  rose-fill: "#fce6ea"
+  danger: "#d93a45"
+  danger-deep: "#b4232f"
+  danger-fill: "#fdecee"
+  ok: "#2f9e6a"
+  ok-deep: "#1d7a4e"
+  ok-fill: "#e2f4ea"
+  warn: "#d9861a"
+  warn-fill: "#fff3df"
 typography:
+  display:
+    fontFamily: "Figtree, ui-sans-serif, system-ui, sans-serif"
+    fontSize: "34px"
+    fontWeight: 800
+    letterSpacing: "-0.025em"
   headline:
-    fontFamily: "Geist, ui-sans-serif, system-ui, sans-serif"
+    fontFamily: "Figtree, ui-sans-serif, system-ui, sans-serif"
+    fontSize: "30px"
+    fontWeight: 800
+    letterSpacing: "-0.025em"
+  headline-phone:
+    fontFamily: "Figtree, ui-sans-serif, system-ui, sans-serif"
+    fontSize: "26px"
+    fontWeight: 800
+    letterSpacing: "-0.025em"
+  figure-xl:
+    fontFamily: "Figtree, ui-sans-serif, system-ui, sans-serif"
+    fontSize: "28px"
+    fontWeight: 800
+    letterSpacing: "-0.025em"
+    fontFeature: "\"tnum\""
+  figure-lg:
+    fontFamily: "Figtree, ui-sans-serif, system-ui, sans-serif"
+    fontSize: "24px"
+    fontWeight: 800
+    fontFeature: "\"tnum\""
+  figure-md:
+    fontFamily: "Figtree, ui-sans-serif, system-ui, sans-serif"
     fontSize: "22px"
-    fontWeight: 600
-    letterSpacing: "-0.02em"
+    fontWeight: 800
+    fontFeature: "\"tnum\""
+  figure-sm:
+    fontFamily: "Figtree, ui-sans-serif, system-ui, sans-serif"
+    fontSize: "20px"
+    fontWeight: 800
+    fontFeature: "\"tnum\""
+  section:
+    fontFamily: "Figtree, ui-sans-serif, system-ui, sans-serif"
+    fontSize: "18px"
+    fontWeight: 700
   title:
-    fontFamily: "Geist, ui-sans-serif, system-ui, sans-serif"
+    fontFamily: "Figtree, ui-sans-serif, system-ui, sans-serif"
+    fontSize: "16px"
+    fontWeight: 700
+    letterSpacing: "-0.01em"
+  body-lg:
+    fontFamily: "Figtree, ui-sans-serif, system-ui, sans-serif"
     fontSize: "15px"
-    fontWeight: 600
-    letterSpacing: "-0.02em"
+    fontWeight: 500
   body:
-    fontFamily: "Geist, ui-sans-serif, system-ui, sans-serif"
+    fontFamily: "Figtree, ui-sans-serif, system-ui, sans-serif"
     fontSize: "14px"
     fontWeight: 400
     lineHeight: 1.5
+  body-sm:
+    fontFamily: "Figtree, ui-sans-serif, system-ui, sans-serif"
+    fontSize: "13.5px"
+    fontWeight: 400
   label:
-    fontFamily: "Geist, ui-sans-serif, system-ui, sans-serif"
+    fontFamily: "Figtree, ui-sans-serif, system-ui, sans-serif"
+    fontSize: "13px"
+    fontWeight: 600
+  caption:
+    fontFamily: "Figtree, ui-sans-serif, system-ui, sans-serif"
     fontSize: "12.5px"
     fontWeight: 500
-  caption:
-    fontFamily: "Geist, ui-sans-serif, system-ui, sans-serif"
+  micro:
+    fontFamily: "Figtree, ui-sans-serif, system-ui, sans-serif"
+    fontSize: "12px"
+    fontWeight: 600
+  tag:
+    fontFamily: "Figtree, ui-sans-serif, system-ui, sans-serif"
     fontSize: "11.5px"
-    fontWeight: 500
-  metric:
-    fontFamily: "Geist Mono, ui-monospace, monospace"
-    fontSize: "17px"
     fontWeight: 600
-    letterSpacing: "-0.02em"
-    fontFeature: "\"tnum\", \"zero\""
-  data:
-    fontFamily: "Geist Mono, ui-monospace, monospace"
-    fontSize: "14px"
+  print-body:
+    fontFamily: "Figtree, ui-sans-serif, system-ui, sans-serif"
+    fontSize: "10.5px"
     fontWeight: 400
-    letterSpacing: "-0.01em"
-    fontFeature: "\"tnum\", \"zero\""
-  total:
-    fontFamily: "Geist Mono, ui-monospace, monospace"
-    fontSize: "26px"
-    fontWeight: 600
-    lineHeight: 1
-    letterSpacing: "-0.02em"
-    fontFeature: "\"tnum\", \"zero\""
+  print-small:
+    fontFamily: "Figtree, ui-sans-serif, system-ui, sans-serif"
+    fontSize: "9px"
+    fontWeight: 400
 rounded:
-  sm: "6px"
-  md: "8px"
-  lg: "12px"
-  xl: "16px"
+  control: "12px"
+  tile: "16px"
+  panel: "20px"
+  card: "24px"
+  sheet: "28px"
   pill: "9999px"
 spacing:
-  xs: "4px"
-  sm: "8px"
-  md: "12px"
-  lg: "16px"
-  xl: "20px"
-  2xl: "24px"
+  gutter-phone: "12px"
+  gutter: "24px"
+  card-pad: "20px"
+  card-pad-wide: "24px"
+  stack: "16px"
 components:
   button-primary:
     backgroundColor: "{colors.ink}"
-    textColor: "{colors.surface}"
-    rounded: "{rounded.md}"
-    height: "36px"
-    padding: "0 14px"
-  button-primary-hover:
-    backgroundColor: "{colors.ink-2}"
+    textColor: "#ffffff"
+    rounded: "{rounded.pill}"
+    height: "40px"
+    padding: "0 16px"
   button-secondary:
-    backgroundColor: "{colors.surface}"
+    backgroundColor: "{colors.sunken}"
     textColor: "{colors.ink}"
-    rounded: "{rounded.md}"
-    height: "36px"
-    padding: "0 14px"
-  button-secondary-hover:
-    backgroundColor: "{colors.canvas}"
+    rounded: "{rounded.pill}"
+    height: "40px"
   input:
+    backgroundColor: "{colors.sunken}"
+    textColor: "{colors.ink}"
+    rounded: "{rounded.control}"
+    height: "44px"
+  input-focus:
     backgroundColor: "{colors.surface}"
-    textColor: "{colors.ink}"
-    rounded: "{rounded.md}"
-    height: "36px"
-    padding: "0 12px"
-  input-error:
-    backgroundColor: "{colors.danger-fill}"
-    textColor: "{colors.ink}"
+    borderColor: "{colors.lav}"
   card:
     backgroundColor: "{colors.surface}"
-    rounded: "{rounded.lg}"
-  rate-pill:
+    rounded: "{rounded.card}"
+  pastel-tile:
+    backgroundColor: "{colors.gold-fill}"
+    rounded: "{rounded.card}"
+  hero-tile:
     backgroundColor: "{colors.ink}"
-    textColor: "{colors.surface}"
-    rounded: "{rounded.pill}"
-    padding: "3px 10px"
+    textColor: "#ffffff"
+    rounded: "{rounded.card}"
   totals-dock:
     backgroundColor: "{colors.ink}"
-    textColor: "{colors.surface}"
-    rounded: "{rounded.xl}"
-    padding: "12px 20px"
-  error-chip:
-    backgroundColor: "{colors.danger-fill}"
-    textColor: "{colors.danger-deep}"
-    rounded: "{rounded.md}"
-    padding: "6px 10px"
+    textColor: "#ffffff"
+    rounded: "{rounded.card}"
+  bottom-bar:
+    backgroundColor: "{colors.ink}"
+    rounded: "{rounded.pill}"
 ---
 
 # Design System: Gold & Silver Billing
 
+North star: **"The friendly counter."** Billing a customer should feel as light as checking a wallet app, while every figure stays exact.
+
 ## Overview
 
-**Creative North Star: "The Trading Desk"**
+The redesign (9 Nov 2026) takes its cues from two consumer apps the owner chose: a finance wallet (white canvas, big balance figures, solid colour category cards, black pill actions, a floating black bottom bar with a centre "+") and a health tracker (soft peach, lavender and mint cards, large numbers, generous corners, segmented Days/Weeks tabs). It is lighter than both: a warm off-white canvas, borderless white cards, pastel tints for meaning, and only a few bold accents.
 
-Numbers are the interface. Every weight, rate and rupee sits in tabular mono figures so decimals line up down a column like an institutional trading screen, while everything around them stays quiet: a cool slate canvas, white hairline cards, and one dark slate frame (the top bar above, the totals dock below) that holds the work between them. The tool should disappear into the bill being made at the counter.
+Three layers do all the work:
 
-Colour does jobs, never decoration. Metallic amber means gold — gold grams, gold rates, the active tab, a figure that just changed — and appears nowhere else. Cool slate means silver. Red means a problem the user must fix. The rest is neutral, so a single amber flash or red field is impossible to miss.
-
-Density is spreadsheet-grade on wide screens (all fourteen item columns on one row at 1200 px and above) and relaxes into labelled, hairline-divided sections on tablets and phones. Motion is fast and functional: 150 ms with an exponential ease-out, only where state changes.
-
-**Key Characteristics:**
-- Tabular mono figures for every number, input value and total; sans for every word.
-- A dark slate frame: top bar with live rate pills, bottom dock with the rolling grand total.
-- Amber reserved for gold and for attention; slate for silver; red only for errors and dues.
-- Hairline borders with a whisper of shadow; no gradients, glass or glow.
-- 150 ms `cubic-bezier(0.16, 1, 0.3, 1)` on state changes only; nothing animates on page load.
+1. **Canvas and cards.** Warm off-white page, white cards with 24 px corners and a soft lift. No borders around cards.
+2. **Pastel meaning.** Each tint has one job (see Colors). A pastel card is a summary you can read from across the counter.
+3. **Ink for decisions.** Near-black is reserved for the one primary action, the hero figure, the totals dock and the phone bottom bar.
 
 ## Colors
 
-A restrained slate system with one metallic accent that always means gold.
+### Neutrals
+- **Canvas `#f6f5f2`** — the page. Warm, never pure grey.
+- **Surface `#ffffff`** — cards, dialogs, sidebar.
+- **Sunken `#f1f0ec`** — inputs, secondary pills, empty states, segmented-control tracks.
+- **Line `#ebe9e3` / line-strong `#dad7cf`** — table rules only. Cards have no border.
+- **Ink `#1c1b22`** through **faint `#77767f`** — text ramp. Faint is the lightest that still passes 4.5:1 on white (placeholders).
 
-### Primary
-- **Counter Slate** (ink): the top bar, the totals dock, primary buttons, checked controls and all body text. The frame and the voice of the app.
+### Meaning tints (fill + deep text colour)
+| Tint | Fill | Text / icon | Means |
+| --- | --- | --- | --- |
+| Gold | `#fdecc8` | `#94590a` | Gold metal, rates, the summary card, totals |
+| Silver | `#e6edf7` | `#4c5f80` | Silver metal, old-metal exchange |
+| Lavender | `#eeeafd` | `#5b3fd0` | Focus, active navigation, invoice details, counts |
+| Mint | `#e2f4ea` | `#1d7a4e` | Paid, GST collected, good change |
+| Peach | `#fdebe1` | `#a64b1e` | People (customer, business), making charges, old metal taken |
+| Rose | `#fce6ea` | `#b4232f` | Money still owed, compliance limits |
 
-### Secondary
-- **Hallmark Amber** (gold): gold metrics in the dock and rate pills, the active-tab underline, the amber flash on a changed figure, the caret. Its deeper tone (gold-deep) is for amber text on light grounds, such as gold rates in the rate master and the "typed by hand" rate marker; its fills (gold-fill, gold-soft) tint the flash and today's row in rate history.
-
-### Tertiary
-- **Assay Silver** (silver): silver metrics and silver rate dots; its fill matches the sunken neutral.
-
-### Neutral
-- **Morning Slate** (canvas): the page ground behind every card.
-- **Paper White** (surface): cards, inputs, dialogs, the printed invoice.
-- **Recess** (sunken): read-only computed cells (net weight, fine weight), table header strips, skeletons.
-- **Hairline** (line) and **Firm Hairline** (line-strong): card and row borders; line-strong on hover and in printed table rules.
-- **Graphite** (ink-3), **Pewter** (muted), **Mist** (faint): secondary text, labels and hints, placeholders and empty-value dashes.
-
-### Semantic
-- **Signal Red** (danger, danger-deep, danger-fill): invalid fields, error chips, balance due, destructive actions.
-- **Settled Green** (ok, ok-deep, ok-fill): success toasts, "Change to return", rates moving up in history.
+### Bold accents
+- **Gold `#e9a23b`** and **silver `#8296b3`** — the two coins of the logo; dots, avatars and the logo only (they are too light for text).
+- **Lavender `#7b61e8`** — focus ring and filter counts.
+- **Danger `#d93a45`** — errors only.
 
 ### Charts
-A separate categorical order for data, validated for colour-blind separation and contrast on light and dark surfaces (adjacent pairs): **chart gold** `#c2700a` and **chart steel** `#3d6fb0` carry gold and silver identity only; non-metal categories take, in fixed order, teal `#12a37a`, violet `#8a5cc7`, rose `#d0527a`, olive `#5f8f1f`, blue `#1b7fb8`. Single-series charts that are neither metal use Graphite (`#334155`); the previous period is a dashed Mist line. Magnitude (the hours heatmap) uses one slate-blue ramp from Recess to `#2f5d99`. Dues and risk use Signal Red tints only.
+Categorical series keep the previously validated palette (gold `#c2700a`, silver `#3d6fb0`, then `#12a37a`, `#8a5cc7`, `#d0527a`, `#5f8f1f`, `#1b7fb8`) so metal colours stay distinct for colour-blind users. Chart chrome (grid `#efede8`, axis `#8d8b94`, previous period `#a3a1ab`) follows the warm neutrals. The heatmap is a single lavender ramp.
 
-### Named Rules
-**The Gold Means Gold Rule.** Amber marks gold metal, the active place, or a value that just changed. Never use it for decoration, a generic call to action, or silver.
-
-**The Red Is a Task Rule.** Red appears only when the user has something to fix or someone owes money. A red element that has no action behind it is a bug.
+### Named rules
+- One meaning per tint. Never use a pastel for decoration alone.
+- Gold-coloured text uses gold-deep; never put `#e9a23b` text on white.
+- Red is only for things the user must fix or money owed.
 
 ## Typography
 
-**Body Font:** Geist (with ui-sans-serif, system-ui)
-**Data Font:** Geist Mono (with ui-monospace), tabular figures and slashed zero
-
-**Character:** One workhorse sans for every word and one mono for every number. The pairing reads like a well-set financial statement: calm labels, figures that align to the paisa.
+**Figtree** for everything (UI and numbers), self-hosted from `src/fonts/figtree/` (SIL OFL). It has the ₹ sign and tabular figures; every number uses the `num` utility (`font-variant-numeric: tabular-nums`) so decimals align. The PDF uses a copy with tabular figures frozen in (`FigtreeTab`).
 
 ### Hierarchy
-- **Headline** (600, 22px, −0.02em): page titles ("New invoice", "Rate master").
-- **Title** (600, 15px, −0.02em): card titles.
-- **Body** (400, 14px, 1.5): field text, dialog copy, descriptions at 13–13.5px in muted.
-- **Label** (500, 12.5px): field labels, column headers (11.5px muted in tables).
-- **Caption** (500, 11.5px): table column headers, small tags ("No GST", "Cancelled"), chart axis ticks.
-- **Metric** (600 mono, 17px, −0.02em): ledger summary tiles and dashboard rate tiles.
-- **Data** (400–600 mono, 13–14px, tabular): every input value, weight, rate, amount, invoice number and date.
-- **Total** (600 mono, 20–26px, −0.02em, line-height 1): the grand total in the dock and summary, rendered by the rolling ticker.
+- **Headline** 30 px / 800 (26 px on phones) — page titles.
+- **Figures** 20–30 px / 800 — hero totals, KPI values, grand total.
+- **Title** 16 px / 700 — card titles.
+- **Body** 14 px; **label** 13 px / 600; **caption** 12.5 px; **tag** 11.5 px / 600.
+- Print and PDF use 9–11 px.
 
-### Named Rules
-**The Mono Is Data Rule.** Geist Mono sets numbers, codes (GSTIN, PAN, HSN, invoice numbers) and number placeholders (`0.000`, `Full: ₹…`). Words, labels and word placeholders ("Optional", "Cash customer") stay in Geist. Mono is never a "technical" costume.
-
-**The Indian Figures Rule.** Money prints in Indian grouping with the rupee sign (₹2,03,701.00), weights always with three decimals (25.450 g), dates as DD-MM-YYYY on every screen, whatever the browser's locale.
+### Named rules
+- No serif, no second family.
+- Weights: 400 body, 600 labels, 700 titles, 800 headlines and figures.
+- Inputs are 16 px on phones (no iOS zoom).
 
 ## Layout
-
-A centred work column up to 1680 px with 24 px side gutters (12 px on phones). Pages stack full-width cards with 16 px gaps; paired cards split 1 : 2.1 (invoice details and customer) or fluid : 440 px (notes and summary) from 1024 px.
-
-The item table is the system's density anchor. At 1200 px and above it is one row per line on a fixed fractional column plan (#, description, purity, HSN, pcs, gross, less, net, wastage, rate, making, stone, amount, remove) with 4 px column gaps and 32 px controls. Below 1200 px each line becomes a labelled section in a 2-, 4- or 6-column grid, divided from its neighbours by a hairline, with the amount on its own bottom row. Exchange rows and rate rows follow the same pattern.
-
-On phones (700 px and below) the top bar scrolls away instead of sticking, inputs are 16 px so iOS never zooms, and rate pills and tabs scroll inside their own strip. No page ever scrolls sideways between 360 and 1920 px; wide reference tables (rate history) scroll inside their own bordered box.
-
-The totals dock is fixed to the bottom on every screen, so the page reserves bottom padding for it.
+- **Computers (≥ 1024 px):** fixed white sidebar. A 76 px icon rail from 1024 px, full 264 px with labels and today's rates from 1440 px. Content max 1456 px, 24–32 px gutters.
+- **Phones and tablets:** a header with the logo, shop name and scrolling rate chips; a floating ink bottom bar with a white centre "+" for New invoice. On the invoice screen the bottom bar gives way to the totals dock and the header shows a back button.
+- **UX-01/02:** no sideways page scroll from 360 to 1920 px. **UX-03:** the 14-column item row stays on one line at ≥ 1200 px, even with the icon rail (checked).
+- Breakpoints: `tab` 700 px, `lg` 1024 px, `desk` 1200 px, `wide` 1440 px.
 
 ## Elevation & Depth
-
-Depth is a hairline first and a whisper of shadow second. Cards carry a 1 px line border plus the hair shadow, which keeps them crisp on the slate canvas. Real lift is reserved for things that float above the work.
-
-### Shadow Vocabulary
-- **Hair** (`box-shadow: 0 1px 2px rgba(15,23,42,0.04)`): cards, secondary buttons, outline links.
-- **Pop** (`box-shadow: 0 12px 32px -8px rgba(15,23,42,0.18), 0 2px 6px rgba(15,23,42,0.06)`): dialogs, dropdowns, the phone-recall list, toasts, the error-chip panel.
-- **Dock** (`box-shadow: 0 -8px 24px -12px rgba(15,23,42,0.35)`): the totals dock and settings save bar, lifting off the page bottom.
-
-### Named Rules
-**The Float Earns Shadow Rule.** Only overlays and the dock get more than the hair shadow. A card that sits in the page never lifts.
+- **hair** — small controls on white (outline buttons, chips).
+- **card** — every card.
+- **pop** — menus, toasts' surroundings, error tray.
+- **dock** — ink surfaces that float: totals dock, bottom bar, hero tile, save bar.
 
 ## Shapes
-
-Gently rounded and consistent: 6px for compact table controls and icon buttons, 8px for inputs and buttons, 12px for cards, 16px for the dock and dialogs (dialogs take a 16 px top radius as a bottom sheet on phones), full pills only for rate pills and status tags. Checkboxes are 5 px squares; switches are pills. The brand mark is a flat amber tile with an ink square inside.
+Controls 12 px, inner tiles 16–18 px, cards 24 px, sheets 28 px, buttons and chips fully round (pills). Avatars and icon chips are circles.
 
 ## Components
 
 ### Buttons
-- **Shape:** gently rounded (8px); compact 32 px in toolbars and tables, 36 px default, 44 px on sign-in.
-- **Primary:** Counter Slate fill, white text, a faint inner top highlight; hover deepens to ink-2.
-- **Secondary:** Paper White with a hairline border and hair shadow; hover firms the border and tints to canvas.
-- **Ghost:** text only; hover fills with Recess.
-- **On the dock:** translucent white (10%) with a white 10% border; the main save action is solid white with ink text.
-- **Press:** every button nudges down 1 px on press; loading swaps in a spinner and blocks repeat clicks.
+Pills. **Primary** ink with white text (one per view). **Secondary** sunken grey. **Outline** white with hair shadow. **Ghost** text only. **Danger** red. **Dock** translucent white on ink. Sizes 32 / 40 / 48 px.
 
-### Rate pills (top bar)
-- **Style:** pill outline on the dark bar, a 6 px metal dot (amber for gold, slate for silver), short purity name in white 60% and the rate in mono.
-- **State:** stale rates dim the pills and lead with an amber "Rates from DD-MM-YYYY — update" pill; no rates shows a solid amber "Set today's rates →" pill.
+### Cards
+White, 24 px, no border. Header: a round pastel **icon chip** (36 px) + 16 px bold title + muted description. Body padding 20 px (24 px from 700 px).
 
-### Cards / Containers
-- **Corner Style:** 12px.
-- **Background:** Paper White on Morning Slate.
-- **Shadow Strategy:** Hair (see Elevation).
-- **Border:** 1 px Hairline.
-- **Internal Padding:** 16 px (20 px from 700 px), title row on top.
+### Inputs
+44 px tall, sunken fill, no border. On focus: white fill, lavender border and a soft lavender ring. Numbers right-aligned with tabular figures. Errors: red border, message under the field.
 
-### Inputs / Fields
-- **Style:** 36 px (32 px in the one-row table), 8px radius, 1 px Hairline, Paper White; numbers right-aligned in mono.
-- **Focus:** border turns Counter Slate with a 2 px slate ring at 10%; the caret is amber.
-- **Error:** Signal Red border on a faint red fill, message under the field (a tooltip in the one-row table).
-- **Number fields:** text inputs with a decimal keypad, no spin arrows, wheel-proof; "-", "+", "e" blocked; rounded on leaving (weights 3 dp, money and % 2 dp).
-- **Date:** a mono DD-MM-YYYY field with a calendar button that opens the native picker.
+### Totals dock (signature)
+A floating ink bar, 24 px corners, aligned to the content column. Gold and silver grams on the left, the rolling grand total in 26 px extrabold, and white "Save" pill on the right. Errors collect in a white tray above it as rose chips that jump to the field.
 
-### Navigation
-- **Style:** tabs on the dark top bar, 13.5px medium; inactive white 55%, hover 85%, active white with a 2 px amber underline that slides between tabs in 150 ms. On phones the tab strip scrolls horizontally inside the bar.
+### Wallet tiles (ledger and dashboards)
+An **ink hero tile** for the headline money figure (Total billed / Sales), then **pastel tiles** for the rest (gold sold, silver sold, old metal, dues; invoices, GST, making). Big 22–30 px extrabold figure, coloured label, change chip.
 
-### KPI tiles & chart cards (dashboards, ledger)
-- **KPI tile:** muted label, mono value with ₹ L / Cr compaction (exact amount on hover), and a delta chip vs the previous equal period (green when the move is good, red when bad — falling dues are good). Tiles sit in a hairline grid, 4 per row on desktop and 2 on phones.
-- **Chart card:** a Paper White card with title and one-line subtitle, a Table toggle and Download CSV top right, legend chips under the title for 2+ series, and a dashed empty state ("No sales in this period"). Every mark is clickable and opens Transactions filtered to exactly those bills.
-- **Marks:** 2 px lines, bars at most 24 px thick with 4 px rounded data ends, 2 px white gaps between stacked segments, hairline solid gridlines, mono axis ticks.
+### Coin avatars
+40 px circles in the ledger: a gold coin, a silver coin, or both overlapping, so the metal on a bill is visible at a glance. They echo the logo.
 
-### Totals Dock (signature)
-- A fixed Counter Slate bar, 16px radius, floating above the page bottom. Left: gold grams in amber, silver grams in slate, balance due in light red when present. Right: the grand total in mono, rolling digit by digit (each digit a vertical strip that slides to its value in 150 ms), then Save & view, Save & print and Save. On phones the secondary saves fold into a menu beside Save.
-- Every summary figure that changes flashes the gold fill once (650 ms fade). The amount in words updates with the total.
-- When a save fails, an error panel opens above the dock with one red chip per problem; each chip scrolls to and focuses its field.
+### Tabs
+- **Segmented control** (period, ₹/grams): sunken track, the active option a white pill.
+- **Page tabs** (dashboard pages): pills, the active one ink.
+
+### Logo
+**Coin B**: an ink stem with a gold coin and a silver coin as the bowls of a B. Masters in `design/logo/`; React component `src/components/shell/logo.tsx`. Favicon, app icons and manifest are generated from the same geometry.
+
+### Print and PDF
+The printed invoice stays neutral and black-and-white friendly: Figtree, hairline rules, one gold rule under the header, an ink grand-total row.
 
 ## Do's and Don'ts
 
-### Do:
-- **Do** set every number, weight, rate, total, code and number placeholder in Geist Mono with tabular figures.
-- **Do** keep amber for gold, the active place, and changed values (The Gold Means Gold Rule).
-- **Do** show money as ₹ with Indian grouping, weights to 3 decimals, and dates as DD-MM-YYYY.
-- **Do** keep the item table on one row at 1200 px and above, and switch rows to hairline-divided labelled sections below.
-- **Do** use 150 ms `cubic-bezier(0.16, 1, 0.3, 1)` for state changes, and honour reduced motion.
-- **Do** keep messages in-page: inline field errors, chips above the dock, one dialog for all warnings, toasts that leave after about 3 s.
+### Do
+- Lead with the number: big, bold, tabular.
+- Use one pastel per meaning and keep cards borderless.
+- Keep one ink primary action per view.
+- Write labels in plain words ("Old metal taken", "Balance due").
 
-### Don't:
-- **Don't** use serif fonts, beige or paper-toned backgrounds, neon purple-blue gradients, 3D blobs, or glowing dark-mode effects (owner's brief).
-- **Don't** fake metal with gradients or bevels; gold is a flat amber token.
-- **Don't** nest cards inside cards; divide rows inside a card with hairlines.
-- **Don't** let any page scroll sideways between 360 and 1920 px.
-- **Don't** animate on page load or for decoration; motion only reports a change of state.
-- **Don't** use browser alert boxes.
+### Don't
+- No borders around cards, no nested cards.
+- No serif fonts, neon purple-blue gradients, 3D blobs or glowing dark mode.
+- No gold-coloured body text on white.
+- No sample data in empty states.
