@@ -46,13 +46,13 @@ export function OverviewPage({ res, drill }: { res: Res<typeof overview>; drill:
   return (
     <>
       <KpiGrid>
-        <KpiTile label="Sales" value={k.sales.value} previous={k.sales.previous} previousLabel={prevLabel} onClick={() => drill()} />
-        <KpiTile label="Invoices" value={k.invoices.value} previous={k.invoices.previous} kind="count" previousLabel={prevLabel} onClick={() => drill()} />
+        <KpiTile tone="hero" label="Sales" value={k.sales.value} previous={k.sales.previous} previousLabel={prevLabel} onClick={() => drill()} />
+        <KpiTile tone="lav" label="Invoices" value={k.invoices.value} previous={k.invoices.previous} kind="count" previousLabel={prevLabel} onClick={() => drill()} />
         <KpiTile label="Average bill" value={k.avgBill.value} previous={k.avgBill.previous} previousLabel={prevLabel} />
         <KpiTile label="Gold sold" value={k.goldG.value} previous={k.goldG.previous} kind="grams" accent="gold" previousLabel={prevLabel} onClick={() => drill({ params: { metal: "gold" } })} />
         <KpiTile label="Silver sold" value={k.silverG.value} previous={k.silverG.previous} kind="grams" accent="silver" previousLabel={prevLabel} onClick={() => drill({ params: { metal: "silver" } })} />
-        <KpiTile label="GST collected" value={k.gst.value} previous={k.gst.previous} previousLabel={prevLabel} onClick={() => drill({ params: { gst: "with" } })} />
-        <KpiTile label="Making earned" value={k.making.value} previous={k.making.previous} previousLabel={prevLabel} />
+        <KpiTile tone="mint" label="GST collected" value={k.gst.value} previous={k.gst.previous} previousLabel={prevLabel} onClick={() => drill({ params: { gst: "with" } })} />
+        <KpiTile tone="peach" label="Making earned" value={k.making.value} previous={k.making.previous} previousLabel={prevLabel} />
         <KpiTile label="Outstanding dues" value={k.dues.value} previous={k.dues.previous} upIsGood={false} accent="danger" previousLabel="then" onClick={() => drill({ allDates: true, params: { due: "1" } })} />
       </KpiGrid>
 
@@ -132,16 +132,15 @@ export function OverviewPage({ res, drill }: { res: Res<typeof overview>; drill:
         rows={d.rates.rows.map((r) => ({ purity: r.label, rate: r.rate, previous: r.previous ?? "" }))}
         empty="No rates saved yet"
       >
-        <ul className="grid grid-cols-1 gap-px overflow-hidden rounded-lg border border-line bg-line tab:grid-cols-3 lg:grid-cols-5">
+        <ul className="grid grid-cols-2 gap-2.5 px-2 tab:grid-cols-3 lg:grid-cols-5">
           {d.rates.rows.map((r) => {
             const delta = r.previous ? Number(r.rate) - Number(r.previous) : 0;
             return (
-              <li key={r.label} className="bg-surface px-3 py-2.5">
-                <p className="flex items-center gap-1.5 text-[12.5px] text-muted">
-                  <span aria-hidden className="size-1.5 rounded-full" style={{ background: metalColor(r.metal) }} />
+              <li key={r.label} className={cn("rounded-[18px] px-4 py-3.5", r.metal === "Gold" ? "bg-gold-fill" : "bg-silver-fill")}>
+                <p className={cn("text-[13px] font-semibold", r.metal === "Gold" ? "text-gold-deep" : "text-silver-deep")}>
                   {r.label}
                 </p>
-                <p className="num mt-1 text-[17px] font-semibold text-ink">₹{money(r.rate)}</p>
+                <p className="num mt-1.5 text-[20px] font-extrabold text-ink">₹{money(r.rate)}</p>
                 <p className={cn("num mt-0.5 flex items-center gap-0.5 text-[12px]", delta > 0 ? "text-ok-deep" : delta < 0 ? "text-danger-deep" : "text-muted")}>
                   {delta > 0 ? <ArrowUpRight className="size-3" aria-hidden /> : delta < 0 ? <ArrowDownRight className="size-3" aria-hidden /> : null}
                   {r.previous ? (delta ? `${delta > 0 ? "+" : "−"}₹${money(Math.abs(delta))}` : "No change") : "—"}
@@ -171,9 +170,9 @@ export function SalesPage({ res, drill }: { res: Res<typeof sales>; drill: Drill
           rows={d.byPurity.map((p) => ({ metal: p.metal, purity: p.purity, sales: p.sales, net_g: p.grams }))}
         >
           <div className="mb-2 flex justify-end px-2 print:hidden">
-            <div role="radiogroup" aria-label="Measure" className="inline-flex rounded-lg border border-line p-0.5 text-[12.5px]">
+            <div role="radiogroup" aria-label="Measure" className="inline-flex rounded-full bg-sunken p-1 text-[13px]">
               {(["inr", "g"] as const).map((u) => (
-                <button key={u} role="radio" aria-checked={unit === u} onClick={() => setUnit(u)} className={cn("rounded-md px-2.5 py-1 font-medium", unit === u ? "bg-ink text-white" : "text-ink-3")}>
+                <button key={u} role="radio" aria-checked={unit === u} onClick={() => setUnit(u)} className={cn("h-8 rounded-full px-3.5 font-semibold", unit === u ? "bg-surface text-ink shadow-hair" : "text-muted")}>
                   {u === "inr" ? "₹" : "Grams"}
                 </button>
               ))}
@@ -249,7 +248,7 @@ export function CustomersPage({ res, drill }: { res: Res<typeof customers>; dril
   const k = d.kpis;
   return (
     <>
-      <section className="grid grid-cols-1 gap-px overflow-hidden rounded-xl border border-line bg-line shadow-hair tab:grid-cols-3">
+      <section className="grid grid-cols-1 gap-3 tab:grid-cols-3">
         <KpiTile label="Unique customers" value={k.unique.value} previous={k.unique.previous} kind="count" previousLabel="" />
         <KpiTile label="Repeat customers (2+ bills)" value={k.repeat.value} previous={k.repeat.previous} kind="count" previousLabel="" />
         <KpiTile label="Walk-in bills (no phone)" value={k.walkIn.value} previous={k.walkIn.previous} kind="count" previousLabel="" />
@@ -310,7 +309,7 @@ export function CustomersPage({ res, drill }: { res: Res<typeof customers>; dril
               label: "",
               format: (v) =>
                 v ? (
-                  <a href={`tel:${String(v)}`} className="inline-flex items-center gap-1 rounded-md border border-line px-2 py-1 text-[12.5px] font-medium text-ink hover:bg-canvas" onClick={(e) => e.stopPropagation()}>
+                  <a href={`tel:${String(v)}`} className="inline-flex items-center gap-1 rounded-full bg-sunken px-2.5 py-1 text-[12.5px] font-semibold text-ink hover:bg-line" onClick={(e) => e.stopPropagation()}>
                     <Phone className="size-3.5" aria-hidden />
                     Call
                   </a>
@@ -334,8 +333,8 @@ function CustomerLookup() {
   const [error, setError] = useState<string | null>(null);
   const [data, setData] = useState<Extract<Awaited<ReturnType<typeof customers>>, { lookup: unknown }>["lookup"] | null>(null);
   return (
-    <section className="rounded-xl border border-line bg-surface p-4 shadow-hair tab:p-5">
-      <h3 className="tight text-[14.5px] font-semibold text-ink">Customer lookup</h3>
+    <section className="rounded-[24px] bg-surface p-5 shadow-card tab:p-6">
+      <h3 className="tight text-[16px] font-bold text-ink">Customer lookup</h3>
       <p className="mt-0.5 text-[12.5px] text-muted">Lifetime sales, grams bought, bills and dues for one phone number.</p>
       <form
         className="mt-3 flex max-w-md gap-2"
@@ -404,7 +403,7 @@ export function PaymentsPage({ res, drill }: { res: Res<typeof payments>; drill:
   ] as const;
   return (
     <>
-      <section className="grid grid-cols-1 gap-px overflow-hidden rounded-xl border border-line bg-line shadow-hair tab:grid-cols-3">
+      <section className="grid grid-cols-1 gap-3 tab:grid-cols-3">
         <KpiTile label="Received" value={k.received.value} previous={k.received.previous} previousLabel="" />
         <KpiTile label="Received in cash" value={k.cash.value} previous={k.cash.previous} previousLabel="" onClick={() => drill({ params: { mode: "Cash" } })} />
         <KpiTile label="Cash share" value={k.cashShare.value} previous={k.cashShare.previous} kind="pct" upIsGood={false} previousLabel="" />
@@ -430,24 +429,24 @@ export function PaymentsPage({ res, drill }: { res: Res<typeof payments>; drill:
         </ChartCard>
       </div>
 
-      <section className="rounded-xl border border-line bg-surface p-4 shadow-hair tab:p-5">
-        <h3 className="tight text-[14.5px] font-semibold text-ink">Cash compliance</h3>
+      <section className="rounded-[24px] bg-surface p-5 shadow-card tab:p-6">
+        <h3 className="tight text-[16px] font-bold text-ink">Cash compliance</h3>
         <p className="mt-0.5 text-[12.5px] text-muted">Bills to double-check against the income-tax limits. Click a bill number to open its row in Transactions.</p>
-        <div className="mt-4 grid gap-px overflow-hidden rounded-lg border border-line bg-line lg:grid-cols-3">
+        <div className="mt-4 grid gap-3 lg:grid-cols-3">
           {lists.map((l) => (
-            <div key={l.key} className="bg-surface">
-              <div className="flex items-center justify-between gap-2 border-b border-line px-3 py-2.5">
+            <div key={l.key} className="overflow-hidden rounded-[18px] bg-sunken/70">
+              <div className="flex items-center justify-between gap-2 px-4 py-3">
                 <div>
-                  <p className="text-[13.5px] font-medium text-ink">{l.title}</p>
+                  <p className="text-[14px] font-bold text-ink">{l.title}</p>
                   <p className="text-[12px] text-muted">{l.note}</p>
                 </div>
-                <span className={cn("num rounded-md px-2 py-0.5 text-[13px] font-semibold", l.rows.length ? "bg-warn-fill text-gold-deep" : "bg-sunken text-muted")}>{l.rows.length}</span>
+                <span className={cn("num rounded-full px-2.5 py-0.5 text-[13px] font-bold", l.rows.length ? "bg-gold-fill text-gold-deep" : "bg-surface text-muted")}>{l.rows.length}</span>
               </div>
               {l.rows.length ? (
-                <ul className="divide-y divide-line">
+                <ul className="mx-2 mb-2 divide-y divide-line rounded-[14px] bg-surface">
                   {l.rows.slice(0, 6).map((r) => (
                     <li key={r.id}>
-                      <button onClick={() => drill({ params: { ...l.params, q: r.number } })} className="flex w-full items-center justify-between gap-2 px-3 py-2 text-left text-[13px] hover:bg-canvas">
+                      <button onClick={() => drill({ params: { ...l.params, q: r.number } })} className="flex w-full items-center justify-between gap-2 px-3 py-2.5 text-left text-[13px] hover:bg-canvas">
                         <span className="min-w-0">
                           <span className="num block font-medium text-ink">{r.number}</span>
                           <span className="block truncate text-[12px] text-muted">
@@ -468,7 +467,7 @@ export function PaymentsPage({ res, drill }: { res: Res<typeof payments>; drill:
                   ) : null}
                 </ul>
               ) : (
-                <p className="px-3 py-4 text-[13px] text-muted">None in this period.</p>
+                <p className="px-4 pb-4 text-[13px] text-muted">None in this period.</p>
               )}
             </div>
           ))}

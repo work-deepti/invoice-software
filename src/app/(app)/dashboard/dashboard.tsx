@@ -97,8 +97,8 @@ export function Dashboard() {
 
   if (!capabilities.canSeeDashboard)
     return (
-      <div className="mx-auto mt-10 max-w-md rounded-xl border border-line bg-surface p-6 text-center shadow-hair">
-        <h1 className="tight text-[17px] font-semibold">Dashboards are off for billing staff</h1>
+      <div className="mx-auto mt-10 max-w-md rounded-[24px] bg-surface p-7 text-center shadow-card">
+        <h1 className="tight text-[18px] font-bold">Dashboards are off for billing staff</h1>
         <p className="mt-1.5 text-[14px] text-muted">The owner can turn them on in Shop settings → Access.</p>
       </div>
     );
@@ -110,8 +110,8 @@ export function Dashboard() {
     <div className="flex flex-col gap-4 pb-12">
       <div className="flex flex-wrap items-end justify-between gap-3">
         <div className="min-w-0">
-          <h1 className="tight text-[22px] font-semibold text-ink">Dashboard</h1>
-          <p className="mt-0.5 text-[13.5px] text-muted">
+          <h1 className="tight text-[26px] font-extrabold text-ink tab:text-[30px]">Dashboard</h1>
+          <p className="mt-1 text-[14px] text-muted">
             {res ? (
               <>
                 <DateRangeText text={res.period.label} /> · compared with <DateRangeText text={res.period.previousLabel} />
@@ -128,8 +128,8 @@ export function Dashboard() {
       </div>
 
       {/* DSH-01 global filter bar */}
-      <div className="flex flex-col gap-3 rounded-xl border border-line bg-surface p-3 shadow-hair print:hidden tab:p-4">
-        <div role="radiogroup" aria-label="Period" className="flex flex-wrap gap-1">
+      <div className="flex flex-col gap-4 rounded-[24px] bg-surface p-4 shadow-card print:hidden tab:p-5">
+        <div role="radiogroup" aria-label="Period" className="flex w-fit max-w-full gap-1 overflow-x-auto rounded-full bg-sunken p-1 [scrollbar-width:none]">
           {PERIODS.map((p) => (
             <button
               key={p}
@@ -137,8 +137,8 @@ export function Dashboard() {
               aria-checked={period === p}
               onClick={() => set({ period: p === "month" ? null : p, ...(p !== "custom" ? { from: null, to: null } : {}) })}
               className={cn(
-                "shrink-0 rounded-lg px-3 py-1.5 text-[13px] font-medium transition-colors",
-                period === p ? "bg-ink text-white" : "text-ink-3 hover:bg-sunken",
+                "h-9 shrink-0 rounded-full px-3.5 text-[13.5px] font-semibold transition-[background-color,color,box-shadow]",
+                period === p ? "bg-surface text-ink shadow-hair" : "text-muted hover:text-ink",
               )}
             >
               {PERIOD_LABEL[p]}
@@ -149,11 +149,11 @@ export function Dashboard() {
           {period === "custom" ? (
             <>
               <label className="flex w-[calc(50%-5px)] flex-col gap-1 tab:w-[148px]">
-                <span className="text-[12px] font-medium text-ink-3">From</span>
+                <span className="text-[13px] font-semibold text-ink-3">From</span>
                 <DateField value={params.get("from") ?? res?.period.current.from ?? ""} max={today} onValueChange={(v) => set({ from: v })} />
               </label>
               <label className="flex w-[calc(50%-5px)] flex-col gap-1 tab:w-[148px]">
-                <span className="text-[12px] font-medium text-ink-3">To</span>
+                <span className="text-[13px] font-semibold text-ink-3">To</span>
                 <DateField value={params.get("to") ?? res?.period.current.to ?? ""} max={today} onValueChange={(v) => set({ to: v })} />
               </label>
             </>
@@ -178,8 +178,8 @@ export function Dashboard() {
             aria-current={view === v.key ? "page" : undefined}
             ref={view === v.key ? (el) => el?.scrollIntoView({ block: "nearest", inline: "nearest" }) : undefined}
             className={cn(
-              "relative shrink-0 px-3 pt-1.5 pb-2.5 text-[13.5px] font-medium transition-colors",
-              view === v.key ? "text-ink after:absolute after:inset-x-3 after:-bottom-px after:h-[2px] after:rounded-full after:bg-gold" : "text-muted hover:text-ink",
+              "flex h-10 shrink-0 items-center rounded-full px-4 text-[14px] font-semibold transition-colors",
+              view === v.key ? "bg-ink text-white" : "text-ink-3 hover:bg-surface hover:text-ink",
             )}
           >
             {v.label}
@@ -188,17 +188,17 @@ export function Dashboard() {
       </PageTabs>
 
       {error ? (
-        <p role="alert" className="rounded-lg bg-danger-fill px-4 py-3 text-[13.5px] text-danger-deep">
+        <p role="alert" className="rounded-[16px] bg-danger-fill px-4 py-3 text-[13.5px] text-danger-deep">
           {error}
         </p>
       ) : null}
 
       {!ready ? (
         <div aria-busy className="space-y-4">
-          <div className="h-28 animate-pulse rounded-xl bg-line/50" />
+          <div className="h-36 animate-pulse rounded-[24px] bg-line/50" />
           <div className="grid gap-4 lg:grid-cols-2">
-            <div className="h-72 animate-pulse rounded-xl bg-line/40" />
-            <div className="h-72 animate-pulse rounded-xl bg-line/40" />
+            <div className="h-72 animate-pulse rounded-[24px] bg-line/40" />
+            <div className="h-72 animate-pulse rounded-[24px] bg-line/40" />
           </div>
         </div>
       ) : (
@@ -235,7 +235,7 @@ function PageTabs({ children }: { children: ReactNode }) {
   }, []);
   return (
     <div className="relative print:hidden">
-      <nav ref={nav} aria-label="Dashboard pages" className="-mx-1 flex gap-1 overflow-x-auto border-b border-line px-1 pr-10 [scrollbar-width:none] lg:pr-1">
+      <nav ref={nav} aria-label="Dashboard pages" className="-mx-1 flex gap-1.5 overflow-x-auto px-1 pr-12 [scrollbar-width:none] lg:pr-1">
         {children}
       </nav>
       {more ? (
@@ -243,9 +243,9 @@ function PageTabs({ children }: { children: ReactNode }) {
           type="button"
           onClick={() => nav.current?.scrollBy({ left: 180, behavior: "smooth" })}
           aria-label="More dashboard pages"
-          className="absolute top-0 right-0 bottom-px grid w-10 place-items-center bg-gradient-to-l from-canvas from-60% to-transparent text-ink-3"
+          className="absolute top-0 right-0 bottom-0 grid w-12 place-items-center bg-gradient-to-l from-canvas from-60% to-transparent text-ink-3"
         >
-          <span className="grid size-7 place-items-center rounded-full border border-line bg-surface shadow-hair">
+          <span className="grid size-8 place-items-center rounded-full bg-surface shadow-card">
             <ChevronRight className="size-4" aria-hidden />
           </span>
         </button>
@@ -273,7 +273,7 @@ function DateRangeText({ text }: { text: string }) {
 function Filter({ label, value, onChange, options }: { label: string; value: string; onChange: (v: string) => void; options: [string, string][] }) {
   return (
     <label className="flex w-[calc(50%-5px)] flex-col gap-1 tab:w-[150px]">
-      <span className="text-[12px] font-medium text-ink-3">{label}</span>
+      <span className="text-[13px] font-semibold text-ink-3">{label}</span>
       <Select value={value} onChange={(e) => onChange(e.target.value)}>
         {options.map(([v, l]) => (
           <option key={v} value={v}>

@@ -28,10 +28,10 @@ export const SERIES = {
   c5: "#d0527a",
   c6: "#5f8f1f",
   c7: "#1b7fb8",
-  ink: "#334155",
-  previous: "#94a3b8",
-  grid: "#eef2f6",
-  axis: "#94a3b8",
+  ink: "#2c2b33",
+  previous: "#a3a1ab",
+  grid: "#efede8",
+  axis: "#8d8b94",
 } as const;
 
 export const metalColor = (metal: string) => (metal === "Gold" ? SERIES.gold : metal === "Silver" ? SERIES.silver : SERIES.c4);
@@ -66,6 +66,19 @@ export function downloadCsv(name: string, rows: CsvRow[]) {
 
 /* ── KPI tile (DSH-02) ──────────────────────────────────────────────── */
 
+export type KpiTone = "hero" | "plain" | "gold" | "silver" | "lav" | "mint" | "peach" | "rose";
+
+const KPI_TONE: Record<KpiTone, { card: string; label: string }> = {
+  hero: { card: "bg-ink text-white shadow-dock", label: "text-white/60" },
+  plain: { card: "bg-surface shadow-card", label: "text-muted" },
+  gold: { card: "bg-gold-fill", label: "text-gold-deep" },
+  silver: { card: "bg-silver-fill", label: "text-silver-deep" },
+  lav: { card: "bg-lav-fill", label: "text-lav-deep" },
+  mint: { card: "bg-mint-fill", label: "text-ok-deep" },
+  peach: { card: "bg-peach-fill", label: "text-[#a64b1e]" },
+  rose: { card: "bg-rose-fill", label: "text-danger-deep" },
+};
+
 export function KpiTile({
   label,
   value,
@@ -73,6 +86,7 @@ export function KpiTile({
   kind = "money",
   upIsGood = true,
   accent,
+  tone,
   previousLabel,
   onClick,
 }: {
@@ -82,6 +96,7 @@ export function KpiTile({
   kind?: "money" | "count" | "grams" | "pct";
   upIsGood?: boolean;
   accent?: "gold" | "silver" | "danger";
+  tone?: KpiTone;
   previousLabel: string;
   onClick?: () => void;
 }) {
@@ -94,29 +109,40 @@ export function KpiTile({
   const up = change !== null && change > 0;
   const flat = change === 0;
   const good = flat ? null : change === null ? null : up === upIsGood;
+  const t = tone ?? (accent === "gold" ? "gold" : accent === "silver" ? "silver" : accent === "danger" && v > 0 ? "rose" : "plain");
+  const hero = t === "hero";
+  const pastel = t !== "plain" && !hero;
   const Body = onClick ? "button" : "div";
   return (
     <Body
       onClick={onClick}
-      className={cn("flex min-w-0 flex-col bg-surface px-4 py-3.5 text-left", onClick && "transition-colors hover:bg-canvas focus-visible:bg-canvas")}
+      className={cn(
+        "flex min-w-0 flex-col rounded-[24px] p-4 text-left transition-[transform,filter] tab:p-5",
+        KPI_TONE[t].card,
+        onClick && "hover:brightness-[0.98] active:scale-[0.99]",
+      )}
       title={exact}
     >
-      <span className="flex items-center gap-1.5 text-[12.5px] font-medium text-muted">
-        {accent === "gold" ? <span aria-hidden className="size-1.5 rounded-full bg-gold" /> : null}
-        {accent === "silver" ? <span aria-hidden className="size-1.5 rounded-full" style={{ background: SERIES.silver }} /> : null}
-        {label}
-      </span>
-      <span className={cn("num tight mt-1.5 truncate text-[22px] leading-none font-semibold text-ink", accent === "danger" && v > 0 && "text-danger-deep")}>
-        {/* the world's signature move: a figure that changed flashes amber once */}
+      <span className={cn("text-[13px] font-semibold", KPI_TONE[t].label)}>{label}</span>
+      <span className={cn("num tight mt-3 truncate text-[24px] leading-none font-extrabold tab:text-[28px]", hero ? "text-white" : "text-ink")}>
+        {/* a figure that changed flashes once */}
         <Flash value={value}>{fmt(value)}</Flash>
       </span>
-      <span className="mt-2 flex flex-wrap items-center gap-x-1.5 gap-y-0.5 text-[12px] text-muted">
+      <span className={cn("mt-3 flex flex-wrap items-center gap-x-1.5 gap-y-1 text-[12px]", hero ? "text-white/55" : "text-muted")}>
         <span
           className={cn(
-            "inline-flex items-center gap-0.5 rounded px-1 py-px font-medium",
-            good === true && "bg-ok-fill text-ok-deep",
-            good === false && "bg-danger-fill text-danger-deep",
-            good === null && "bg-sunken text-muted",
+            "inline-flex items-center gap-0.5 rounded-full px-1.5 py-0.5 font-semibold",
+            hero
+              ? good === false
+                ? "bg-[#ff9aa8]/20 text-[#ffb8c2]"
+                : good === true
+                  ? "bg-[#7fe0b0]/15 text-[#9be8c1]"
+                  : "bg-white/10 text-white/70"
+              : good === true
+                ? cn("text-ok-deep", pastel ? "bg-white/75" : "bg-ok-fill")
+                : good === false
+                  ? cn("text-danger-deep", pastel ? "bg-white/75" : "bg-danger-fill")
+                  : cn("text-muted", pastel ? "bg-white/75" : "bg-sunken"),
           )}
         >
           {flat ? <Minus className="size-3" aria-hidden /> : change === null ? null : up ? <ArrowUpRight className="size-3" aria-hidden /> : <ArrowDownRight className="size-3" aria-hidden />}
@@ -132,7 +158,7 @@ export function KpiTile({
 
 export function KpiGrid({ children }: { children: ReactNode }) {
   // DSH-10: 4 per row on desktop, 2 on phones
-  return <section className="grid grid-cols-2 gap-px overflow-hidden rounded-xl border border-line bg-line shadow-hair lg:grid-cols-4">{children}</section>;
+  return <section className="grid grid-cols-2 gap-3 lg:grid-cols-4">{children}</section>;
 }
 
 /* ── chart card (title, table view, CSV, empty state) ───────────────── */
@@ -162,11 +188,11 @@ export function ChartCard({
   const isEmpty = rows.length === 0;
   const cols = columns ?? (rows[0] ? Object.keys(rows[0]).map((k) => ({ key: k, label: k })) : []);
   return (
-    <section className={cn("print-keep flex min-w-0 flex-col rounded-xl border border-line bg-surface shadow-hair", className)}>
-      <header className="flex items-start justify-between gap-3 px-4 pt-4 tab:px-5">
+    <section className={cn("print-keep flex min-w-0 flex-col rounded-[24px] bg-surface shadow-card", className)}>
+      <header className="flex items-start justify-between gap-3 px-5 pt-5 tab:px-6">
         <div className="min-w-0">
-          <h3 className="tight text-[14.5px] font-semibold text-ink">{title}</h3>
-          {subtitle ? <p className="mt-0.5 text-[12.5px] text-muted">{subtitle}</p> : null}
+          <h3 className="tight text-[16px] font-bold text-ink">{title}</h3>
+          {subtitle ? <p className="mt-0.5 text-[13px] text-muted">{subtitle}</p> : null}
         </div>
         {!isEmpty ? (
           <div className="flex shrink-0 gap-0.5 print:hidden">
@@ -175,7 +201,7 @@ export function ChartCard({
                 onClick={() => setTable((t) => !t)}
                 aria-pressed={table}
                 title={table ? "Show chart" : "Show as table"}
-                className={cn("grid size-8 place-items-center rounded-md text-muted transition-colors hover:bg-sunken hover:text-ink", table && "bg-sunken text-ink")}
+                className={cn("grid size-8 place-items-center rounded-full text-muted transition-colors hover:bg-sunken hover:text-ink", table && "bg-sunken text-ink")}
               >
                 <Table2 className="size-4" aria-hidden />
                 <span className="sr-only">{table ? "Show chart" : "Show as table"}</span>
@@ -185,7 +211,7 @@ export function ChartCard({
               <button
                 onClick={() => downloadCsv(csvName, rows)}
                 title="Download CSV"
-                className="grid size-8 place-items-center rounded-md text-muted transition-colors hover:bg-sunken hover:text-ink"
+                className="grid size-8 place-items-center rounded-full text-muted transition-colors hover:bg-sunken hover:text-ink"
               >
                 <Download className="size-4" aria-hidden />
                 <span className="sr-only">Download CSV</span>
@@ -195,7 +221,7 @@ export function ChartCard({
         ) : null}
       </header>
       {legend && !isEmpty && !table ? (
-        <ul className="flex flex-wrap gap-x-4 gap-y-1 px-4 pt-2 text-[12px] text-ink-3 tab:px-5">
+        <ul className="flex flex-wrap gap-x-4 gap-y-1 px-5 pt-2.5 text-[12.5px] text-ink-3 tab:px-6">
           {legend.map((l) => (
             <li key={l.label} className="flex items-center gap-1.5">
               <span
@@ -208,9 +234,9 @@ export function ChartCard({
           ))}
         </ul>
       ) : null}
-      <div className="min-h-0 flex-1 px-2 pt-3 pb-4 tab:px-3">
+      <div className="min-h-0 flex-1 px-2 pt-3 pb-5 tab:px-4">
         {isEmpty ? (
-          <p className="grid h-40 place-items-center rounded-lg border border-dashed border-line text-[13px] text-muted">{empty ?? "No sales in this period"}</p>
+          <p className="mx-2 grid h-28 place-items-center rounded-[16px] bg-sunken text-[13.5px] text-muted">{empty ?? "No sales in this period"}</p>
         ) : table ? (
           <DataTable rows={rows} columns={cols} />
         ) : (
@@ -251,12 +277,12 @@ export function DataTable({
   return (
     <div
       ref={box}
-      className={cn("overflow-auto rounded-lg border border-line", more && "[mask-image:linear-gradient(to_right,black_calc(100%-32px),transparent)]")}
+      className={cn("overflow-auto rounded-[16px] ring-1 ring-line ring-inset", more && "[mask-image:linear-gradient(to_right,black_calc(100%-32px),transparent)]")}
       style={maxHeight ? { maxHeight } : undefined}
     >
       <table className="w-full border-collapse text-[13px]">
         <thead className="sticky top-0 z-[1]">
-          <tr className="bg-sunken text-left text-[11.5px] font-medium text-muted">
+          <tr className="bg-sunken text-left text-[12px] font-semibold text-muted">
             {columns.map((c) => (
               <th key={c.key} className={cn("px-3 py-2 font-medium whitespace-nowrap", c.align === "right" && "text-right")}>
                 {c.label}
@@ -291,7 +317,7 @@ type TipFormat = (v: number) => string;
 function Tip({ active, payload, label, format }: TooltipContentProps & { format: TipFormat }) {
   if (!active || !payload?.length) return null;
   return (
-    <div className="min-w-40 rounded-lg border border-line bg-surface px-3 py-2 text-[12.5px] shadow-pop">
+    <div className="min-w-40 rounded-[14px] bg-surface px-3.5 py-2.5 text-[12.5px] shadow-pop">
       <p className="mb-1 text-muted">{(payload[0]?.payload as { tipLabel?: string })?.tipLabel ?? label}</p>
       {payload.map((p) => (
         <p key={String(p.dataKey)} className="flex items-center justify-between gap-4">
@@ -479,7 +505,7 @@ export function BarList({
           <li key={it.key}>
             <Row
               onClick={onClick ? () => onClick(it.key) : undefined}
-              className={cn("group block w-full rounded-md text-left", onClick && "-mx-1 px-1 py-0.5 transition-colors hover:bg-canvas")}
+              className={cn("group block w-full rounded-[10px] text-left", onClick && "-mx-1 px-1 py-0.5 transition-colors hover:bg-canvas")}
               title={format === "money" ? inrExact(it.value) : undefined}
             >
               <span className="flex items-baseline justify-between gap-3 text-[13px]">
@@ -503,7 +529,7 @@ export function BarList({
 /* ── heatmap (day of week × hour) ───────────────────────────────────── */
 
 const DOW = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
-const HEAT = ["#f1f5f9", "#d6e2f1", "#adc5e3", "#7fa3d1", "#4f7fbd", "#2f5d99"]; // one hue, light → dark
+const HEAT = ["#f1f0ec", "#e0dafb", "#c3b7f6", "#a08ef0", "#7b61e8", "#5b3fd0"]; // one hue, light → dark
 
 export function Heatmap({ cells }: { cells: { dow: number; hour: number; count: number }[] }) {
   const max = Math.max(...cells.map((c) => c.count), 1);
@@ -535,7 +561,7 @@ export function Heatmap({ cells }: { cells: { dow: number; hour: number; count: 
                     key={h}
                     tabIndex={n ? 0 : -1}
                     title={`${d} ${String(h).padStart(2, "0")}:00–${String(h + 1).padStart(2, "0")}:00 · ${n} ${n === 1 ? "invoice" : "invoices"}`}
-                    className="h-6 w-7 rounded-[4px] outline-none focus-visible:ring-2 focus-visible:ring-ink/40"
+                    className="h-6 w-7 rounded-[6px] outline-none focus-visible:ring-2 focus-visible:ring-ink/40"
                     style={{ background: HEAT[step] }}
                   />
                 );
