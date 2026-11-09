@@ -50,7 +50,8 @@ export const NumInput = forwardRef<HTMLInputElement, NumInputProps>(function Num
       }}
       className={cn(
         controlBase,
-        "num h-9 text-right",
+        // number placeholders (0.000, Full: ₹…) stay mono so they line up with typed values
+        "num h-9 text-right placeholder:font-mono",
         className,
         // long values step down a size in the dense one-row table instead of clipping
         value.length >= 10 && "desk:text-[11.5px]",

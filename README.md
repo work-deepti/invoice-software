@@ -10,8 +10,8 @@ GST-compliant billing for an Indian gold & silver jewellery shop. Full spec: [`d
 | --- | --- | --- |
 | 1 | Calculation & validation engine + unit tests (T-01 – T-11, T-20 – T-27) | ✅ Done |
 | 2 | Database schema, auth & roles, atomic REST API + integration tests | ✅ Done |
-| 3 | Core screens: rate master, settings, invoice, print/PDF | ⏳ Next |
-| 4 | Transactions ledger UI, CSV, backup/restore, dashboards | — |
+| 3 | Core screens: sign-in, rate master, settings, invoice, print/PDF | ✅ Done |
+| 4 | Transactions ledger UI, CSV, backup/restore, dashboards | ⏳ Next |
 
 ## Owner decisions recorded (9 Nov 2026)
 
@@ -64,16 +64,11 @@ npm run dev
 
 `npm test` runs the unit suite and, when `TEST_DATABASE_URL` is set, the PostgreSQL integration suite. The integration suite **drops and re-creates** the test database's schema, so it refuses to run unless the database name contains `test` and differs from `DATABASE_URL`.
 
-### Try the API
+### First run
 
-There is no sign-in screen yet (Step 3), so use curl. With `npm run dev` running:
+Open http://localhost:3000. The first visit asks you to create the owner account, then takes you to Shop settings. After that: Rate master → enter today's rates → New invoice.
 
-```bash
-curl -c jar -X POST localhost:3000/api/auth/setup -H 'content-type: application/json' -d '{"name":"Owner","login":"owner","password":"choose-a-password"}'
-```
-```bash
-curl -b jar localhost:3000/api/rates
-```
+Design system: [`DESIGN.md`](DESIGN.md) ("The Trading Desk").
 
 ## Architecture
 
@@ -114,4 +109,6 @@ src/app/api/**/route.ts       REST endpoints (§12.2)
 | `POST /api/invoices/{id}/cancel` | owner | Cancel with reason (D-01) |
 | `GET /api/customers?phone=` or `?q=` | all | Customer recall / autocomplete |
 
-Still to come: `/api/invoices/{id}/pdf` (Step 3), `/api/export/csv`, `/api/backup`, `/api/restore`, `/api/dashboard/*` (Step 4).
+| `GET /api/invoices/{id}/pdf` | all | Vector A4 PDF, e.g. INV-2026-27-001.pdf |
+
+Still to come: `/api/export/csv`, `/api/backup`, `/api/restore`, `/api/dashboard/*` (Step 4).

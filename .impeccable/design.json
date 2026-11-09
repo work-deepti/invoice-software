@@ -1,0 +1,282 @@
+{
+  "schemaVersion": 2,
+  "generatedAt": "2026-11-09T11:37:50Z",
+  "title": "Design System: Gold & Silver Billing",
+  "extensions": {
+    "colorMeta": {
+      "ink": {
+        "role": "primary",
+        "displayName": "Counter Slate",
+        "canonical": "#0f172a",
+        "tonalRamp": [
+          "#020617",
+          "#0f172a",
+          "#1e293b",
+          "#334155",
+          "#475569",
+          "#64748b",
+          "#94a3b8",
+          "#e2e8f0"
+        ]
+      },
+      "gold": {
+        "role": "secondary",
+        "displayName": "Hallmark Amber",
+        "canonical": "#d97706",
+        "tonalRamp": [
+          "#78350f",
+          "#92400e",
+          "#b45309",
+          "#d97706",
+          "#f59e0b",
+          "#fbbf24",
+          "#fde68a",
+          "#fef3c7"
+        ]
+      },
+      "silver": {
+        "role": "tertiary",
+        "displayName": "Assay Silver",
+        "canonical": "#475569",
+        "tonalRamp": [
+          "#1e293b",
+          "#334155",
+          "#475569",
+          "#64748b",
+          "#94a3b8",
+          "#cbd5e1",
+          "#e2e8f0",
+          "#f1f5f9"
+        ]
+      },
+      "canvas": {
+        "role": "neutral",
+        "displayName": "Morning Slate",
+        "canonical": "#f8fafc"
+      },
+      "surface": {
+        "role": "neutral",
+        "displayName": "Paper White",
+        "canonical": "#ffffff"
+      },
+      "sunken": {
+        "role": "neutral",
+        "displayName": "Recess",
+        "canonical": "#f1f5f9"
+      },
+      "line": {
+        "role": "neutral",
+        "displayName": "Hairline",
+        "canonical": "#e2e8f0"
+      },
+      "danger": {
+        "role": "error",
+        "displayName": "Signal Red",
+        "canonical": "#dc2626",
+        "tonalRamp": [
+          "#7f1d1d",
+          "#991b1b",
+          "#b91c1c",
+          "#dc2626",
+          "#ef4444",
+          "#f87171",
+          "#fecaca",
+          "#fef2f2"
+        ]
+      },
+      "ok": {
+        "role": "success",
+        "displayName": "Settled Green",
+        "canonical": "#16a34a",
+        "tonalRamp": [
+          "#14532d",
+          "#166534",
+          "#15803d",
+          "#16a34a",
+          "#22c55e",
+          "#4ade80",
+          "#bbf7d0",
+          "#f0fdf4"
+        ]
+      }
+    },
+    "typographyMeta": {
+      "headline": {
+        "displayName": "Headline",
+        "purpose": "Page titles."
+      },
+      "title": {
+        "displayName": "Title",
+        "purpose": "Card titles."
+      },
+      "body": {
+        "displayName": "Body",
+        "purpose": "Field text and copy."
+      },
+      "label": {
+        "displayName": "Label",
+        "purpose": "Field labels and column headers."
+      },
+      "data": {
+        "displayName": "Data",
+        "purpose": "Every number, input value, code and date."
+      },
+      "total": {
+        "displayName": "Total",
+        "purpose": "The rolling grand total in dock and summary."
+      }
+    },
+    "shadows": [
+      {
+        "name": "hair",
+        "value": "0 1px 2px rgba(15,23,42,0.04)",
+        "purpose": "Cards and secondary buttons."
+      },
+      {
+        "name": "pop",
+        "value": "0 12px 32px -8px rgba(15,23,42,0.18), 0 2px 6px rgba(15,23,42,0.06)",
+        "purpose": "Dialogs, dropdowns, toasts, error panel."
+      },
+      {
+        "name": "dock",
+        "value": "0 -8px 24px -12px rgba(15,23,42,0.35)",
+        "purpose": "Totals dock and save bar."
+      }
+    ],
+    "motion": [
+      {
+        "name": "ease-out-expo",
+        "value": "cubic-bezier(0.16, 1, 0.3, 1)",
+        "purpose": "All state transitions."
+      },
+      {
+        "name": "duration-default",
+        "value": "150ms",
+        "purpose": "Row add, tab indicator, dialogs, ticker digits."
+      },
+      {
+        "name": "flash",
+        "value": "650ms gold-fill fade",
+        "purpose": "A summary figure that just changed."
+      }
+    ],
+    "breakpoints": [
+      {
+        "name": "tab",
+        "value": "700px"
+      },
+      {
+        "name": "lg",
+        "value": "1024px"
+      },
+      {
+        "name": "desk",
+        "value": "1200px"
+      }
+    ]
+  },
+  "components": [
+    {
+      "name": "Primary Button",
+      "kind": "button",
+      "refersTo": "button-primary",
+      "description": "Main action on light surfaces.",
+      "html": "<button class=\"ds-btn-primary\">Save rates</button>",
+      "css": ".ds-btn-primary{background:var(--color-ink,#0f172a);color:#fff;height:36px;padding:0 14px;border:0;border-radius:8px;font:500 14px/1 Geist,system-ui,sans-serif;box-shadow:inset 0 1px 0 rgba(255,255,255,.08),0 1px 2px rgba(15,23,42,.2);transition:background-color .15s cubic-bezier(.16,1,.3,1)}.ds-btn-primary:hover{background:#1e293b}.ds-btn-primary:active{transform:translateY(1px)}.ds-btn-primary:focus-visible{outline:2px solid rgba(15,23,42,.7);outline-offset:2px}"
+    },
+    {
+      "name": "Secondary Button",
+      "kind": "button",
+      "refersTo": "button-secondary",
+      "description": "Supporting actions.",
+      "html": "<button class=\"ds-btn-secondary\">Auto-fill from fine rate</button>",
+      "css": ".ds-btn-secondary{background:#fff;color:#0f172a;height:36px;padding:0 14px;border:1px solid #e2e8f0;border-radius:8px;font:500 14px/1 Geist,system-ui,sans-serif;box-shadow:0 1px 2px rgba(15,23,42,.04);transition:border-color .15s,background-color .15s}.ds-btn-secondary:hover{border-color:#cbd5e1;background:#f8fafc}.ds-btn-secondary:focus-visible{outline:2px solid rgba(15,23,42,.7);outline-offset:2px}"
+    },
+    {
+      "name": "Number Input",
+      "kind": "input",
+      "refersTo": "input",
+      "description": "Right-aligned mono field for weights, rates and money.",
+      "html": "<input class=\"ds-num\" value=\"25.450\" inputmode=\"decimal\" aria-label=\"Gross weight\">",
+      "css": ".ds-num{width:140px;height:36px;padding:0 12px;border:1px solid #e2e8f0;border-radius:8px;background:#fff;color:#0f172a;text-align:right;font:400 14px 'Geist Mono',ui-monospace,monospace;font-variant-numeric:tabular-nums slashed-zero;caret-color:#b45309;outline:none;transition:border-color .15s,box-shadow .15s}.ds-num:hover{border-color:#cbd5e1}.ds-num:focus{border-color:#0f172a;box-shadow:0 0 0 2px rgba(15,23,42,.1)}"
+    },
+    {
+      "name": "Error Chip",
+      "kind": "chip",
+      "refersTo": "error-chip",
+      "description": "One per blocking problem; click focuses the field.",
+      "html": "<button class=\"ds-chip-error\">Phone number must be exactly 10 digits.</button>",
+      "css": ".ds-chip-error{background:#fef2f2;color:#b91c1c;border:1px solid rgba(220,38,38,.2);border-radius:8px;padding:6px 10px;font:400 12.5px/1.35 Geist,system-ui,sans-serif;transition:border-color .15s,background-color .15s}.ds-chip-error:hover{border-color:rgba(220,38,38,.45);background:#fee2e2}"
+    },
+    {
+      "name": "Rate Pill",
+      "kind": "chip",
+      "refersTo": "rate-pill",
+      "description": "Today's rate in the top bar.",
+      "html": "<div style=\"background:#0f172a;padding:10px\"><span class=\"ds-pill\"><i></i><span class=\"k\">22K (916)</span><b>₹7,150</b></span></div>",
+      "css": ".ds-pill{display:inline-flex;align-items:center;gap:6px;border:1px solid rgba(255,255,255,.12);border-radius:9999px;padding:3px 10px;color:rgba(255,255,255,.9);font:400 12.5px Geist,system-ui,sans-serif}.ds-pill i{width:6px;height:6px;border-radius:9999px;background:#d97706}.ds-pill .k{color:rgba(255,255,255,.6)}.ds-pill b{font:500 12.5px 'Geist Mono',ui-monospace,monospace}"
+    },
+    {
+      "name": "Totals Dock",
+      "kind": "custom",
+      "refersTo": "totals-dock",
+      "description": "Signature: fixed slate dock with gold/silver grams and the rolling grand total.",
+      "html": "<div class=\"ds-dock\"><span class=\"g\"><i></i>Gold <b>28.190 g</b></span><span class=\"t\"><small>Grand total</small>₹2,03,701.00</span><button>Save</button></div>",
+      "css": ".ds-dock{display:flex;align-items:center;gap:20px;background:#0f172a;color:#fff;border-radius:16px;padding:12px 20px;box-shadow:0 -8px 24px -12px rgba(15,23,42,.35);font:400 12.5px Geist,system-ui,sans-serif}.ds-dock .g{display:flex;align-items:center;gap:8px;color:rgba(255,255,255,.55)}.ds-dock .g i{width:6px;height:6px;border-radius:9999px;background:#d97706}.ds-dock .g b{color:#d97706;font:500 12.5px 'Geist Mono',monospace}.ds-dock .t{margin-left:auto;display:flex;flex-direction:column;align-items:flex-end;font:600 24px/1 'Geist Mono',monospace;letter-spacing:-.02em}.ds-dock .t small{font:500 11.5px Geist,sans-serif;color:rgba(255,255,255,.55);margin-bottom:4px;letter-spacing:0}.ds-dock button{background:#fff;color:#0f172a;border:0;border-radius:8px;height:36px;padding:0 14px;font:500 14px Geist,sans-serif}.ds-dock button:hover{background:#f1f5f9}"
+    }
+  ],
+  "narrative": {
+    "northStar": "The Trading Desk",
+    "overview": "Numbers are the interface. Every weight, rate and rupee sits in tabular mono figures so decimals line up down a column like an institutional trading screen, while everything around them stays quiet: a cool slate canvas, white hairline cards, and one dark slate frame (the top bar above, the totals dock below) that holds the work between them. The tool should disappear into the bill being made at the counter.\n\nColour does jobs, never decoration. Metallic amber means gold — gold grams, gold rates, the active tab, a figure that just changed — and appears nowhere else. Cool slate means silver. Red means a problem the user must fix. The rest is neutral, so a single amber flash or red field is impossible to miss.\n\nDensity is spreadsheet-grade on wide screens (all fourteen item columns on one row at 1200 px and above) and relaxes into labelled, hairline-divided sections on tablets and phones. Motion is fast and functional: 150 ms with an exponential ease-out, only where state changes.",
+    "keyCharacteristics": [
+      "Tabular mono figures for every number, input value and total; sans for every word.",
+      "A dark slate frame: top bar with live rate pills, bottom dock with the rolling grand total.",
+      "Amber reserved for gold and for attention; slate for silver; red only for errors and dues.",
+      "Hairline borders with a whisper of shadow; no gradients, glass or glow.",
+      "150 ms `cubic-bezier(0.16, 1, 0.3, 1)` on state changes only; nothing animates on page load."
+    ],
+    "rules": [
+      {
+        "name": "The Gold Means Gold Rule",
+        "body": "Amber marks gold metal, the active place, or a value that just changed. Never use it for decoration, a generic call to action, or silver.",
+        "section": "colors"
+      },
+      {
+        "name": "The Red Is a Task Rule",
+        "body": "Red appears only when the user has something to fix or someone owes money. A red element that has no action behind it is a bug.",
+        "section": "colors"
+      },
+      {
+        "name": "The Mono Is Data Rule",
+        "body": "Geist Mono sets numbers, codes (GSTIN, PAN, HSN, invoice numbers) and number placeholders (`0.000`, `Full: ₹…`). Words, labels and word placeholders (\"Optional\", \"Cash customer\") stay in Geist. Mono is never a \"technical\" costume.",
+        "section": "typography"
+      },
+      {
+        "name": "The Indian Figures Rule",
+        "body": "Money prints in Indian grouping with the rupee sign (₹2,03,701.00), weights always with three decimals (25.450 g), dates as DD-MM-YYYY on every screen, whatever the browser's locale.",
+        "section": "typography"
+      },
+      {
+        "name": "The Float Earns Shadow Rule",
+        "body": "Only overlays and the dock get more than the hair shadow. A card that sits in the page never lifts.",
+        "section": "elevation"
+      }
+    ],
+    "dos": [
+      "**Do** set every number, weight, rate, total, code and number placeholder in Geist Mono with tabular figures.",
+      "**Do** keep amber for gold, the active place, and changed values (The Gold Means Gold Rule).",
+      "**Do** show money as ₹ with Indian grouping, weights to 3 decimals, and dates as DD-MM-YYYY.",
+      "**Do** keep the item table on one row at 1200 px and above, and switch rows to hairline-divided labelled sections below.",
+      "**Do** use 150 ms `cubic-bezier(0.16, 1, 0.3, 1)` for state changes, and honour reduced motion.",
+      "**Do** keep messages in-page: inline field errors, chips above the dock, one dialog for all warnings, toasts that leave after about 3 s."
+    ],
+    "donts": [
+      "**Don't** use serif fonts, beige or paper-toned backgrounds, neon purple-blue gradients, 3D blobs, or glowing dark-mode effects (owner's brief).",
+      "**Don't** fake metal with gradients or bevels; gold is a flat amber token.",
+      "**Don't** nest cards inside cards; divide rows inside a card with hairlines.",
+      "**Don't** let any page scroll sideways between 360 and 1920 px.",
+      "**Don't** animate on page load or for decoration; motion only reports a change of state.",
+      "**Don't** use browser alert boxes."
+    ]
+  }
+}
