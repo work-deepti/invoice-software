@@ -1,5 +1,5 @@
 "use client";
-import { History, Phone } from "lucide-react";
+import { FileText, History, Phone, UserRound } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 import { PAY_MODES, formatDateDMY, sanitizeGstin, sanitizePan, sanitizePhone, type PayMode } from "@/lib/calc-engine";
 import { api } from "@/lib/api-client";
@@ -34,8 +34,8 @@ export function DetailsCard({
 }) {
   return (
     <Card aria-labelledby="details-h" className="pb-4">
-      <CardHeader title={<span id="details-h">Invoice details</span>} />
-      <div className="grid grid-cols-2 gap-3 px-4 pt-3 tab:px-5">
+      <CardHeader icon={<FileText />} tone="lav" title={<span id="details-h">Invoice details</span>} />
+      <div className="grid grid-cols-2 gap-3 px-5 pt-4 tab:px-6">
         <Field label="Invoice no." className="col-span-2" hint={editing ? undefined : "Next in the series — confirmed when you save"}>
           {(p) => (
             <output
@@ -111,8 +111,8 @@ export function CustomerCard({
 }) {
   return (
     <Card aria-labelledby="cust-h" className="pb-4">
-      <CardHeader title={<span id="cust-h">Customer</span>} description="Type a phone number to recall a past customer." />
-      <div className="grid grid-cols-1 gap-3 px-4 pt-3 tab:grid-cols-2 tab:px-5 lg:grid-cols-6">
+      <CardHeader icon={<UserRound />} tone="peach" title={<span id="cust-h">Customer</span>} description="Type a phone number to recall a past customer." />
+      <div className="grid grid-cols-1 gap-3 px-5 pt-4 tab:grid-cols-2 tab:px-6 lg:grid-cols-6">
         <PhoneRecall customer={customer} error={errorFor("customer.phone")} onChange={onChange} className="lg:col-span-2" />
         <Field label="Name" field="customer.name" error={errorFor("customer.name")} className="lg:col-span-2">
           {(p) => (

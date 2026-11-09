@@ -6,7 +6,7 @@ const nextConfig: NextConfig = {
   // The PDF renderer runs as a plain Node dependency; its fonts ship with the function.
   serverExternalPackages: ["@react-pdf/renderer"],
   outputFileTracingIncludes: {
-    "/api/invoices/[id]/pdf": ["./src/server/pdf/fonts/**"],
+    "/api/invoices/[id]/pdf": ["./src/fonts/figtree/**"],
   },
   turbopack: {
     rules: {

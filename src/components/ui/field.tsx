@@ -4,10 +4,11 @@ import { cn } from "@/lib/cn";
 
 /** Base look shared by every text-like control. */
 export const controlBase =
-  "w-full min-w-0 rounded-lg border bg-surface px-3 text-[14px] text-ink placeholder:font-sans placeholder:text-faint transition-[border-color,box-shadow,background-color] outline-none " +
-  "border-line hover:border-line-strong focus:border-ink focus:ring-2 focus:ring-ink/10 " +
-  "disabled:bg-sunken disabled:text-muted " +
-  "aria-[invalid=true]:border-danger aria-[invalid=true]:bg-danger-fill/40 aria-[invalid=true]:focus:ring-danger/15";
+  "w-full min-w-0 rounded-[12px] border border-transparent bg-sunken px-3.5 text-[14.5px] text-ink placeholder:font-normal placeholder:text-faint outline-none " +
+  "transition-[border-color,box-shadow,background-color] hover:bg-[#ecebe6] " +
+  "focus:border-lav focus:bg-surface focus:ring-4 focus:ring-lav/15 " +
+  "disabled:bg-sunken/60 disabled:text-muted " +
+  "aria-[invalid=true]:border-danger aria-[invalid=true]:bg-danger-fill/60 aria-[invalid=true]:focus:ring-danger/15";
 
 export interface FieldProps {
   label: ReactNode;
@@ -29,7 +30,7 @@ export function Field({ label, field, error, hint, className, labelClassName, me
   const msgId = `${id}-msg`;
   return (
     <div className={cn("flex min-w-0 flex-col gap-1.5", className)}>
-      <label htmlFor={id} className={cn("text-[12.5px] font-medium text-ink-3", srLabel && "sr-only", labelClassName)}>
+      <label htmlFor={id} className={cn("text-[13px] font-semibold text-ink-3", srLabel && "sr-only", labelClassName)}>
         {label}
       </label>
       {children({
@@ -56,14 +57,14 @@ export const TextInput = forwardRef<HTMLInputElement, InputHTMLAttributes<HTMLIn
   { className, ...rest },
   ref,
 ) {
-  return <input ref={ref} type="text" className={cn(controlBase, "h-9", className)} {...rest} />;
+  return <input ref={ref} type="text" className={cn(controlBase, "h-11", className)} {...rest} />;
 });
 
 export const TextArea = forwardRef<HTMLTextAreaElement, TextareaHTMLAttributes<HTMLTextAreaElement>>(function TextArea(
   { className, ...rest },
   ref,
 ) {
-  return <textarea ref={ref} className={cn(controlBase, "min-h-20 resize-y py-2 leading-relaxed", className)} {...rest} />;
+  return <textarea ref={ref} className={cn(controlBase, "min-h-20 resize-y py-2.5 leading-relaxed", className)} {...rest} />;
 });
 
 export const Select = forwardRef<HTMLSelectElement, SelectHTMLAttributes<HTMLSelectElement>>(function Select(
@@ -75,7 +76,7 @@ export const Select = forwardRef<HTMLSelectElement, SelectHTMLAttributes<HTMLSel
       ref={ref}
       className={cn(
         controlBase,
-        "select-chevron h-9 cursor-pointer appearance-none pr-8",
+        "select-chevron h-11 cursor-pointer appearance-none pr-9 focus:bg-surface",
         className,
       )}
       {...rest}

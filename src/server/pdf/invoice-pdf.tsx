@@ -17,26 +17,19 @@ import {
 import type { InvoiceDTO } from "../invoices";
 import type { SettingsDTO } from "../settings";
 
-/* Fonts ship inside the repo (DEP-07: no CDN at runtime). Geist carries the ₹ glyph. */
-const FONT_DIR = path.join(process.cwd(), "src/server/pdf/fonts");
+/* Fonts ship inside the repo (DEP-07: no CDN at runtime). Figtree (OFL) carries the ₹ glyph. */
+const FONT_DIR = path.join(process.cwd(), "src/fonts/figtree");
 let registered = false;
 function registerFonts() {
   if (registered) return;
+  const f = (w: number, name: string) => ({ src: path.join(FONT_DIR, `Figtree_${name}.ttf`), fontWeight: w });
+  Font.register({ family: "Figtree", fonts: [f(400, "400Regular"), f(500, "500Medium"), f(600, "600SemiBold"), f(700, "700Bold"), f(800, "800ExtraBold")] });
+  // Figtree with tabular figures frozen in (react-pdf can't switch OpenType features) so PDF columns align
   Font.register({
-    family: "Geist",
+    family: "FigtreeTab",
     fonts: [
-      { src: path.join(FONT_DIR, "Geist-Regular.ttf"), fontWeight: 400 },
-      { src: path.join(FONT_DIR, "Geist-Medium.ttf"), fontWeight: 500 },
-      { src: path.join(FONT_DIR, "Geist-SemiBold.ttf"), fontWeight: 600 },
-      { src: path.join(FONT_DIR, "Geist-Bold.ttf"), fontWeight: 700 },
-    ],
-  });
-  Font.register({
-    family: "GeistMono",
-    fonts: [
-      { src: path.join(FONT_DIR, "GeistMono-Regular.ttf"), fontWeight: 400 },
-      { src: path.join(FONT_DIR, "GeistMono-Medium.ttf"), fontWeight: 500 },
-      { src: path.join(FONT_DIR, "GeistMono-SemiBold.ttf"), fontWeight: 600 },
+      { src: path.join(FONT_DIR, "FigtreeTab_400Regular.ttf"), fontWeight: 400 },
+      { src: path.join(FONT_DIR, "FigtreeTab_600SemiBold.ttf"), fontWeight: 600 },
     ],
   });
   Font.registerHyphenationCallback((w) => [w]);
@@ -58,9 +51,9 @@ const C = {
 
 const s = StyleSheet.create({
   // No lineHeight on Page: react-pdf drops absolutely positioned fixed text (the page footer) when the page sets one.
-  page: { paddingTop: 34, paddingBottom: 44, paddingHorizontal: 34, fontFamily: "Geist", fontSize: 8, color: C.ink },
+  page: { paddingTop: 34, paddingBottom: 44, paddingHorizontal: 34, fontFamily: "Figtree", fontSize: 8, color: C.ink },
   body: { lineHeight: 1.4 },
-  mono: { fontFamily: "GeistMono" },
+  mono: { fontFamily: "FigtreeTab" },
   row: { flexDirection: "row" },
   label: { fontSize: 6.5, fontWeight: 600, letterSpacing: 0.8, color: C.muted },
   th: { fontSize: 6.3, fontWeight: 600, color: C.ink3, letterSpacing: 0.3, textTransform: "uppercase" },

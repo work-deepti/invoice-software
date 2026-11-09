@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256">
+  <!-- Letter B: a stem plus two coins as its bowls; the lower coin slightly larger, like a stack -->
+  <rect x="56" y="32" width="40" height="192" rx="20" fill="#000"/>
+  <circle cx="134" cy="82" r="50" fill="#000"/>
+  <circle cx="142" cy="170" r="58" fill="#000"/>
+  <!-- coin rims as cut rings -->
+  <circle cx="134" cy="82" r="30" fill="#fff"/>
+  <circle cx="142" cy="170" r="36" fill="#fff"/>
+</svg>

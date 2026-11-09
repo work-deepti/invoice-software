@@ -25,13 +25,13 @@ export function Checkbox({
         checked={checked}
         disabled={disabled}
         onCheckedChange={(v) => onCheckedChange(v === true)}
-        className="mt-px grid size-[18px] shrink-0 place-items-center rounded-[5px] border border-line-strong bg-surface transition-[background-color,border-color] group-hover:border-ink-3 data-[state=checked]:border-ink data-[state=checked]:bg-ink"
+        className="mt-px grid size-5 shrink-0 place-items-center rounded-[7px] border-[1.5px] border-line-strong bg-surface transition-[background-color,border-color] group-hover:border-ink-3 data-[state=checked]:border-ink data-[state=checked]:bg-ink"
       >
         <C.Indicator className="text-white">
           <Check className="size-3.5" strokeWidth={3} aria-hidden />
         </C.Indicator>
       </C.Root>
-      <span className="text-[13.5px] leading-[18px] text-ink">
+      <span className="text-[14px] leading-5 font-medium text-ink">
         {label}
         {hint ? <span className="mt-0.5 block text-[12.5px] text-muted">{hint}</span> : null}
       </span>

@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256">
+  <!-- The jeweller's dumbbell price tag: two pads joined by a thin neck, tilted; each pad has its string hole -->
+  <g transform="rotate(-35 128 128)" fill="#000" fill-rule="evenodd">
+    <path d="M28 92 h64 a14 14 0 0 1 14 14 v44 a14 14 0 0 1 -14 14 h-64 a14 14 0 0 1 -14 -14 v-44 a14 14 0 0 1 14 -14 Z M42 128 a10 10 0 1 0 20 0 a10 10 0 1 0 -20 0 Z"/>
+    <rect x="100" y="120" width="56" height="16" rx="8"/>
+    <path d="M164 92 h64 a14 14 0 0 1 14 14 v44 a14 14 0 0 1 -14 14 h-64 a14 14 0 0 1 -14 -14 v-44 a14 14 0 0 1 14 -14 Z M194 128 a10 10 0 1 0 20 0 a10 10 0 1 0 -20 0 Z"/>
+  </g>
+</svg>

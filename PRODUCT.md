@@ -45,13 +45,14 @@ A billing tool built around how jewellery is actually priced in India: gross / l
 
 ## Brand Commitments
 
-Binding visual constraints from the owner's brief (these override PRD §15.1's ivory / serif look):
+Redesign brief from the owner (9 Nov 2026), replacing the earlier dark-slate "trading desk" look, which the owner did not like:
 
-- Modern, high-craft financial / POS software. Named references: Vercel, Apple, Stripe Billing, Linear, Ramp, Square POS.
-- No serif fonts, no beige / paper backgrounds, no neon purple-blue gradients, no 3D blobs, no glowing dark-mode gimmicks.
-- Palette: canvas `#F8FAFC`; surfaces `#FFFFFF` with `1px #E2E8F0` hairlines and `0 1px 2px rgba(15,23,42,.04)` elevation; ink / top bar / primary buttons `#0F172A`; muted `#64748B`; gold accent `#D97706` / `#B45309` (fill `#FEF3C7`), used on purpose for gold metrics, active states and key highlights; silver `#475569` (fill `#F1F5F9`); error `#DC2626` / `#FEF2F2`, success `#16A34A` / `#F0FDF4`, warning `#D97706` / `#FFFBEB`.
-- Type: Geist Sans or Plus Jakarta Sans (500/600/700, `-0.02em` on headers and KPIs); every number, weight, rate, input and total in Geist Mono / JetBrains Mono or tabular figures so decimals line up.
-- Motion: sleek and modern but fast. `150ms cubic-bezier(0.16, 1, 0.3, 1)` on row additions, tab switches, drawers and live total updates. Visible focus rings (`ring-2 ring-slate-900/10`, `border-slate-900`).
+- Inspired by two reference apps the owner supplied: a consumer finance wallet (white canvas, big friendly balance figures, solid colour category cards, round icon buttons, black pill actions, a floating black bottom bar with a centre "+") and a health tracker (soft pastel cards in peach, lavender, mint and coral, large numbers, generous rounded corners, floating white bottom bar with a tinted active item, Days/Weeks segmented tabs).
+- Lighter shades than the references: soft pastels for cards and sections, with a few bold accents (gold, silver, ink) for key figures and primary actions. Confirmed: "soft pastels + bold accents".
+- Font: **Figtree** (confirmed from a specimen of four options). One family for UI and numbers, with tabular figures so amounts align.
+- Navigation: a light left sidebar on computers; on phones the floating bottom bar with a big centre "+" for New invoice.
+- Logo: **Coin B** (confirmed) — the letter B for Billing whose two bowls are a gold coin and a silver coin, with the product name "Gold & Silver Billing". Masters in `design/logo/`.
+- Still binding from the original brief: no serif fonts, no neon purple-blue gradients, no 3D blobs, no glowing dark-mode effects; Indian number formatting; fast, purposeful motion.
 - Product name (working): "Gold & Silver Billing". The shop's own name, address and GSTIN come from Shop settings and print on every invoice.
 
 ## Evidence on Hand

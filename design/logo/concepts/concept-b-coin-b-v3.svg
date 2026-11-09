@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256">
+  <!-- B: a stem and two coin bowls (rings); the lower coin larger, like a stack. Separate solid pieces, no XOR -->
+  <g fill="#000" fill-rule="evenodd">
+    <rect x="58" y="24" width="40" height="208" rx="20"/>
+    <path d="M136 26 a52 52 0 1 1 0 104 a52 52 0 1 1 0 -104 Z M136 58 a20 20 0 1 0 0 40 a20 20 0 1 0 0 -40 Z"/>
+    <path d="M142 116 a58 58 0 1 1 0 116 a58 58 0 1 1 0 -116 Z M142 150 a24 24 0 1 0 0 48 a24 24 0 1 0 0 -48 Z"/>
+  </g>
+</svg>

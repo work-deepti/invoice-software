@@ -307,7 +307,7 @@ function Tip({ active, payload, label, format }: TooltipContentProps & { format:
 }
 
 const axisProps = {
-  tick: { fill: SERIES.axis, fontSize: 11, fontFamily: "var(--font-geist-mono)" },
+  tick: { fill: SERIES.axis, fontSize: 11, fontFamily: "var(--font-figtree)", fontVariantNumeric: "tabular-nums" },
   tickLine: false,
   axisLine: false,
 } as const;
@@ -427,7 +427,7 @@ export function Columns({
         {vertical ? (
           <>
             <XAxis type="number" {...axisProps} tickFormatter={tickF} />
-            <YAxis type="category" dataKey={categoryKey} {...axisProps} tick={{ ...axisProps.tick, fontFamily: "var(--font-geist-sans)" }} width={120} />
+            <YAxis type="category" dataKey={categoryKey} {...axisProps} tick={{ ...axisProps.tick, fontFamily: "var(--font-figtree)" }} width={120} />
           </>
         ) : (
           <>

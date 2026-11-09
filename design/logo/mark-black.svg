@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256">
+  <title>Gold &amp; Silver Billing</title>
+  <!-- Coin B: a stem and two coin bowls. Gold coin above, silver coin (a touch larger) below, like a stack. -->
+  <rect x="56" y="24" width="42" height="208" rx="21" fill="#000000"/>
+  <path fill="#000000" fill-rule="evenodd" d="M138 24 a53 53 0 1 1 0 106 a53 53 0 1 1 0 -106 Z M138 57 a20 20 0 1 0 0 40 a20 20 0 1 0 0 -40 Z"/>
+  <path fill="#000000" fill-rule="evenodd" d="M144 114 a59 59 0 1 1 0 118 a59 59 0 1 1 0 -118 Z M144 149 a24 24 0 1 0 0 48 a24 24 0 1 0 0 -48 Z"/>
+</svg>

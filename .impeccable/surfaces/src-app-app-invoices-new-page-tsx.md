@@ -2,31 +2,29 @@
 version: 1
 slug: "src-app-app-invoices-new-page-tsx"
 primary_target: "src/app/(app)/invoices/new/page.tsx"
-related_targets: ["src/app/(app)/rates/page.tsx","src/app/(app)/settings/page.tsx","src/components/invoice-document.tsx"]
+related_targets: ["src/app/(app)/transactions/page.tsx","src/app/(app)/dashboard/page.tsx","src/app/(app)/rates/page.tsx","src/app/(app)/settings/page.tsx"]
 ---
 
-# Surface: Billing workspace (app shell, New/Edit invoice, Rate master, Shop settings, Invoice preview/print)
+# Surface: Billing workspace (shell, New/Edit invoice, Transactions, Dashboards, Rate master, Shop settings, Preview/print)
 
 Mode: Operate. Code-led (Operate surfaces are code-led; no image generation on this machine).
 
-Audience & job: counter staff building a correct GST jewellery bill in under 2 minutes while the customer waits; owner setting rates each morning and shop settings once. Desktop, tablet and phone with equal priority.
+Audience & job: counter staff building a correct GST jewellery bill in under 2 minutes while the customer waits, on desktop, tablet or phone (equal priority); owner setting rates each morning, reading dashboards, reconciling the ledger.
 
-Constraints: PRD UX-01..UX-08 (14 item columns on one row at >=1200px, cards below, no sideways scroll 360-1920px), VAL-01..07 input rules, INV-18 error chips that scroll to and focus the field, A4 print from the saved snapshot.
-
-Owner choices (9 Nov 2026): totals live in a sticky bottom dock (full-width item table); signature moment is the live totals ticker.
+Constraints: PRD UX-01..UX-08 (14 item columns on one row at >=1200px, cards below, no sideways scroll 360-1920px), VAL rules, INV-18 error chips, A4 print from the saved snapshot. Redesign of the whole app (owner disliked the dark-slate world). Owner choices: Figtree; Coin B logo; left sidebar on computers, floating bottom bar with centre "+" on phones; soft pastels + bold accents.
 
 ## Direction contract
 
-THESIS: The bill computes itself in front of the customer. Refuses the category default of a grey form with a totals sidebar; instead a full-width spreadsheet-grade line table over a dark slate dock where the grand total resolves digit by digit.
+THESIS: A billing counter that feels as friendly as a wallet app: soft pastel metal cards and big confident figures, with near-black pill actions doing the work. Refuses the category default of grey enterprise forms and dark chrome.
 
-OWN-WORLD: Slate 50 canvas, white hairline cards (1px #E2E8F0), Slate 900 ink for the top bar, primary buttons and the totals dock; metallic amber (#B45309 / #D97706, fill #FEF3C7) only for gold metrics, active tab, focus of attention and changed figures; cool slate #475569 for silver. Geist Sans for UI, Geist Mono tabular for every number, weight, rate and input.
+OWN-WORLD: Warm off-white canvas #F6F5F2, borderless white cards at 24px radius with a soft shadow; pastel tints carry meaning (cream = gold, mist blue = silver, lavender = focus/active, mint = paid, peach/rose = dues); bold accents only for the Coin B gold #E9A23B, silver #8296B3 and ink #1C1B22 pill buttons. Figtree 400-800, tabular figures, tight -0.02em headings.
 
-STORY: Staff see today's rates are current, type a phone and the customer fills in, tab across lines like a spreadsheet, watch totals settle, fix any red field from its chip, save and print. The owner trusts every figure.
+STORY: Staff see today's rates as small metal cards, start a bill with the "+", type a phone and the customer fills in, tab across lines, watch the total settle in the floating black dock, fix any red field from its chip, save and print. The owner glances at pastel KPI cards and taps through to the bills.
 
-FIRST VIEWPORT: Slate 900 top bar in three tight rows: shop name left and user right; rate pills; tabs with an amber sliding indicator (adaptation: five or more pills plus five tabs cannot share one row at 1200 px without truncating rates, and the same stack works unchanged on phones). Page title "New invoice" with the number in mono. Card 1 invoice details + customer in one row at desktop. Items table begins in the first viewport. Bottom dock fixed: Au grams (amber), Ag grams (slate), balance, grand total large in mono, Save & print / Save & view / Save.
+FIRST VIEWPORT: Desktop: a light left sidebar (Coin B lockup, five sections with icons, today's rates as compact metal rows, user) beside the work area; the invoice page opens with a big "New invoice" title and the number, then details + customer cards and the item table, with the floating black totals dock at the bottom. Phone: compact header with logo and rate chips, cards stacked, floating black bottom bar with a white centre "+".
 
-FORM: Brief-pinned direction (owner named Vercel / Apple / Stripe / Linear / Ramp / Square POS and fixed palette, type and motion); position 1 of 1. seed: none (brief-pinned, no roll)
+FORM: Brief-pinned direction (owner supplied two reference apps, chose font, logo, navigation and colour level); position 1 of 1. seed: none (brief-pinned, no roll)
 
-Signature interaction: totals ticker. Digits of the grand total roll vertically into place in 150ms cubic-bezier(0.16,1,0.3,1); any summary figure that changes flashes amber once; amount in words updates live. Motion grammar: 150ms on row add/remove, tab indicator slide, dialog and toast entry; nothing on page load.
+Signature interaction: the floating black totals dock — the grand total rolls digit by digit (150ms), changed figures flash a soft gold once, and the dock carries black-pill actions like the reference wallet's Add / Move / Send. Motion grammar: 150-200ms expo-out on row add/remove, tab and segment switches, dialogs and toasts; nothing on page load.
 
 FINISH: unreviewed and undocumented is unfinished; this build ends with the finish review, the verdict, DESIGN.md, and every shipping raster carrying its provenance

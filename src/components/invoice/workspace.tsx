@@ -1,5 +1,5 @@
 "use client";
-import { ArrowLeft, Eraser } from "lucide-react";
+import { ArrowLeft, Eraser, StickyNote } from "lucide-react";
 import Link from "next/link";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import {
@@ -352,7 +352,7 @@ export function InvoiceWorkspace({ editId }: { editId?: string }) {
 
   return (
     <div
-      className="pb-36"
+      className="pb-40 lg:pb-32"
       onBlurCapture={(e) => {
         const f = (e.target as HTMLElement).dataset?.field;
         if (f && !touched.has(f)) setTouched((t) => new Set(t).add(f));
@@ -360,10 +360,10 @@ export function InvoiceWorkspace({ editId }: { editId?: string }) {
     >
       <div className="mb-5 flex flex-wrap items-center justify-between gap-3">
         <div className="min-w-0">
-          <h1 className="tight flex flex-wrap items-baseline gap-x-2.5 text-[22px] font-semibold text-ink">
+          <h1 className="tight flex flex-wrap items-baseline gap-x-2.5 text-[26px] font-extrabold text-ink tab:text-[30px]">
             {editing ? (
               <>
-                Editing <span className="num text-[20px] font-medium text-ink-3">{source?.number}</span>
+                Editing <span className="num text-[22px] font-semibold text-muted tab:text-[24px]">{source?.number}</span>
               </>
             ) : (
               "New invoice"
@@ -374,7 +374,7 @@ export function InvoiceWorkspace({ editId }: { editId?: string }) {
           {editing ? (
             <Link
               href="/invoices/new"
-              className="inline-flex h-9 items-center gap-1.5 rounded-lg border border-line bg-surface px-3.5 text-sm font-medium text-ink shadow-hair transition-colors hover:border-line-strong hover:bg-canvas"
+              className="inline-flex h-10 items-center gap-1.5 rounded-full bg-surface px-4 text-[14px] font-semibold text-ink shadow-hair transition-colors hover:bg-sunken"
             >
               <ArrowLeft className="size-4" aria-hidden />
               Cancel editing
@@ -427,8 +427,8 @@ export function InvoiceWorkspace({ editId }: { editId?: string }) {
 
         <div className="grid items-start gap-4 lg:grid-cols-[minmax(0,1fr)_minmax(0,440px)]">
           <Card aria-labelledby="notes-h" className="pb-4">
-            <CardHeader title={<span id="notes-h">Notes</span>} description="Printed on the invoice." />
-            <div className="px-4 pt-3 tab:px-5">
+            <CardHeader icon={<StickyNote />} tone="mint" title={<span id="notes-h">Notes</span>} description="Printed on the invoice." />
+            <div className="px-5 pt-4 tab:px-6">
               <label htmlFor="inv-notes" className="sr-only">
                 Notes
               </label>

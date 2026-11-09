@@ -1,5 +1,5 @@
 "use client";
-import { Plus, RotateCcw, X } from "lucide-react";
+import { ArrowLeftRight, Gem, Plus, RotateCcw, X } from "lucide-react";
 import { formatIndianNumber, type ExchangeResult, type LineResult, type MakingType, type Metal } from "@/lib/calc-engine";
 import { cn } from "@/lib/cn";
 import type { RatesDTO } from "@/server/rates";
@@ -50,17 +50,19 @@ export function ItemsCard({
   return (
     <Card aria-labelledby="items-h">
       <CardHeader
+        icon={<Gem />}
+        tone="gold"
         title={<span id="items-h">Items</span>}
         description="Rates come from today's rate master. A rate you type stays fixed for that line."
         actions={
           <Button size="sm" onClick={onAdd} title="Add item (Alt+N)">
             <Plus className="size-4" aria-hidden />
             Add item
-            <kbd className="ml-1 hidden rounded border border-line px-1 font-sans text-[11px] text-muted desk:inline">Alt N</kbd>
+            <kbd className="ml-1 hidden rounded-md bg-surface px-1.5 font-sans text-[11px] text-muted desk:inline">Alt N</kbd>
           </Button>
         }
       />
-      <div className="px-3 pt-3 pb-4 tab:px-5">
+      <div className="px-3 pt-4 pb-5 tab:px-6">
         {/* column header — one-row layout only */}
         <div
           aria-hidden
@@ -334,6 +336,8 @@ export function ExchangeCard({
   return (
     <Card aria-labelledby="xch-h">
       <CardHeader
+        icon={<ArrowLeftRight />}
+        tone="silver"
         title={<span id="xch-h">Old gold / silver exchange</span>}
         description="Deducted after GST. GST is never reduced by exchange."
         actions={
@@ -343,9 +347,9 @@ export function ExchangeCard({
           </Button>
         }
       />
-      <div className="px-3 pt-3 pb-4 tab:px-5">
+      <div className="px-3 pt-4 pb-5 tab:px-6">
         {rows.length === 0 ? (
-          <p className="rounded-lg border border-dashed border-line px-4 py-3 text-[13px] text-muted">
+          <p className="rounded-[16px] bg-sunken px-4 py-3.5 text-[13.5px] text-muted">
             No old metal on this bill. Use <span className="font-medium text-ink-3">Add old metal</span> when the customer trades some in.
           </p>
         ) : (

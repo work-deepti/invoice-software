@@ -1,44 +1,70 @@
 @import "tailwindcss";
 
 /* ──────────────────────────────────────────────────────────────────────────
-   Design tokens — Gold & Silver Billing
-   Slate canvas, white hairline surfaces, Slate 900 ink; metallic amber only
-   where gold or attention is meant; cool slate for silver.
+   Design tokens — Gold & Silver Billing · "Soft Ledger"
+   Warm off-white canvas, borderless white cards, pastel tints that carry
+   meaning (cream = gold, mist = silver, lavender = focus, mint = paid,
+   peach / rose = dues) and a few bold accents: gold, silver, ink pills.
    ────────────────────────────────────────────────────────────────────────── */
 @theme {
-  --font-sans: var(--font-geist-sans), ui-sans-serif, system-ui, sans-serif;
-  --font-mono: var(--font-geist-mono), ui-monospace, "SFMono-Regular", monospace;
+  --font-sans: var(--font-figtree), ui-sans-serif, system-ui, sans-serif;
+  /* one family: numbers use Figtree's tabular figures (see .num) */
+  --font-mono: var(--font-figtree), ui-sans-serif, system-ui, sans-serif;
 
-  --color-canvas: #f8fafc;
+  /* ground & neutrals (warm) */
+  --color-canvas: #f6f5f2;
   --color-surface: #ffffff;
-  --color-sunken: #f1f5f9;
-  --color-line: #e2e8f0;
-  --color-line-strong: #cbd5e1;
-  --color-ink: #0f172a;
-  --color-ink-2: #1e293b;
-  --color-ink-3: #334155;
-  --color-muted: #64748b;
-  --color-faint: #94a3b8;
+  --color-sunken: #f1f0ec;
+  --color-line: #ebe9e3;
+  --color-line-strong: #dad7cf;
+  --color-ink: #1c1b22;
+  --color-ink-2: #2c2b33;
+  --color-ink-3: #47464f;
+  --color-muted: #6b6a73;
+  --color-faint: #77767f; /* placeholders: ≥ 4.5:1 on white */
 
-  --color-gold: #d97706;
-  --color-gold-deep: #b45309;
-  --color-gold-fill: #fef3c7;
-  --color-gold-soft: #fffbeb;
-  --color-silver: #475569;
-  --color-silver-fill: #f1f5f9;
+  /* metals — bold accent + pastel fill */
+  --color-gold: #e9a23b;
+  --color-gold-deep: #94590a; /* gold text on light grounds (≥ 4.5:1) */
+  --color-gold-fill: #fdecc8;
+  --color-gold-soft: #fff6e6;
+  --color-silver: #8296b3;
+  --color-silver-deep: #4c5f80;
+  --color-silver-fill: #e6edf7;
 
-  --color-danger: #dc2626;
-  --color-danger-deep: #b91c1c;
-  --color-danger-fill: #fef2f2;
-  --color-ok: #16a34a;
-  --color-ok-deep: #15803d;
-  --color-ok-fill: #f0fdf4;
-  --color-warn: #d97706;
-  --color-warn-fill: #fffbeb;
+  /* pastel family (the reference apps' card tints, a step lighter) */
+  --color-lav: #7b61e8;
+  --color-lav-deep: #5b3fd0;
+  --color-lav-fill: #eeeafd;
+  --color-mint: #2f9e6a;
+  --color-mint-fill: #e2f4ea;
+  --color-peach-fill: #fdebe1;
+  --color-rose: #e0556b;
+  --color-rose-fill: #fce6ea;
 
-  --shadow-hair: 0 1px 2px rgba(15, 23, 42, 0.04);
-  --shadow-pop: 0 12px 32px -8px rgba(15, 23, 42, 0.18), 0 2px 6px rgba(15, 23, 42, 0.06);
-  --shadow-dock: 0 -8px 24px -12px rgba(15, 23, 42, 0.35);
+  /* semantics */
+  --color-danger: #d93a45;
+  --color-danger-deep: #b4232f;
+  --color-danger-fill: #fdecee;
+  --color-ok: #2f9e6a;
+  --color-ok-deep: #1d7a4e;
+  --color-ok-fill: #e2f4ea;
+  --color-warn: #d9861a;
+  --color-warn-fill: #fff3df;
+
+  /* radius scale */
+  --radius-sm: 8px;
+  --radius-md: 12px;
+  --radius-lg: 16px;
+  --radius-xl: 20px;
+  --radius-2xl: 24px;
+  --radius-3xl: 28px;
+
+  /* soft, lifted depth — no hairline borders on cards */
+  --shadow-hair: 0 1px 2px rgba(28, 27, 34, 0.04), 0 4px 16px -8px rgba(28, 27, 34, 0.08);
+  --shadow-card: 0 1px 2px rgba(28, 27, 34, 0.04), 0 10px 30px -14px rgba(28, 27, 34, 0.12);
+  --shadow-pop: 0 18px 44px -12px rgba(28, 27, 34, 0.22), 0 3px 8px rgba(28, 27, 34, 0.06);
+  --shadow-dock: 0 18px 40px -12px rgba(28, 27, 34, 0.45), 0 4px 10px rgba(28, 27, 34, 0.12);
 
   --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
   --default-transition-duration: 150ms;
@@ -48,18 +74,21 @@
   --breakpoint-desk: 75rem;
   /* UX-04: phone rules apply up to 700 px */
   --breakpoint-tab: 43.75rem;
+  /* full sidebar from 1440 px; icon rail from 1024 px; bottom bar below */
+  --breakpoint-wide: 90rem;
 
-  --animate-flash: flash 650ms var(--ease-out-expo);
-  --animate-enter: enter 150ms var(--ease-out-expo);
-  --animate-overlay: overlay 150ms var(--ease-out-expo);
-  --animate-toast: toast 180ms var(--ease-out-expo);
+  --animate-flash: flash 700ms var(--ease-out-expo);
+  --animate-enter: enter 180ms var(--ease-out-expo);
+  --animate-overlay: overlay 160ms var(--ease-out-expo);
+  --animate-toast: toast 200ms var(--ease-out-expo);
+  --animate-sheet: sheet 220ms var(--ease-out-expo);
 
   @keyframes flash {
     0% { background-color: var(--color-gold-fill); color: var(--color-gold-deep); }
     100% { background-color: transparent; }
   }
   @keyframes enter {
-    from { opacity: 0; transform: translateY(4px) scale(0.995); }
+    from { opacity: 0; transform: translateY(6px) scale(0.99); }
     to { opacity: 1; transform: none; }
   }
   @keyframes overlay {
@@ -67,7 +96,11 @@
     to { opacity: 1; }
   }
   @keyframes toast {
-    from { opacity: 0; transform: translateY(8px); }
+    from { opacity: 0; transform: translateY(10px) scale(0.98); }
+    to { opacity: 1; transform: none; }
+  }
+  @keyframes sheet {
+    from { opacity: 0; transform: translateY(24px); }
     to { opacity: 1; transform: none; }
   }
 }
@@ -84,17 +117,16 @@
     background: var(--color-canvas);
     color: var(--color-ink);
     font-family: var(--font-sans);
-    font-feature-settings: "ss01", "cv11";
     overflow-x: clip; /* UX-05: never a sideways page scroll */
   }
   ::selection {
-    background: var(--color-gold-fill);
+    background: var(--color-lav-fill);
     color: var(--color-ink);
   }
   input,
   textarea,
   select {
-    caret-color: var(--color-gold-deep);
+    caret-color: var(--color-lav);
   }
   /* UX-04: 16 px inputs on phones so iOS never zooms */
   @media (max-width: 43.75rem) {
@@ -105,7 +137,7 @@
     }
   }
   :focus-visible {
-    outline: 2px solid color-mix(in srgb, var(--color-ink) 70%, transparent);
+    outline: 3px solid color-mix(in srgb, var(--color-lav) 45%, transparent);
     outline-offset: 2px;
   }
   /* UX-02: no spin arrows anywhere */
@@ -126,20 +158,20 @@
   }
 }
 
+/* Numbers: Figtree tabular figures so amounts and weights line up */
 @utility num {
-  font-family: var(--font-mono);
-  font-variant-numeric: tabular-nums slashed-zero;
-  font-feature-settings: "tnum", "zero";
-  letter-spacing: -0.01em;
+  font-variant-numeric: tabular-nums;
+  font-feature-settings: "tnum";
+  letter-spacing: -0.005em;
 }
 
 /* Native <select> with a drawn chevron (kept in CSS: the data URL has spaces) */
 @utility select-chevron {
-  background-color: var(--color-surface);
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%2364748b' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m7 10 5 5 5-5'/%3E%3C/svg%3E");
+  background-color: var(--color-sunken);
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%236b6a73' stroke-width='2.2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m7 10 5 5 5-5'/%3E%3C/svg%3E");
   background-repeat: no-repeat;
   background-size: 16px;
-  background-position: right 8px center;
+  background-position: right 10px center;
 }
 
 @utility tight {

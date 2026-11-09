@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256">
+  <!-- Two equal coins resting on a level beam over a pivot; coins sit on the beam with a clear gap between them -->
+  <g fill="#000">
+    <circle cx="78" cy="126" r="42"/>
+    <circle cx="178" cy="126" r="42"/>
+    <rect x="22" y="170" width="212" height="22" rx="11"/>
+    <path d="M118 198 h20 l20 28 a6 6 0 0 1 -5 9.5 h-50 a6 6 0 0 1 -5 -9.5 Z"/>
+  </g>
+</svg>

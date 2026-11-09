@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256">
+  <!-- Gold ingot (trapezoid) whose bottom edge is a torn receipt; a bevel slot marks the ingot's top face -->
+  <path fill-rule="evenodd" fill="#000" stroke="#000" stroke-width="10" stroke-linejoin="round"
+    d="M84 56 H172 L212 172 L193 192 L174 172 L155 192 L136 172 L117 192 L98 172 L79 192 L60 172 L44 172 Z
+       M92 96 H164 L170 112 H86 Z"/>
+</svg>

@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256">
+  <!-- Two equal coins resting level on a beam over a pivot: weighed precisely, books balanced -->
+  <circle cx="86" cy="118" r="42" fill="#000"/>
+  <circle cx="170" cy="118" r="42" fill="#000"/>
+  <rect x="28" y="168" width="200" height="22" rx="11" fill="#000"/>
+  <path d="M128 196 L154 228 H102 Z" fill="#000" stroke="#000" stroke-width="8" stroke-linejoin="round"/>
+</svg>
