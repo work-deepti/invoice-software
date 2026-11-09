@@ -1,5 +1,8 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="17.5 16 224 224"><title>Gold &amp; Silver Billing</title>
-  <rect x="56" y="24" width="44" height="208" rx="22" fill="#1C1B22"/>
-  <path fill="#E9A23B" fill-rule="evenodd" d="M138 24 a53 53 0 1 1 0 106 a53 53 0 1 1 0 -106 Z M138 55 a22 22 0 1 0 0 44 a22 22 0 1 0 0 -44 Z"/>
-  <path fill="#A3B1C6" fill-rule="evenodd" d="M144 114 a59 59 0 1 1 0 118 a59 59 0 1 1 0 -118 Z M144 147 a26 26 0 1 0 0 52 a26 26 0 1 0 0 -52 Z"/>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256"><title>Gold &amp; Silver Billing</title>
+  <rect width="256" height="256" rx="56" fill="#FFF4E2"/>
+  <g transform="translate(-6.7 -5) scale(1.04)">
+    <rect x="56" y="24" width="46" height="208" rx="23" fill="#1C1B22"/>
+    <path fill="#E9A23B" fill-rule="evenodd" d="M138 24 a53 53 0 1 1 0 106 a53 53 0 1 1 0 -106 Z M138 55 a22 22 0 1 0 0 44 a22 22 0 1 0 0 -44 Z"/>
+    <path fill="#A3B1C6" fill-rule="evenodd" d="M144 114 a59 59 0 1 1 0 118 a59 59 0 1 1 0 -118 Z M144 147 a26 26 0 1 0 0 52 a26 26 0 1 0 0 -52 Z"/>
+  </g>
 </svg>

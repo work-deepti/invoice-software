@@ -65,6 +65,10 @@ npm run dev
 
 `npm test` runs the unit suite and, when `TEST_DATABASE_URL` is set, the PostgreSQL integration suite. The integration suite **drops and re-creates** the test database's schema, so it refuses to run unless the database name contains `test` and differs from `DATABASE_URL`.
 
+### Icons and link previews
+
+The browser icon (`src/app/favicon.ico`, `src/app/icon.svg`), the phone home-screen icon (`src/app/apple-icon.png`) and the picture shown when a link is shared on WhatsApp, X or LinkedIn (`src/app/opengraph-image.png`, `twitter-image.png`) all use the Coin B logo. On Vercel the preview image uses the production domain automatically. Once you add a custom domain, set `NEXT_PUBLIC_SITE_URL=https://your-domain` in Vercel so previews point at it. The app asks search engines not to list it (it is a private shop tool); link previews still work.
+
 ### First run
 
 Open http://localhost:3000. The first visit asks you to create the owner account, then takes you to Shop settings. After that: Rate master → enter today's rates → New invoice.

@@ -15,10 +15,23 @@ const figtree = localFont({
   ],
 });
 
+const DESCRIPTION = "GST invoices for jewellery shops, from today's gold and silver rates.";
+
+/* Share previews need absolute URLs. On Vercel, Next uses the production domain by itself;
+   set NEXT_PUBLIC_SITE_URL (e.g. https://billing.example.in) once a custom domain is added. */
+const siteUrl = process.env.NEXT_PUBLIC_SITE_URL;
+
 export const metadata: Metadata = {
+  ...(siteUrl ? { metadataBase: new URL(siteUrl) } : {}),
+  applicationName: "Gold & Silver Billing",
   title: { default: "Gold & Silver Billing", template: "%s · Gold & Silver Billing" },
-  description: "GST billing for gold and silver jewellery.",
+  description: DESCRIPTION,
   manifest: "/manifest.webmanifest",
+  appleWebApp: { title: "G&S Billing", statusBarStyle: "default" },
+  // the image itself comes from app/opengraph-image.png and app/twitter-image.png
+  openGraph: { type: "website", siteName: "Gold & Silver Billing", title: "Gold & Silver Billing", description: DESCRIPTION, locale: "en_IN" },
+  twitter: { card: "summary_large_image", title: "Gold & Silver Billing", description: DESCRIPTION },
+  robots: { index: false, follow: false }, // a private shop tool: keep it out of search results
 };
 
 export const viewport: Viewport = {
