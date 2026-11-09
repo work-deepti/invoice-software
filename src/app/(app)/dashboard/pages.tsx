@@ -283,7 +283,6 @@ export function CustomersPage({ res, drill }: { res: Res<typeof customers>; dril
 
       <ChartCard title="Top 20 customers" subtitle="By sales in this period. Click a row for their bills." csvName="top-customers" rows={d.top.map((t) => ({ customer: t.name || "Walk-in", phone: t.phone ?? "", invoices: t.invoices, sales: t.sales, last_purchase: t.last, outstanding: t.outstanding }))}>
         <DataTable
-          maxHeight={420}
           rows={d.top.map((t) => ({ name: t.name || (t.phone ? "—" : "Walk-in"), phone: t.phone ?? "", invoices: t.invoices, sales: t.sales, last: t.last, outstanding: t.outstanding }))}
           onRow={(r) => (r.phone ? drill({ params: { phone: String(r.phone) } }) : drill())}
           columns={[
@@ -299,8 +298,7 @@ export function CustomersPage({ res, drill }: { res: Res<typeof customers>; dril
 
       <ChartCard title="Bills with a balance due" subtitle="Oldest first, all dates. Call the customer straight from here." csvName="dues" rows={d.dues.map((x) => ({ number: x.number, date: x.date, customer: x.name, phone: x.phone, balance: x.balance, days: x.days }))} empty="No dues — every bill is paid">
         <DataTable
-          maxHeight={420}
-          rows={d.dues.map((x) => ({ number: x.number, date: x.date, name: x.name, phone: x.phone, balance: x.balance, days: x.days }))}
+          rows={d.dues.slice(0, 10).map((x) => ({ number: x.number, date: x.date, name: x.name, phone: x.phone, balance: x.balance, days: x.days }))}
           columns={[
             { key: "number", label: "Invoice", format: (v) => <span className="num font-medium text-ink">{String(v)}</span> },
             { key: "date", label: "Date", format: (v) => <span className="num">{formatDateDMY(String(v))}</span> },
@@ -320,6 +318,11 @@ export function CustomersPage({ res, drill }: { res: Res<typeof customers>; dril
             },
           ]}
         />
+        {d.dues.length > 10 ? (
+          <button onClick={() => drill({ allDates: true, params: { due: "1" } })} className="mt-2 px-1 text-[12.5px] font-medium text-ink-3 hover:text-ink">
+            Show all {d.dues.length} bills with a balance in Transactions →
+          </button>
+        ) : null}
       </ChartCard>
     </>
   );
@@ -418,7 +421,11 @@ export function PaymentsPage({ res, drill }: { res: Res<typeof payments>; drill:
               for (const md of modes) row[md] = d.monthly.find((x) => x.month === mo && x.mode === md)?.received ?? "";
               return row;
             })}
-            columns={[{ key: "month", label: "Month" }, ...modes.map((md) => ({ key: md, label: md, align: "right" as const, format: (v: unknown) => (v ? `₹${money(v)}` : "—") }))]}
+            columns={[
+              { key: "month", label: "Month" },
+              // compact so all modes fit the card; the exact amount is in the tooltip, the CSV and the table above
+              ...modes.map((md) => ({ key: md, label: md, align: "right" as const, format: (v: unknown) => (v ? <span title={inrExact(String(v))}>{inr(String(v))}</span> : "—") })),
+            ]}
           />
         </ChartCard>
       </div>
@@ -426,9 +433,9 @@ export function PaymentsPage({ res, drill }: { res: Res<typeof payments>; drill:
       <section className="rounded-xl border border-line bg-surface p-4 shadow-hair tab:p-5">
         <h3 className="tight text-[14.5px] font-semibold text-ink">Cash compliance</h3>
         <p className="mt-0.5 text-[12.5px] text-muted">Bills to double-check against the income-tax limits. Click a bill number to open its row in Transactions.</p>
-        <div className="mt-4 grid gap-4 lg:grid-cols-3">
+        <div className="mt-4 grid gap-px overflow-hidden rounded-lg border border-line bg-line lg:grid-cols-3">
           {lists.map((l) => (
-            <div key={l.key} className="rounded-lg border border-line">
+            <div key={l.key} className="bg-surface">
               <div className="flex items-center justify-between gap-2 border-b border-line px-3 py-2.5">
                 <div>
                   <p className="text-[13.5px] font-medium text-ink">{l.title}</p>
@@ -437,8 +444,8 @@ export function PaymentsPage({ res, drill }: { res: Res<typeof payments>; drill:
                 <span className={cn("num rounded-md px-2 py-0.5 text-[13px] font-semibold", l.rows.length ? "bg-warn-fill text-gold-deep" : "bg-sunken text-muted")}>{l.rows.length}</span>
               </div>
               {l.rows.length ? (
-                <ul className="max-h-56 divide-y divide-line overflow-y-auto">
-                  {l.rows.map((r) => (
+                <ul className="divide-y divide-line">
+                  {l.rows.slice(0, 6).map((r) => (
                     <li key={r.id}>
                       <button onClick={() => drill({ params: { ...l.params, q: r.number } })} className="flex w-full items-center justify-between gap-2 px-3 py-2 text-left text-[13px] hover:bg-canvas">
                         <span className="min-w-0">
@@ -452,6 +459,13 @@ export function PaymentsPage({ res, drill }: { res: Res<typeof payments>; drill:
                       </button>
                     </li>
                   ))}
+                  {l.rows.length > 6 ? (
+                    <li>
+                      <button onClick={() => drill({ params: l.params })} className="w-full px-3 py-2 text-left text-[12.5px] font-medium text-ink-3 hover:bg-canvas">
+                        Show all {l.rows.length} in Transactions →
+                      </button>
+                    </li>
+                  ) : null}
                 </ul>
               ) : (
                 <p className="px-3 py-4 text-[13px] text-muted">None in this period.</p>
@@ -617,6 +631,7 @@ export function RatesPage({ res }: { res: Res<typeof rates> }) {
                 height={150}
                 data={d.rateTrend.points.map((p) => ({ label: formatDateDMY(p.date).slice(0, 5), tipLabel: formatDateDMY(p.date), value: (p as Record<string, string>)[s.label] ? Number((p as Record<string, string>)[s.label]) : null }))}
                 series={[{ key: "value", name: s.label, color: metalColor(s.metal) }]}
+                fitDomain
               />
             </div>
           ))}

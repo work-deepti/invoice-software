@@ -114,7 +114,7 @@ export function Dashboard() {
           <p className="mt-0.5 text-[13.5px] text-muted">
             {res ? (
               <>
-                <span className="num">{res.period.label}</span> · compared with <span className="num">{res.period.previousLabel}</span>
+                <DateRangeText text={res.period.label} /> · compared with <DateRangeText text={res.period.previousLabel} />
               </>
             ) : (
               "Loading…"
@@ -129,7 +129,7 @@ export function Dashboard() {
 
       {/* DSH-01 global filter bar */}
       <div className="flex flex-col gap-3 rounded-xl border border-line bg-surface p-3 shadow-hair print:hidden tab:p-4">
-        <div role="radiogroup" aria-label="Period" className="-mx-1 flex gap-1 overflow-x-auto px-1 [scrollbar-width:none]">
+        <div role="radiogroup" aria-label="Period" className="flex flex-wrap gap-1">
           {PERIODS.map((p) => (
             <button
               key={p}
@@ -164,7 +164,10 @@ export function Dashboard() {
         </div>
       </div>
 
-      <nav aria-label="Dashboard pages" className="-mx-1 flex gap-1 overflow-x-auto border-b border-line px-1 print:hidden [scrollbar-width:none]">
+      <nav
+        aria-label="Dashboard pages"
+        className="-mx-1 flex gap-1 overflow-x-auto border-b border-line px-1 print:hidden [scrollbar-width:none] max-lg:[mask-image:linear-gradient(to_right,black_calc(100%-28px),transparent)]"
+      >
         {VIEWS.map((v) => (
           <Link
             key={v.key}
@@ -176,6 +179,7 @@ export function Dashboard() {
             })()}`}
             scroll={false}
             aria-current={view === v.key ? "page" : undefined}
+            ref={view === v.key ? (el) => el?.scrollIntoView({ block: "nearest", inline: "nearest" }) : undefined}
             className={cn(
               "relative shrink-0 px-3 pt-1.5 pb-2.5 text-[13.5px] font-medium transition-colors",
               view === v.key ? "text-ink after:absolute after:inset-x-3 after:-bottom-px after:h-[2px] after:rounded-full after:bg-gold" : "text-muted hover:text-ink",
@@ -212,6 +216,22 @@ export function Dashboard() {
         </div>
       )}
     </div>
+  );
+}
+
+/** "01-10-2026 – 09-10-2026" that wraps between the dates, never inside one. */
+function DateRangeText({ text }: { text: string }) {
+  const [a, b] = text.split(" – ");
+  return (
+    <span className="num">
+      <span className="whitespace-nowrap">{a}</span>
+      {b ? (
+        <>
+          {" – "}
+          <span className="whitespace-nowrap">{b}</span>
+        </>
+      ) : null}
+    </span>
   );
 }
 

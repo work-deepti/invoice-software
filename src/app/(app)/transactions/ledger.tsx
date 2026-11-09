@@ -17,7 +17,7 @@ import {
 import Link from "next/link";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
-import { formatCompactINR, formatDateDMY, formatINR, formatIndianNumber, formatWeight, todayIST, toDec } from "@/lib/calc-engine";
+import { formatDateDMY, formatINR, formatIndianNumber, formatWeight, todayIST, toDec } from "@/lib/calc-engine";
 import { api } from "@/lib/api-client";
 import { cn } from "@/lib/cn";
 import type { LedgerRow, LedgerSummary } from "@/server/invoices";
@@ -299,12 +299,12 @@ function SummaryStrip({ summary }: { summary?: LedgerSummary }) {
   const tiles: { label: string; value: string; exact?: string; tone?: string }[] = summary
     ? [
         { label: "Invoices", value: formatIndianNumber(summary.invoices, 0) },
-        { label: "Total billed", value: formatCompactINR(summary.totalBilled), exact: formatINR(summary.totalBilled) },
-        { label: "GST collected", value: formatCompactINR(summary.gstCollected), exact: formatINR(summary.gstCollected) },
+        { label: "Total billed", value: formatINR(summary.totalBilled) },
+        { label: "GST collected", value: formatINR(summary.gstCollected) },
         { label: "Gold sold", value: formatWeight(summary.goldG), tone: "text-gold-deep" },
         { label: "Silver sold", value: formatWeight(summary.silverG), tone: "text-silver" },
-        { label: "Exchange taken", value: formatCompactINR(summary.exchange), exact: formatINR(summary.exchange) },
-        { label: "Balance due", value: formatCompactINR(summary.balanceDue), exact: formatINR(summary.balanceDue), tone: toDec(summary.balanceDue).gt(0) ? "text-danger-deep" : undefined },
+        { label: "Exchange taken", value: formatINR(summary.exchange) },
+        { label: "Balance due", value: formatINR(summary.balanceDue), tone: toDec(summary.balanceDue).gt(0) ? "text-danger-deep" : undefined },
       ]
     : [];
   return (
@@ -313,7 +313,8 @@ function SummaryStrip({ summary }: { summary?: LedgerSummary }) {
         ? tiles.map((t) => (
             <div key={t.label} className="bg-surface px-4 py-3" title={t.exact}>
               <p className="text-[12px] font-medium text-muted">{t.label}</p>
-              <p className={cn("num tight mt-1 text-[17px] font-semibold text-ink", t.tone)}>{t.value}</p>
+              {/* reconciliation screen: exact figures; the data step at 1200–1499 px keeps 7 tiles on one row */}
+              <p className={cn("num tight mt-1 truncate text-[17px] font-semibold text-ink desk:text-[14px] min-[1500px]:text-[17px]", t.tone)}>{t.value}</p>
             </div>
           ))
         : Array.from({ length: 7 }, (_, i) => (

@@ -210,7 +210,8 @@ export async function overview({ period, filters: f }: DashQuery) {
   const rateRows = await q(sql`
     with d as (select distinct date from rate_history where date <= ${todayIST()}::date order by date desc limit 2)
     select rh.date, rh.label, rh.metal::text as metal, rh.rate_per_g::text as rate
-    from rate_history rh join d on d.date = rh.date where rh.rate_per_g is not null order by rh.date desc`);
+    from rate_history rh join d on d.date = rh.date left join purities p on p.id = rh.purity_id
+    where rh.rate_per_g is not null order by rh.date desc, coalesce(p.sort_order, 999), rh.label`);
   const dates = [...new Set(rateRows.map((x) => iso(x.date)))];
   const rates = rateRows
     .filter((x) => iso(x.date) === dates[0])
@@ -500,7 +501,8 @@ export async function rates({ period, filters: f }: DashQuery) {
   // up to one year of rate history
   const from = r.from < addDays(r.to, -365) ? addDays(r.to, -365) : r.from;
   const [history, intake, realised] = await Promise.all([
-    q(sql`select rh.date, rh.label, rh.metal::text as metal, rh.rate_per_g::text as rate from rate_history rh
+    q(sql`select rh.date, rh.label, rh.metal::text as metal, rh.rate_per_g::text as rate, coalesce(p.sort_order, 999) as sort
+          from rate_history rh left join purities p on p.id = rh.purity_id
           where rh.date between ${from}::date and ${r.to}::date and rh.rate_per_g is not null order by rh.date`),
     q(sql`select date_trunc('month', ds.date)::date as m, ds.metal, sum(exchange_g)::numeric(12,3)::text as grams,
              sum(exchange_fine_g)::numeric(12,3)::text as fine, sum(exchange_value)::numeric(14,2)::text as value
@@ -513,7 +515,9 @@ export async function rates({ period, filters: f }: DashQuery) {
           left join rate_history rh on rh.date = i.invoice_date and lower(rh.label) = lower(l.purity_label)
           where ${invWhere(r, f)} and l.net_g > 0 group by 1,2 order by 2,1`),
   ]);
-  const labels = [...new Set(history.map((h) => String(h.label)))];
+  // same order as the rate master (and the top-bar pills)
+  const sortOf = new Map(history.map((h) => [String(h.label), Number(h.sort)]));
+  const labels = [...new Set(history.map((h) => String(h.label)))].sort((a, b) => sortOf.get(a)! - sortOf.get(b)! || a.localeCompare(b));
   const byDate = new Map<string, Record<string, string>>();
   for (const h of history) (byDate.get(iso(h.date)) ?? byDate.set(iso(h.date), {}).get(iso(h.date))!)[String(h.label)] = String(h.rate);
   return {

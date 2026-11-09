@@ -1,6 +1,6 @@
 "use client";
 import { ArrowDownRight, ArrowUpRight, Download, Minus, Table2 } from "lucide-react";
-import { useState, type ReactNode } from "react";
+import { useEffect, useRef, useState, type ReactNode } from "react";
 import {
   Bar,
   BarChart,
@@ -15,6 +15,7 @@ import {
 } from "recharts";
 import { formatCompactINR, formatINR, formatIndianNumber, toDec } from "@/lib/calc-engine";
 import { cn } from "@/lib/cn";
+import { Flash } from "@/components/invoice/ticker";
 
 /* ── palette (validated with the dataviz validator: light + dark, adjacent pairs) ──
    1 amber = gold, 2 steel = silver (identity, never reused for anything else);
@@ -105,7 +106,10 @@ export function KpiTile({
         {accent === "silver" ? <span aria-hidden className="size-1.5 rounded-full" style={{ background: SERIES.silver }} /> : null}
         {label}
       </span>
-      <span className={cn("num tight mt-1.5 truncate text-[22px] leading-none font-semibold text-ink", accent === "danger" && v > 0 && "text-danger-deep")}>{fmt(value)}</span>
+      <span className={cn("num tight mt-1.5 truncate text-[22px] leading-none font-semibold text-ink", accent === "danger" && v > 0 && "text-danger-deep")}>
+        {/* the world's signature move: a figure that changed flashes amber once */}
+        <Flash value={value}>{fmt(value)}</Flash>
+      </span>
       <span className="mt-2 flex flex-wrap items-center gap-x-1.5 gap-y-0.5 text-[12px] text-muted">
         <span
           className={cn(
@@ -221,16 +225,36 @@ export function DataTable({
   rows,
   columns,
   onRow,
-  maxHeight = 320,
+  maxHeight,
 }: {
   rows: CsvRow[];
   columns: { key: string; label: string; align?: "right"; format?: (v: unknown, row: CsvRow) => ReactNode }[];
   onRow?: (row: CsvRow) => void;
   maxHeight?: number;
 }) {
+  const box = useRef<HTMLDivElement>(null);
+  const [more, setMore] = useState(false);
+  useEffect(() => {
+    const el = box.current;
+    if (!el) return;
+    // a table that genuinely has to scroll sideways shows a fade at the edge that hides columns
+    const check = () => setMore(el.scrollWidth - el.clientWidth - el.scrollLeft > 2);
+    check();
+    const ro = new ResizeObserver(check);
+    ro.observe(el);
+    el.addEventListener("scroll", check, { passive: true });
+    return () => {
+      ro.disconnect();
+      el.removeEventListener("scroll", check);
+    };
+  }, [rows.length]);
   return (
-    <div className="overflow-auto rounded-lg border border-line" style={{ maxHeight }}>
-      <table className="w-full min-w-max border-collapse text-[13px]">
+    <div
+      ref={box}
+      className={cn("overflow-auto rounded-lg border border-line", more && "[mask-image:linear-gradient(to_right,black_calc(100%-32px),transparent)]")}
+      style={maxHeight ? { maxHeight } : undefined}
+    >
+      <table className="w-full border-collapse text-[13px]">
         <thead className="sticky top-0 z-[1]">
           <tr className="bg-sunken text-left text-[11.5px] font-medium text-muted">
             {columns.map((c) => (
@@ -296,19 +320,22 @@ export function TrendLine({
   format = "money",
   height = 240,
   onPointClick,
+  fitDomain,
 }: {
   data: Record<string, unknown>[];
   series: { key: string; name: string; color: string; dashed?: boolean }[];
   format?: "money" | "grams" | "count";
   height?: number;
   onPointClick?: (row: Record<string, unknown>) => void;
+  /** Fit the y-axis to the data's own range (rates) instead of starting at zero. */
+  fitDomain?: boolean;
 }) {
   const f: TipFormat = format === "money" ? (v) => inrExact(v) : format === "grams" ? (v) => grams(v) : (v) => formatIndianNumber(v, 0);
   return (
     <ResponsiveContainer width="100%" height={height}>
       <LineChart
         data={data}
-        margin={{ top: 8, right: 12, bottom: 0, left: 4 }}
+        margin={{ top: 8, right: 28, bottom: 0, left: 4 }}
         onClick={(s) => {
           const i = s?.activeIndex;
           if (onPointClick && i !== undefined && i !== null) onPointClick(data[Number(i)]);
@@ -317,7 +344,12 @@ export function TrendLine({
       >
         <CartesianGrid vertical={false} stroke={SERIES.grid} />
         <XAxis dataKey="label" {...axisProps} minTickGap={16} />
-        <YAxis {...axisProps} width={64} tickFormatter={format === "money" ? axisInr : axisNum} />
+        <YAxis
+          {...axisProps}
+          width={64}
+          tickFormatter={format === "money" ? axisInr : axisNum}
+          domain={fitDomain ? [(min: number) => Math.floor(min - Math.max(1, min * 0.01)), (max: number) => Math.ceil(max + Math.max(1, max * 0.01))] : undefined}
+        />
         <Tooltip content={(p) => <Tip {...(p as TooltipContentProps)} format={f} />} cursor={{ stroke: SERIES.axis, strokeWidth: 1 }} />
         {series.map((s) => (
           <Line
@@ -364,7 +396,7 @@ export function Columns({
   const vertical = layout === "vertical";
   return (
     <ResponsiveContainer width="100%" height={height}>
-      <BarChart data={data} layout={vertical ? "vertical" : "horizontal"} margin={{ top: 8, right: 12, bottom: 0, left: 4 }} barCategoryGap="28%">
+      <BarChart data={data} layout={vertical ? "vertical" : "horizontal"} margin={{ top: 8, right: 28, bottom: 0, left: 4 }} barCategoryGap="28%">
         <CartesianGrid vertical={vertical} horizontal={!vertical} stroke={SERIES.grid} />
         {vertical ? (
           <>
@@ -432,7 +464,7 @@ export function BarList({
                 <span className="num shrink-0 font-medium text-ink">{f(it.value)}</span>
               </span>
               <span className="mt-1 block h-1.5 rounded-full bg-sunken">
-                <span className="block h-full rounded-full transition-[width] duration-150" style={{ width: `${Math.max(pct, 1.5)}%`, background: it.color ?? SERIES.ink }} />
+                <span className="block h-full rounded-full transition-[width] duration-150" style={{ width: `${pct === 0 ? 0 : Math.max(pct, 1.5)}%`, background: it.color ?? SERIES.ink }} />
               </span>
             </Row>
           </li>
