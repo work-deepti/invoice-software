@@ -312,6 +312,26 @@ const axisProps = {
   axisLine: false,
 } as const;
 
+/** Round a fitted range outward to "nice" steps (1, 2, 2.5, 5 × 10ⁿ) with about `count` intervals. */
+export function niceScale(min: number, max: number, count = 4): { domain: [number, number]; ticks: number[] } {
+  if (!Number.isFinite(min) || !Number.isFinite(max)) return { domain: [0, 1], ticks: [0, 1] };
+  if (min === max) {
+    const pad = Math.max(1, Math.abs(min) * 0.01);
+    min -= pad;
+    max += pad;
+  }
+  const raw = (max - min) / count;
+  const mag = 10 ** Math.floor(Math.log10(raw));
+  // 2.5 × 10ⁿ only when it stays a whole number, so whole-rupee ticks never round (97.5 → "98")
+  const steps = mag >= 10 ? [1, 2, 2.5, 5, 10] : [1, 2, 5, 10];
+  const step = (steps.find((m) => m * mag >= raw) ?? 10) * mag;
+  const lo = Math.floor(min / step) * step;
+  const hi = Math.ceil(max / step) * step;
+  const ticks: number[] = [];
+  for (let t = lo; t <= hi + step / 2; t += step) ticks.push(Number(t.toFixed(6)));
+  return { domain: [lo, hi], ticks };
+}
+
 /* ── line: sales trend with the previous period dashed ──────────────── */
 
 export function TrendLine({
@@ -331,6 +351,10 @@ export function TrendLine({
   fitDomain?: boolean;
 }) {
   const f: TipFormat = format === "money" ? (v) => inrExact(v) : format === "grams" ? (v) => grams(v) : (v) => formatIndianNumber(v, 0);
+  const values = fitDomain
+    ? data.flatMap((d) => series.map((s) => d[s.key])).filter((v): v is number => typeof v === "number" && Number.isFinite(v))
+    : [];
+  const fitted = fitDomain && values.length ? niceScale(Math.min(...values), Math.max(...values)) : null;
   return (
     <ResponsiveContainer width="100%" height={height}>
       <LineChart
@@ -348,7 +372,9 @@ export function TrendLine({
           {...axisProps}
           width={64}
           tickFormatter={format === "money" ? axisInr : axisNum}
-          domain={fitDomain ? [(min: number) => Math.floor(min - Math.max(1, min * 0.01)), (max: number) => Math.ceil(max + Math.max(1, max * 0.01))] : undefined}
+          domain={fitted ? fitted.domain : undefined}
+          ticks={fitted ? fitted.ticks : undefined}
+          interval={fitted ? 0 : undefined}
         />
         <Tooltip content={(p) => <Tip {...(p as TooltipContentProps)} format={f} />} cursor={{ stroke: SERIES.axis, strokeWidth: 1 }} />
         {series.map((s) => (

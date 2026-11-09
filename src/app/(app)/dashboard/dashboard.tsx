@@ -1,8 +1,8 @@
 "use client";
-import { FileText } from "lucide-react";
+import { ChevronRight, FileText } from "lucide-react";
 import Link from "next/link";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useRef, useState, type ReactNode } from "react";
 import { PAY_MODES, todayIST } from "@/lib/calc-engine";
 import { api } from "@/lib/api-client";
 import { cn } from "@/lib/cn";
@@ -164,10 +164,7 @@ export function Dashboard() {
         </div>
       </div>
 
-      <nav
-        aria-label="Dashboard pages"
-        className="-mx-1 flex gap-1 overflow-x-auto border-b border-line px-1 print:hidden [scrollbar-width:none] max-lg:[mask-image:linear-gradient(to_right,black_calc(100%-28px),transparent)]"
-      >
+      <PageTabs>
         {VIEWS.map((v) => (
           <Link
             key={v.key}
@@ -188,7 +185,7 @@ export function Dashboard() {
             {v.label}
           </Link>
         ))}
-      </nav>
+      </PageTabs>
 
       {error ? (
         <p role="alert" className="rounded-lg bg-danger-fill px-4 py-3 text-[13.5px] text-danger-deep">
@@ -215,6 +212,44 @@ export function Dashboard() {
           {view === "rates" ? <RatesPage res={res as never} /> : null}
         </div>
       )}
+    </div>
+  );
+}
+
+/** Page tabs; on narrow screens a chevron shows (and scrolls to) tabs that are off to the right. */
+function PageTabs({ children }: { children: ReactNode }) {
+  const nav = useRef<HTMLElement>(null);
+  const [more, setMore] = useState(false);
+  useEffect(() => {
+    const el = nav.current;
+    if (!el) return;
+    const check = () => setMore(el.scrollWidth - el.clientWidth - el.scrollLeft > 4);
+    check();
+    const ro = new ResizeObserver(check);
+    ro.observe(el);
+    el.addEventListener("scroll", check, { passive: true });
+    return () => {
+      ro.disconnect();
+      el.removeEventListener("scroll", check);
+    };
+  }, []);
+  return (
+    <div className="relative print:hidden">
+      <nav ref={nav} aria-label="Dashboard pages" className="-mx-1 flex gap-1 overflow-x-auto border-b border-line px-1 pr-10 [scrollbar-width:none] lg:pr-1">
+        {children}
+      </nav>
+      {more ? (
+        <button
+          type="button"
+          onClick={() => nav.current?.scrollBy({ left: 180, behavior: "smooth" })}
+          aria-label="More dashboard pages"
+          className="absolute top-0 right-0 bottom-px grid w-10 place-items-center bg-gradient-to-l from-canvas from-60% to-transparent text-ink-3"
+        >
+          <span className="grid size-7 place-items-center rounded-full border border-line bg-surface shadow-hair">
+            <ChevronRight className="size-4" aria-hidden />
+          </span>
+        </button>
+      ) : null}
     </div>
   );
 }
