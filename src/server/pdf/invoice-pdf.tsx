@@ -52,7 +52,8 @@ const C = {
 const s = StyleSheet.create({
   // No lineHeight on Page: react-pdf drops absolutely positioned fixed text (the page footer) when the page sets one.
   page: { paddingTop: 34, paddingBottom: 44, paddingHorizontal: 34, fontFamily: "Figtree", fontSize: 8, color: C.ink },
-  body: { lineHeight: 1.4 },
+  // fontSize must sit beside lineHeight: react-pdf resolves a unitless lineHeight against the same node's font size (default 18).
+  body: { lineHeight: 1.4, fontSize: 8 },
   mono: { fontFamily: "FigtreeTab" },
   row: { flexDirection: "row" },
   label: { fontSize: 6.5, fontWeight: 600, letterSpacing: 0.8, color: C.muted },
@@ -82,13 +83,13 @@ function InvoicePdf({ inv, copyLabel }: { inv: Inv; copyLabel?: string }) {
   // column widths (% of content width)
   const cols: { key: string; label: string; w: number; right?: boolean }[] = [
     { key: "n", label: "#", w: 3.5 },
-    { key: "desc", label: "Description", w: showWst ? 15 : 17 },
+    { key: "desc", label: "Description", w: showWst ? 13.5 : 17 },
     { key: "hsn", label: "HSN", w: 6 },
     { key: "pur", label: "Purity", w: showWst ? 12 : 13 },
     { key: "pcs", label: "Pcs", w: 4, right: true },
     { key: "gross", label: "Gross wt", w: 7.5, right: true },
     { key: "net", label: "Net wt", w: 7.5, right: true },
-    ...(showWst ? [{ key: "wst", label: "Wst", w: 6.5, right: true }] : []),
+    ...(showWst ? [{ key: "wst", label: "Wst", w: 8, right: true }] : []),
     { key: "rate", label: "Rate/g", w: 8, right: true },
     { key: "mv", label: "Metal value", w: 9, right: true },
     { key: "mk", label: "Making", w: showWst ? 8.5 : 9, right: true },
@@ -123,7 +124,7 @@ function InvoicePdf({ inv, copyLabel }: { inv: Inv; copyLabel?: string }) {
         {/* header */}
         <View style={[s.row, { justifyContent: "space-between" }]}>
           <View style={{ maxWidth: "62%" }}>
-            <Text style={{ fontSize: 16, fontWeight: 600, letterSpacing: -0.3 }}>{shop.name || "—"}</Text>
+            <Text style={{ fontSize: 16, fontWeight: 600, letterSpacing: -0.3, lineHeight: 1.25 }}>{shop.name || "—"}</Text>
             {shop.address ? <Text style={{ color: C.ink3, marginTop: 2 }}>{shop.address}</Text> : null}
             {shop.phone || shop.email ? <Text style={{ color: C.ink3 }}>{[shop.phone && `Ph: ${shop.phone}`, shop.email].filter(Boolean).join(" · ")}</Text> : null}
             {shop.gstin || shop.state ? (
@@ -133,7 +134,7 @@ function InvoicePdf({ inv, copyLabel }: { inv: Inv; copyLabel?: string }) {
             ) : null}
           </View>
           <View style={{ alignItems: "flex-end" }}>
-            <Text style={{ fontSize: 11.5, fontWeight: 600, letterSpacing: 0.6 }}>{heading.title}</Text>
+            <Text style={{ fontSize: 11.5, fontWeight: 600, letterSpacing: 0.6, lineHeight: 1.3 }}>{heading.title}</Text>
             {heading.subtitle || copyLabel ? <Text style={[s.label, { marginTop: 1 }]}>{copyLabel ?? heading.subtitle}</Text> : null}
             <View style={{ marginTop: 6 }}>
               {[
@@ -156,7 +157,7 @@ function InvoicePdf({ inv, copyLabel }: { inv: Inv; copyLabel?: string }) {
         <View style={[s.row, { justifyContent: "space-between", marginTop: 8 }]}>
           <View style={{ maxWidth: "62%" }}>
             <Text style={s.label}>BILL TO</Text>
-            <Text style={{ fontSize: 9.5, fontWeight: 600, marginTop: 1 }}>{inv.customerName || "Cash customer"}</Text>
+            <Text style={{ fontSize: 9.5, fontWeight: 600, marginTop: 1, lineHeight: 1.35 }}>{inv.customerName || "Cash customer"}</Text>
             {inv.customerAddress ? <Text style={{ color: C.ink3 }}>{inv.customerAddress}</Text> : null}
             {inv.customerPhone ? <Text style={{ color: C.ink3 }}>Ph: {inv.customerPhone}</Text> : null}
             {inv.customerGstin ? <Text style={{ color: C.ink3 }}>GSTIN: {inv.customerGstin}</Text> : null}
@@ -166,7 +167,7 @@ function InvoicePdf({ inv, copyLabel }: { inv: Inv; copyLabel?: string }) {
           {inv.gstOn ? (
             <View style={{ alignItems: "flex-end" }}>
               <Text style={s.label}>PLACE OF SUPPLY</Text>
-              <Text style={{ fontSize: 9, fontWeight: 500, marginTop: 1 }}>{inv.placeOfSupply || "—"}</Text>
+              <Text style={{ fontSize: 9, fontWeight: 500, marginTop: 1, lineHeight: 1.35 }}>{inv.placeOfSupply || "—"}</Text>
             </View>
           ) : null}
         </View>
@@ -280,7 +281,7 @@ function InvoicePdf({ inv, copyLabel }: { inv: Inv; copyLabel?: string }) {
             {!isZero(inv.roundOff) ? <TRow label="Round off" value={`${toDec(inv.roundOff).isNeg() ? "−" : "+"}${money(toDec(inv.roundOff).abs())}`} /> : null}
             <View style={[s.row, { justifyContent: "space-between", backgroundColor: C.ink, paddingHorizontal: 7, paddingVertical: 5 }]}>
               <Text style={{ color: "#fff", fontWeight: 500 }}>{grand.lt(0) ? "Payable to customer" : "Grand total"}</Text>
-              <Text style={[s.mono, { color: "#fff", fontSize: 10.5, fontWeight: 600 }]}>{formatINR(grand.abs())}</Text>
+              <Text style={[s.mono, { color: "#fff", fontSize: 10.5, fontWeight: 600, lineHeight: 1.3 }]}>{formatINR(grand.abs())}</Text>
             </View>
             <TRow label={`Received (${inv.payMode})`} value={money(toDec(inv.paid).abs())} />
             {!isZero(inv.changeReturned) ? <TRow label="Change returned" value={money(inv.changeReturned)} /> : null}
