@@ -44,6 +44,16 @@ typography:
     fontFamily: "Geist, ui-sans-serif, system-ui, sans-serif"
     fontSize: "12.5px"
     fontWeight: 500
+  caption:
+    fontFamily: "Geist, ui-sans-serif, system-ui, sans-serif"
+    fontSize: "11.5px"
+    fontWeight: 500
+  metric:
+    fontFamily: "Geist Mono, ui-monospace, monospace"
+    fontSize: "17px"
+    fontWeight: 600
+    letterSpacing: "-0.02em"
+    fontFeature: "\"tnum\", \"zero\""
   data:
     fontFamily: "Geist Mono, ui-monospace, monospace"
     fontSize: "14px"
@@ -159,6 +169,9 @@ A restrained slate system with one metallic accent that always means gold.
 - **Signal Red** (danger, danger-deep, danger-fill): invalid fields, error chips, balance due, destructive actions.
 - **Settled Green** (ok, ok-deep, ok-fill): success toasts, "Change to return", rates moving up in history.
 
+### Charts
+A separate categorical order for data, validated for colour-blind separation and contrast on light and dark surfaces (adjacent pairs): **chart gold** `#c2700a` and **chart steel** `#3d6fb0` carry gold and silver identity only; non-metal categories take, in fixed order, teal `#12a37a`, violet `#8a5cc7`, rose `#d0527a`, olive `#5f8f1f`, blue `#1b7fb8`. Single-series charts that are neither metal use Graphite (`#334155`); the previous period is a dashed Mist line. Magnitude (the hours heatmap) uses one slate-blue ramp from Recess to `#2f5d99`. Dues and risk use Signal Red tints only.
+
 ### Named Rules
 **The Gold Means Gold Rule.** Amber marks gold metal, the active place, or a value that just changed. Never use it for decoration, a generic call to action, or silver.
 
@@ -176,6 +189,8 @@ A restrained slate system with one metallic accent that always means gold.
 - **Title** (600, 15px, −0.02em): card titles.
 - **Body** (400, 14px, 1.5): field text, dialog copy, descriptions at 13–13.5px in muted.
 - **Label** (500, 12.5px): field labels, column headers (11.5px muted in tables).
+- **Caption** (500, 11.5px): table column headers, small tags ("No GST", "Cancelled"), chart axis ticks.
+- **Metric** (600 mono, 17px, −0.02em): ledger summary tiles and dashboard rate tiles.
 - **Data** (400–600 mono, 13–14px, tabular): every input value, weight, rate, amount, invoice number and date.
 - **Total** (600 mono, 20–26px, −0.02em, line-height 1): the grand total in the dock and summary, rendered by the rolling ticker.
 
@@ -240,6 +255,11 @@ Gently rounded and consistent: 6px for compact table controls and icon buttons, 
 
 ### Navigation
 - **Style:** tabs on the dark top bar, 13.5px medium; inactive white 55%, hover 85%, active white with a 2 px amber underline that slides between tabs in 150 ms. On phones the tab strip scrolls horizontally inside the bar.
+
+### KPI tiles & chart cards (dashboards, ledger)
+- **KPI tile:** muted label, mono value with ₹ L / Cr compaction (exact amount on hover), and a delta chip vs the previous equal period (green when the move is good, red when bad — falling dues are good). Tiles sit in a hairline grid, 4 per row on desktop and 2 on phones.
+- **Chart card:** a Paper White card with title and one-line subtitle, a Table toggle and Download CSV top right, legend chips under the title for 2+ series, and a dashed empty state ("No sales in this period"). Every mark is clickable and opens Transactions filtered to exactly those bills.
+- **Marks:** 2 px lines, bars at most 24 px thick with 4 px rounded data ends, 2 px white gaps between stacked segments, hairline solid gridlines, mono axis ticks.
 
 ### Totals Dock (signature)
 - A fixed Counter Slate bar, 16px radius, floating above the page bottom. Left: gold grams in amber, silver grams in slate, balance due in light red when present. Right: the grand total in mono, rolling digit by digit (each digit a vertical strip that slides to its value in 150 ms), then Save & view, Save & print and Save. On phones the secondary saves fold into a menu beside Save.

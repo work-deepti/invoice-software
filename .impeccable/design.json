@@ -124,6 +124,14 @@
       "total": {
         "displayName": "Total",
         "purpose": "The rolling grand total in dock and summary."
+      },
+      "caption": {
+        "displayName": "Caption",
+        "purpose": "Column headers, small tags, axis ticks."
+      },
+      "metric": {
+        "displayName": "Metric",
+        "purpose": "Summary tiles and rate tiles."
       }
     },
     "shadows": [

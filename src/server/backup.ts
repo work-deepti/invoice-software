@@ -26,6 +26,15 @@ export const RESTORE_BATCH = 50;
 
 /* ── Backup (TXN-13) ────────────────────────────────────────────────── */
 
+/** Child rows are re-keyed on restore, so their ids and audit columns are left out. */
+function withoutRowMeta<T extends { id: string; invoiceId: string; createdAt: Date; updatedAt: Date; createdBy: string | null; updatedBy: string | null }>(
+  row: T,
+): Omit<T, "id" | "invoiceId" | "createdAt" | "updatedAt" | "createdBy" | "updatedBy"> {
+  const { id: _i, invoiceId: _v, createdAt: _a, updatedAt: _b, createdBy: _x, updatedBy: _y, ...rest } = row;
+  void [_i, _v, _a, _b, _x, _y];
+  return rest;
+}
+
 /** GET /api/backup — settings, rates, rate date, numbering counters, history and every invoice. */
 export async function buildBackup() {
   const db = getDb();
@@ -60,14 +69,8 @@ export async function buildBackup() {
       void _c;
       return {
         ...inv,
-        lines: (linesBy.get(inv.id) ?? []).map(({ id: _i, invoiceId: _v, createdAt: _a, updatedAt: _b, createdBy: _x, updatedBy: _y, ...l }) => {
-          void _i, void _v, void _a, void _b, void _x, void _y;
-          return l;
-        }),
-        exchange: (xBy.get(inv.id) ?? []).map(({ id: _i, invoiceId: _v, createdAt: _a, updatedAt: _b, createdBy: _x, updatedBy: _y, ...x }) => {
-          void _i, void _v, void _a, void _b, void _x, void _y;
-          return x;
-        }),
+        lines: (linesBy.get(inv.id) ?? []).map(withoutRowMeta),
+        exchange: (xBy.get(inv.id) ?? []).map(withoutRowMeta),
       };
     }),
   };

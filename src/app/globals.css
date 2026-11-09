@@ -170,7 +170,8 @@
   body {
     background: #fff !important;
   }
-  body > *:not(#print-root) {
+  /* Invoice printing: only the invoice. Other pages (dashboard → PDF) print as they are. */
+  body:has(> #print-root) > *:not(#print-root) {
     display: none !important;
   }
   #print-root {

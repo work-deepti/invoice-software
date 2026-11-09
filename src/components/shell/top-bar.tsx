@@ -44,7 +44,7 @@ export function TopBar() {
   const priced = rates.rows.filter((r) => r.rate !== "");
 
   return (
-    <header className="z-40 bg-ink text-white tab:sticky tab:top-0">
+    <header className="z-40 bg-ink text-white tab:sticky tab:top-0 print:hidden">
       <div className="mx-auto flex max-w-[1680px] items-center gap-3 px-4 pt-3 tab:px-6">
         <Link href="/invoices/new" className="flex min-w-0 shrink items-center gap-2.5 rounded-md">
           <span aria-hidden className="grid size-7 shrink-0 place-items-center rounded-md bg-gold">
