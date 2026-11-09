@@ -11,7 +11,7 @@ GST-compliant billing for an Indian gold & silver jewellery shop. Full spec: [`d
 | 1 | Calculation & validation engine + unit tests (T-01 – T-11, T-20 – T-27) | ✅ Done |
 | 2 | Database schema, auth & roles, atomic REST API + integration tests | ✅ Done |
 | 3 | Core screens: sign-in, rate master, settings, invoice, print/PDF | ✅ Done |
-| 4 | Transactions ledger UI, CSV, backup/restore, dashboards | ⏳ Next |
+| 4 | Transactions ledger, CSV export, backup/restore, dashboards A–F | ✅ Done |
 
 ## Owner decisions recorded (9 Nov 2026)
 
@@ -111,4 +111,8 @@ src/app/api/**/route.ts       REST endpoints (§12.2)
 
 | `GET /api/invoices/{id}/pdf` | all | Vector A4 PDF, e.g. INV-2026-27-001.pdf |
 
-Still to come: `/api/export/csv`, `/api/backup`, `/api/restore`, `/api/dashboard/*` (Step 4).
+| `GET /api/export/csv?…ledger filters…&full=1` | all (full: owner) | CSV of the filtered ledger, UTF-8 BOM, phone/PAN masked unless full |
+| `GET /api/backup`, `POST /api/restore` | owner | Full JSON backup; phased restore (start → invoice batches → finish) |
+| `GET /api/dashboard/{overview,sales,customers,payments,gst,rates}?period=&from=&to=&metal=&gst=&mode=` | owner, viewer (staff if allowed) | Dashboard aggregates |
+
+Not built yet: the local desktop installer (DEP-01..07), the weekly summary email (DSH-12), and the print-pagination browser test for T-10.
