@@ -149,7 +149,7 @@ export function RateMaster() {
             <span className="pr-2 text-right">Equivalent</span>
             <span />
           </div>
-          <ol className="flex flex-col gap-3 desk:gap-0">
+          <ol className="flex flex-col desk:gap-0">
             {rows.map((r, i) => {
               const eq = rateEquivalent(r.metal, r.rate);
               const f = (k: string) => `rates.${i}.${k}`;
@@ -157,8 +157,8 @@ export function RateMaster() {
                 <li
                   key={r.key}
                   className={cn(
-                    "relative grid animate-enter grid-cols-2 gap-3 rounded-xl border border-line bg-canvas/50 p-3.5 tab:grid-cols-4",
-                    "desk:items-center desk:gap-x-2 desk:gap-y-0 desk:rounded-none desk:border-0 desk:border-b desk:bg-transparent desk:p-0 desk:py-1.5",
+                    "relative grid animate-enter grid-cols-2 gap-3 border-b border-line pt-4 pb-5 first:pt-1 last:border-b-0 last:pb-1 tab:grid-cols-4",
+                    "desk:items-center desk:gap-x-2 desk:gap-y-0 desk:border-b desk:last:border-b desk:bg-transparent desk:p-0 desk:py-1.5",
                     GRID,
                   )}
                 >
@@ -218,7 +218,7 @@ export function RateMaster() {
                       type="button"
                       onClick={() => setRows((rs) => rs.filter((_, j) => j !== i))}
                       aria-label={`Remove ${r.label || `row ${i + 1}`}`}
-                      className="absolute top-2 right-2 grid size-8 place-items-center rounded-md text-faint transition-colors hover:bg-danger-fill hover:text-danger desk:static desk:size-7 desk:justify-self-center"
+                      className="absolute top-3 right-0 grid size-8 place-items-center rounded-md text-faint transition-colors hover:bg-danger-fill hover:text-danger desk:static desk:size-7 desk:justify-self-center"
                     >
                       <X className="size-4" aria-hidden />
                     </button>
@@ -266,8 +266,8 @@ export function RateMaster() {
                   {history.dates.map((d, di) => {
                     const prev = history.dates[di + 1];
                     return (
-                      <tr key={d} className={cn("border-t border-line", d === todayIST() && "bg-gold-soft/60")}>
-                        <td className={cn("num sticky left-0 px-3 py-2 whitespace-nowrap", d === todayIST() ? "bg-[#fffbeb] font-medium" : "bg-surface")}>
+                      <tr key={d} className={cn("border-t border-line", d === todayIST() && "bg-gold-soft")}>
+                        <td className={cn("num sticky left-0 px-3 py-2 whitespace-nowrap", d === todayIST() ? "bg-gold-soft font-medium" : "bg-surface")}>
                           {formatDateDMY(d)}
                         </td>
                         {history.columns.map((c) => {

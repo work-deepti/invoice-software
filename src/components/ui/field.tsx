@@ -4,7 +4,7 @@ import { cn } from "@/lib/cn";
 
 /** Base look shared by every text-like control. */
 export const controlBase =
-  "w-full min-w-0 rounded-lg border bg-surface px-3 text-[14px] text-ink placeholder:text-faint transition-[border-color,box-shadow,background-color] outline-none " +
+  "w-full min-w-0 rounded-lg border bg-surface px-3 text-[14px] text-ink placeholder:font-sans placeholder:text-faint transition-[border-color,box-shadow,background-color] outline-none " +
   "border-line hover:border-line-strong focus:border-ink focus:ring-2 focus:ring-ink/10 " +
   "disabled:bg-sunken disabled:text-muted " +
   "aria-[invalid=true]:border-danger aria-[invalid=true]:bg-danger-fill/40 aria-[invalid=true]:focus:ring-danger/15";

@@ -23,7 +23,7 @@ OWN-WORLD: Slate 50 canvas, white hairline cards (1px #E2E8F0), Slate 900 ink fo
 
 STORY: Staff see today's rates are current, type a phone and the customer fills in, tab across lines like a spreadsheet, watch totals settle, fix any red field from its chip, save and print. The owner trusts every figure.
 
-FIRST VIEWPORT: Slate 900 top bar (shop name left, rate pills centre, tabs and user right). Page title "New invoice" with the number in mono. Card 1 invoice details + customer in one row at desktop. Items table begins in the first viewport. Bottom dock fixed: Au grams (amber), Ag grams (slate), balance, grand total large in mono, Save & print / Save & view / Save.
+FIRST VIEWPORT: Slate 900 top bar in three tight rows: shop name left and user right; rate pills; tabs with an amber sliding indicator (adaptation: five or more pills plus five tabs cannot share one row at 1200 px without truncating rates, and the same stack works unchanged on phones). Page title "New invoice" with the number in mono. Card 1 invoice details + customer in one row at desktop. Items table begins in the first viewport. Bottom dock fixed: Au grams (amber), Ag grams (slate), balance, grand total large in mono, Save & print / Save & view / Save.
 
 FORM: Brief-pinned direction (owner named Vercel / Apple / Stripe / Linear / Ramp / Square POS and fixed palette, type and motion); position 1 of 1. seed: none (brief-pinned, no roll)
 

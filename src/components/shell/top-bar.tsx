@@ -47,7 +47,7 @@ export function TopBar() {
     <header className="z-40 bg-ink text-white tab:sticky tab:top-0">
       <div className="mx-auto flex max-w-[1680px] items-center gap-3 px-4 pt-3 tab:px-6">
         <Link href="/invoices/new" className="flex min-w-0 shrink items-center gap-2.5 rounded-md">
-          <span aria-hidden className="grid size-7 shrink-0 place-items-center rounded-md bg-gradient-to-b from-[#f5c45e] to-gold-deep shadow-[inset_0_1px_0_rgba(255,255,255,0.45)]">
+          <span aria-hidden className="grid size-7 shrink-0 place-items-center rounded-md bg-gold">
             <span className="size-2.5 rounded-[3px] bg-ink/85" />
           </span>
           <span className="tight truncate text-[15px] font-semibold">{settings.name || "Gold & Silver Billing"}</span>
@@ -98,7 +98,7 @@ export function TopBar() {
                   )}
                   title={`${r.label}: ₹${formatIndianNumber(r.rate, 2)} per gram`}
                 >
-                  <span aria-hidden className={cn("size-1.5 rounded-full", r.metal === "Gold" ? "bg-[#f5c45e]" : r.metal === "Silver" ? "bg-slate-300" : "bg-white/60")} />
+                  <span aria-hidden className={cn("size-1.5 rounded-full", r.metal === "Gold" ? "bg-gold" : r.metal === "Silver" ? "bg-slate-300" : "bg-white/60")} />
                   <span className="text-white/60">{shortPurity(r.label)}</span>
                   <span className="num font-medium">{rateText(r.rate)}</span>
                 </span>

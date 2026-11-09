@@ -106,7 +106,7 @@ export function SummaryCard({
         ) : (
           <>
             <span className="text-[13.5px] text-muted">Balance</span>
-            <span className="num text-right text-[14px] text-muted">Paid in full</span>
+            <span className="text-right text-[14px] text-muted">Paid in full</span>
           </>
         )}
       </div>
@@ -182,7 +182,7 @@ export function Dock({
 
         <div className="flex items-center gap-3 rounded-2xl bg-ink px-3 py-2.5 text-white shadow-dock tab:gap-5 tab:px-5 tab:py-3">
           <dl className="hidden items-center gap-5 text-[12.5px] lg:flex">
-            <Metric dot="bg-[#f5c45e]" label="Gold" value={formatWeight(totals.goldNetG)} dim={totals.goldNetG === "0.000"} />
+            <Metric dot="bg-gold" tone="text-gold" label="Gold" value={formatWeight(totals.goldNetG)} dim={totals.goldNetG === "0.000"} />
             <Metric dot="bg-slate-300" label="Silver" value={formatWeight(totals.silverNetG)} dim={totals.silverNetG === "0.000"} />
             {balance.gt(0) ? <Metric dot="bg-danger" label="Balance due" value={formatINR(balance)} danger /> : null}
           </dl>
@@ -240,12 +240,12 @@ export function Dock({
   );
 }
 
-function Metric({ dot, label, value, dim, danger }: { dot: string; label: string; value: string; dim?: boolean; danger?: boolean }) {
+function Metric({ dot, tone, label, value, dim, danger }: { dot: string; tone?: string; label: string; value: string; dim?: boolean; danger?: boolean }) {
   return (
     <div className={cn("flex items-center gap-2", dim && "opacity-45")}>
       <span aria-hidden className={cn("size-1.5 rounded-full", dot)} />
       <dt className="text-white/55">{label}</dt>
-      <dd className={cn("num font-medium", danger ? "text-red-300" : "text-white")}>
+      <dd className={cn("num font-medium", danger ? "text-red-300" : (tone ?? "text-white"))}>
         <Flash value={value}>{value}</Flash>
       </dd>
     </div>

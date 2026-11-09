@@ -6,7 +6,8 @@ import { api } from "@/lib/api-client";
 import { cn } from "@/lib/cn";
 import { Card, CardHeader } from "@/components/ui/card";
 import { Checkbox } from "@/components/ui/checkbox";
-import { Field, Select, TextArea, TextInput, controlBase } from "@/components/ui/field";
+import { DateField } from "@/components/ui/date-field";
+import { Field, Select, TextArea, TextInput } from "@/components/ui/field";
 import { STATES, type CustomerForm, type FormState } from "./form-state";
 import type { ErrorFor } from "./line-items";
 
@@ -47,14 +48,7 @@ export function DetailsCard({
         </Field>
         <Field label="Date" field="date" error={errorFor("date")}>
           {(p) => (
-            <input
-              {...p}
-              type="date"
-              max={today}
-              value={form.date}
-              onChange={(e) => onChange({ date: e.target.value })}
-              className={cn(controlBase, "num h-9")}
-            />
+            <DateField {...p} max={today} value={form.date} onValueChange={(date) => onChange({ date })} />
           )}
         </Field>
         <Field label="Payment mode" field="payMode" error={errorFor("payMode")}>

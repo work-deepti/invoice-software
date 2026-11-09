@@ -44,7 +44,7 @@ export function LoginForm() {
     <form onSubmit={submit} className="w-full max-w-[380px] animate-enter">
       <div className="mb-7 flex items-center gap-3">
         <span aria-hidden className="grid size-10 place-items-center rounded-xl bg-ink shadow-hair">
-          <span className="grid size-5 place-items-center rounded-[5px] bg-gradient-to-b from-[#f5c45e] to-gold-deep">
+          <span className="grid size-5 place-items-center rounded-[5px] bg-gold">
             <span className="size-1.5 rounded-[2px] bg-ink/85" />
           </span>
         </span>

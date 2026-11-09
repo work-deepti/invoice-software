@@ -62,7 +62,7 @@ export function InvoicePreviewDialog({
                   <span className="rounded-full bg-danger-fill px-2 py-0.5 text-[11.5px] font-medium text-danger-deep">Cancelled</span>
                 ) : null}
               </D.Title>
-              <D.Description className="text-[12.5px] text-muted">
+              <D.Description className="truncate text-[12.5px] text-muted">
                 {invoice.customerName || "Cash customer"} · <span className="num">{formatINR(grand.abs())}</span>
                 {invoice.createdByName ? <> · Created by {invoice.createdByName}</> : null}
                 {invoice.updatedByName && invoice.updatedAt !== invoice.createdAt ? <> · Last edited by {invoice.updatedByName}</> : null}
