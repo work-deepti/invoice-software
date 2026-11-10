@@ -13,6 +13,7 @@ GST-compliant billing for an Indian gold & silver jewellery shop. Full spec: [`d
 | 3 | Core screens: sign-in, rate master, settings, invoice, print/PDF | ✅ Done |
 | 4 | Transactions ledger, CSV export, backup/restore, dashboards A–F | ✅ Done |
 | — | Redesign: new design system, Figtree font, Coin B logo, sidebar + phone bottom bar | ✅ Done |
+| — | Dark / light mode, WhatsApp share, autosave of the bill in progress | ✅ Done |
 
 ## Owner decisions recorded (9 Nov 2026)
 

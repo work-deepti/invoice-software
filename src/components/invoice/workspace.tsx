@@ -1,7 +1,7 @@
 "use client";
-import { ArrowLeft, Eraser, StickyNote } from "lucide-react";
+import { ArrowLeft, Eraser, History, StickyNote } from "lucide-react";
 import Link from "next/link";
-import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState, useSyncExternalStore } from "react";
 import {
   applyRateMaster,
   computeInvoice,
@@ -39,6 +39,9 @@ import { InvoicePreviewDialog } from "./preview-dialog";
 import { usePrint } from "./print";
 import { Dock, SummaryCard, type SaveAction } from "./summary";
 import type { SavedInvoice } from "./types";
+import { clearDraft, readDraft, writeDraft, type Draft } from "./draft";
+
+const noSubscribe = () => () => {};
 
 function focusField(field: string) {
   const el = document.querySelector<HTMLElement>(`[data-field="${CSS.escape(field)}"]`);
@@ -49,7 +52,7 @@ function focusField(field: string) {
 
 /** §6 — one screen, five blocks; totals update on every keystroke. */
 export function InvoiceWorkspace({ editId }: { editId?: string }) {
-  const { settings, rates, capabilities } = useSession();
+  const { settings, rates, capabilities, user } = useSession();
   const toast = useToast();
   const print = usePrint();
   const today = todayIST();
@@ -103,6 +106,55 @@ export function InvoiceWorkspace({ editId }: { editId?: string }) {
       exchange: f.exchange.map((x) => (x.fineRateManual ? x : { ...x, fineRate: rates.fineRates[x.metal] ?? "" })),
     }));
   }, [rates, editing]);
+
+  /* ── Autosave (new bills only): keep the bill being made in this browser ── */
+  // Read once on the client; the server render has no draft (getServerSnapshot → null).
+  const savedDraftRaw = useSyncExternalStore(
+    noSubscribe,
+    () => (editing ? null : localStorage.getItem(`gsb-draft:${user.id}`)),
+    () => null,
+  );
+  const offer = useMemo<Draft | null>(() => (savedDraftRaw ? readDraft(user.id) : null), [savedDraftRaw, user.id]);
+  const [draftDecided, setDraftDecided] = useState(false);
+  // only offer a draft that existed before this page opened — never the one autosave writes while typing
+  const [openedAt] = useState(() => Date.now());
+  const offerPending = !editing && !draftDecided && !!offer && offer.savedAt < openedAt;
+
+  const latestForm = useRef(form);
+  useEffect(() => {
+    latestForm.current = form;
+    if (editing || offerPending) return; // don't overwrite a draft the user hasn't decided on
+    const t = setTimeout(() => writeDraft(user.id, form), 400);
+    return () => clearTimeout(t);
+  }, [form, editing, offerPending, user.id]);
+  useEffect(() => {
+    if (editing || offerPending) return;
+    // the tab may be killed while hidden (tablets, phones): write immediately
+    const flush = () => document.visibilityState === "hidden" && writeDraft(user.id, latestForm.current);
+    document.addEventListener("visibilitychange", flush);
+    window.addEventListener("pagehide", flush);
+    return () => {
+      document.removeEventListener("visibilitychange", flush);
+      window.removeEventListener("pagehide", flush);
+    };
+  }, [editing, offerPending, user.id]);
+
+  const continueDraft = () => {
+    if (!offer) return;
+    const f = offer.form;
+    setForm({
+      ...f,
+      date: todayIST(), // a bill is dated the day it is saved
+      lines: applyRateMaster(f.lines, rates.rows), // lines without a hand-typed rate take today's rates
+      exchange: f.exchange.map((x) => (x.fineRateManual ? x : { ...x, fineRate: rates.fineRates[x.metal] ?? "" })),
+    });
+    setDraftDecided(true);
+    toast("Bill restored. Rates you didn't type yourself use today's rates.");
+  };
+  const discardDraft = () => {
+    clearDraft(user.id);
+    setDraftDecided(true);
+  };
 
   /* ── NUM-07: preview number follows the GST switch and the date ───── */
   useEffect(() => {
@@ -255,11 +307,12 @@ export function InvoiceWorkspace({ editId }: { editId?: string }) {
   );
 
   const reset = useCallback(() => {
+    clearDraft(user.id);
     setForm(blankForm(rates, settings, todayIST()));
     setTouched(new Set());
     setSubmitted(false);
     setServerErrors(null);
-  }, [rates, settings]);
+  }, [rates, settings, user.id]);
 
   /* ── save (INV-17) ───────────────────────────────────────────────── */
   const save = useCallback(
@@ -389,6 +442,7 @@ export function InvoiceWorkspace({ editId }: { editId?: string }) {
       </div>
 
       <div className="flex flex-col gap-4">
+        {offerPending && offer ? <DraftOffer draft={offer} onContinue={continueDraft} onDiscard={discardDraft} /> : null}
         <div className="grid gap-4 lg:grid-cols-[minmax(0,1fr)_minmax(0,2.1fr)]">
           <DetailsCard
             form={form}
@@ -572,5 +626,35 @@ function Notice({ title, text, back }: { title: string; text: string; back?: boo
         </Link>
       ) : null}
     </div>
+  );
+}
+
+function DraftOffer({ draft, onContinue, onDiscard }: { draft: Draft; onContinue: () => void; onDiscard: () => void }) {
+  const f = draft.form;
+  const items = f.lines.filter((l) => l.description.trim() || l.gross).length;
+  const who = f.customer.name || f.customer.phone || "No customer yet";
+  const at = new Date(draft.savedAt);
+  const sameDay = at.toDateString() === new Date().toDateString();
+  const when = at.toLocaleString("en-IN", sameDay ? { hour: "numeric", minute: "2-digit" } : { day: "2-digit", month: "short", hour: "numeric", minute: "2-digit" });
+  return (
+    <section role="status" className="flex animate-enter flex-wrap items-center gap-x-4 gap-y-3 rounded-[24px] bg-lav-fill p-4 tab:p-5">
+      <span aria-hidden className="grid size-10 shrink-0 place-items-center rounded-full bg-surface text-lav-deep">
+        <History className="size-5" />
+      </span>
+      <div className="min-w-0 flex-1">
+        <p className="text-[15px] font-bold text-ink">Continue your unsaved bill?</p>
+        <p className="mt-0.5 truncate text-[13.5px] text-ink-3">
+          {who} · {items === 1 ? "1 item" : `${items} items`} · last change {sameDay ? "today" : ""} {when}
+        </p>
+      </div>
+      <div className="flex gap-2">
+        <Button variant="ghost" onClick={onDiscard}>
+          Discard
+        </Button>
+        <Button variant="primary" onClick={onContinue}>
+          Continue bill
+        </Button>
+      </div>
+    </section>
   );
 }
