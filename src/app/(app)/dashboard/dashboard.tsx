@@ -179,7 +179,7 @@ export function Dashboard() {
             ref={view === v.key ? (el) => el?.scrollIntoView({ block: "nearest", inline: "nearest" }) : undefined}
             className={cn(
               "flex h-10 shrink-0 items-center rounded-full px-4 text-[14px] font-semibold transition-colors",
-              view === v.key ? "bg-ink text-white" : "text-ink-3 hover:bg-surface hover:text-ink",
+              view === v.key ? "bg-ink text-on-ink" : "text-ink-3 hover:bg-surface hover:text-ink",
             )}
           >
             {v.label}

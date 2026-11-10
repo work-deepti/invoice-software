@@ -30,7 +30,7 @@ export function Switch({
         onCheckedChange={onCheckedChange}
         className="relative mt-0.5 h-6 w-11 shrink-0 rounded-full bg-line-strong transition-colors data-[state=checked]:bg-ink"
       >
-        <S.Thumb className="block size-5 translate-x-0.5 rounded-full bg-white shadow-[0_1px_3px_rgba(28,27,34,0.3)] transition-transform data-[state=checked]:translate-x-[22px]" />
+        <S.Thumb className="block size-5 translate-x-0.5 rounded-full bg-white data-[state=checked]:bg-canvas shadow-[0_1px_3px_rgba(28,27,34,0.3)] transition-transform data-[state=checked]:translate-x-[22px]" />
       </S.Root>
     </label>
   );

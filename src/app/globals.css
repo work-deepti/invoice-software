@@ -22,6 +22,11 @@
   --color-ink-3: #47464f;
   --color-muted: #6b6a73;
   --color-faint: #77767f; /* placeholders: ≥ 4.5:1 on white */
+  /* inverse: the floating ink surfaces (totals dock, hero tile, bottom bar, toasts); on-ink: text on ink pills */
+  --color-inverse: #1c1b22;
+  --color-on-ink: #ffffff;
+  --color-night: #1c1b22; /* always dark: text on the white buttons that sit on inverse surfaces */
+  --color-field-hover: #ecebe6;
 
   /* metals — bold accent + pastel fill */
   --color-gold: #e9a23b;
@@ -36,11 +41,14 @@
   --color-lav: #7b61e8;
   --color-lav-deep: #5b3fd0;
   --color-lav-fill: #eeeafd;
+  --color-lav-fill-hover: #e3ddfb;
   --color-mint: #2f9e6a;
   --color-mint-fill: #e2f4ea;
   --color-peach-fill: #fdebe1;
+  --color-peach-deep: #a64b1e;
   --color-rose: #e0556b;
   --color-rose-fill: #fce6ea;
+  --color-rose-fill-hover: #f9d5dc;
 
   /* semantics */
   --color-danger: #d93a45;
@@ -102,6 +110,273 @@
   @keyframes sheet {
     from { opacity: 0; transform: translateY(24px); }
     to { opacity: 1; transform: none; }
+  }
+}
+
+
+/* ── themes ───────────────────────────────────────────────────────────────
+   html[data-theme] is set before first paint by the script in app/layout.tsx
+   (Light / Dark / Match device). Light values are the @theme defaults above;
+   .light-scope pins a subtree to light (the invoice is paper, always white). */
+@custom-variant dark (&:where([data-theme="dark"], [data-theme="dark"] *));
+
+:root,
+.light-scope {
+  color-scheme: light;
+  --color-canvas: #f6f5f2;
+  --color-surface: #ffffff;
+  --color-sunken: #f1f0ec;
+  --color-line: #ebe9e3;
+  --color-line-strong: #dad7cf;
+  --color-ink: #1c1b22;
+  --color-ink-2: #2c2b33;
+  --color-ink-3: #47464f;
+  --color-muted: #6b6a73;
+  --color-faint: #77767f;
+  --color-gold: #e9a23b;
+  --color-gold-deep: #94590a;
+  --color-gold-fill: #fdecc8;
+  --color-gold-soft: #fff6e6;
+  --color-silver: #8296b3;
+  --color-silver-deep: #4c5f80;
+  --color-silver-fill: #e6edf7;
+  --color-lav: #7b61e8;
+  --color-lav-deep: #5b3fd0;
+  --color-lav-fill: #eeeafd;
+  --color-lav-fill-hover: #e3ddfb;
+  --color-mint: #2f9e6a;
+  --color-mint-fill: #e2f4ea;
+  --color-peach-fill: #fdebe1;
+  --color-peach-deep: #a64b1e;
+  --color-rose: #e0556b;
+  --color-rose-fill: #fce6ea;
+  --color-rose-fill-hover: #f9d5dc;
+  --color-danger: #d93a45;
+  --color-danger-deep: #b4232f;
+  --color-danger-fill: #fdecee;
+  --color-ok: #2f9e6a;
+  --color-ok-deep: #1d7a4e;
+  --color-ok-fill: #e2f4ea;
+  --color-warn: #d9861a;
+  --color-warn-fill: #fff3df;
+  --color-field-hover: #ecebe6;
+  --color-inverse: #1c1b22;
+  --color-on-ink: #ffffff;
+  --chart-gold: #c2700a;
+  --chart-silver: #3d6fb0;
+  --chart-c3: #12a37a;
+  --chart-c4: #8a5cc7;
+  --chart-c5: #d0527a;
+  --chart-c6: #5f8f1f;
+  --chart-c7: #1b7fb8;
+  --chart-ink: #2c2b33;
+  --chart-previous: #a3a1ab;
+  --chart-grid: #efede8;
+  --chart-axis: #8d8b94;
+  --chart-heat-0: #f1f0ec;
+  --chart-heat-1: #e0dafb;
+  --chart-heat-2: #c3b7f6;
+  --chart-heat-3: #a08ef0;
+  --chart-heat-4: #7b61e8;
+  --chart-heat-5: #5b3fd0;
+  --shadow-hair: 0 1px 2px rgba(28, 27, 34, 0.04), 0 4px 16px -8px rgba(28, 27, 34, 0.08);
+  --shadow-card: 0 1px 2px rgba(28, 27, 34, 0.04), 0 10px 30px -14px rgba(28, 27, 34, 0.12);
+  --shadow-pop: 0 18px 44px -12px rgba(28, 27, 34, 0.22), 0 3px 8px rgba(28, 27, 34, 0.06);
+  --shadow-dock: 0 18px 40px -12px rgba(28, 27, 34, 0.45), 0 4px 10px rgba(28, 27, 34, 0.12);
+}
+
+:root[data-theme="dark"] {
+  color-scheme: dark;
+  --color-canvas: #131216;
+  --color-surface: #1d1c22;
+  --color-sunken: #26252c;
+  --color-line: #2e2d34;
+  --color-line-strong: #3d3c44;
+  --color-ink: #f3f1ec;
+  --color-ink-2: #e4e2dc;
+  --color-ink-3: #c6c4be;
+  --color-muted: #a09fa8;
+  --color-faint: #8d8c95;
+  --color-gold: #e9a23b;
+  --color-gold-deep: #f2bd6b;
+  --color-gold-fill: #3a2d16;
+  --color-gold-soft: #2a2319;
+  --color-silver: #8ea2c0;
+  --color-silver-deep: #b6c5dc;
+  --color-silver-fill: #222b39;
+  --color-lav: #9a85f0;
+  --color-lav-deep: #c0b2ff;
+  --color-lav-fill: #2a2546;
+  --color-lav-fill-hover: #342d57;
+  --color-mint: #3fb47e;
+  --color-mint-fill: #16301f;
+  --color-peach-fill: #3a251a;
+  --color-peach-deep: #f2a97f;
+  --color-rose: #ef6f83;
+  --color-rose-fill: #3b1e25;
+  --color-rose-fill-hover: #4a2530;
+  --color-danger: #f0646f;
+  --color-danger-deep: #ff9ea6;
+  --color-danger-fill: #3a1d22;
+  --color-ok: #3fb47e;
+  --color-ok-deep: #86d9ab;
+  --color-ok-fill: #16301f;
+  --color-warn: #f0a53a;
+  --color-warn-fill: #33270f;
+  --color-field-hover: #2b2a31;
+  --color-inverse: #393643;
+  --color-on-ink: #131216;
+  --chart-gold: #cc8028;
+  --chart-silver: #5b93e0;
+  --chart-c3: #1fa478;
+  --chart-c4: #9c7ce0;
+  --chart-c5: #d8608a;
+  --chart-c6: #6f9f30;
+  --chart-c7: #2f9ed6;
+  --chart-ink: #e4e2dc;
+  --chart-previous: #6e6c76;
+  --chart-grid: #2a2930;
+  --chart-axis: #8d8c95;
+  --chart-heat-0: #26252c;
+  --chart-heat-1: #352e5a;
+  --chart-heat-2: #4b3d8f;
+  --chart-heat-3: #6650c4;
+  --chart-heat-4: #8a73ec;
+  --chart-heat-5: #b3a3ff;
+  --shadow-hair: 0 0 0 1px rgba(255, 255, 255, 0.05);
+  --shadow-card: 0 0 0 1px rgba(255, 255, 255, 0.04), 0 10px 30px -14px rgba(0, 0, 0, 0.6);
+  --shadow-pop: 0 0 0 1px rgba(255, 255, 255, 0.07), 0 18px 44px -12px rgba(0, 0, 0, 0.7);
+  --shadow-dock: 0 0 0 1px rgba(255, 255, 255, 0.07), 0 18px 40px -12px rgba(0, 0, 0, 0.75);
+}
+
+[data-theme="dark"] .light-scope {
+  color-scheme: light;
+  --color-canvas: #f6f5f2;
+  --color-surface: #ffffff;
+  --color-sunken: #f1f0ec;
+  --color-line: #ebe9e3;
+  --color-line-strong: #dad7cf;
+  --color-ink: #1c1b22;
+  --color-ink-2: #2c2b33;
+  --color-ink-3: #47464f;
+  --color-muted: #6b6a73;
+  --color-faint: #77767f;
+  --color-gold: #e9a23b;
+  --color-gold-deep: #94590a;
+  --color-gold-fill: #fdecc8;
+  --color-gold-soft: #fff6e6;
+  --color-silver: #8296b3;
+  --color-silver-deep: #4c5f80;
+  --color-silver-fill: #e6edf7;
+  --color-lav: #7b61e8;
+  --color-lav-deep: #5b3fd0;
+  --color-lav-fill: #eeeafd;
+  --color-lav-fill-hover: #e3ddfb;
+  --color-mint: #2f9e6a;
+  --color-mint-fill: #e2f4ea;
+  --color-peach-fill: #fdebe1;
+  --color-peach-deep: #a64b1e;
+  --color-rose: #e0556b;
+  --color-rose-fill: #fce6ea;
+  --color-rose-fill-hover: #f9d5dc;
+  --color-danger: #d93a45;
+  --color-danger-deep: #b4232f;
+  --color-danger-fill: #fdecee;
+  --color-ok: #2f9e6a;
+  --color-ok-deep: #1d7a4e;
+  --color-ok-fill: #e2f4ea;
+  --color-warn: #d9861a;
+  --color-warn-fill: #fff3df;
+  --color-field-hover: #ecebe6;
+  --color-inverse: #1c1b22;
+  --color-on-ink: #ffffff;
+  --chart-gold: #c2700a;
+  --chart-silver: #3d6fb0;
+  --chart-c3: #12a37a;
+  --chart-c4: #8a5cc7;
+  --chart-c5: #d0527a;
+  --chart-c6: #5f8f1f;
+  --chart-c7: #1b7fb8;
+  --chart-ink: #2c2b33;
+  --chart-previous: #a3a1ab;
+  --chart-grid: #efede8;
+  --chart-axis: #8d8b94;
+  --chart-heat-0: #f1f0ec;
+  --chart-heat-1: #e0dafb;
+  --chart-heat-2: #c3b7f6;
+  --chart-heat-3: #a08ef0;
+  --chart-heat-4: #7b61e8;
+  --chart-heat-5: #5b3fd0;
+  --shadow-hair: 0 1px 2px rgba(28, 27, 34, 0.04), 0 4px 16px -8px rgba(28, 27, 34, 0.08);
+  --shadow-card: 0 1px 2px rgba(28, 27, 34, 0.04), 0 10px 30px -14px rgba(28, 27, 34, 0.12);
+  --shadow-pop: 0 18px 44px -12px rgba(28, 27, 34, 0.22), 0 3px 8px rgba(28, 27, 34, 0.06);
+  --shadow-dock: 0 18px 40px -12px rgba(28, 27, 34, 0.45), 0 4px 10px rgba(28, 27, 34, 0.12);
+  color: var(--color-ink);
+}
+
+@media print {
+  :root[data-theme="dark"] {
+  color-scheme: light;
+  --color-canvas: #f6f5f2;
+  --color-surface: #ffffff;
+  --color-sunken: #f1f0ec;
+  --color-line: #ebe9e3;
+  --color-line-strong: #dad7cf;
+  --color-ink: #1c1b22;
+  --color-ink-2: #2c2b33;
+  --color-ink-3: #47464f;
+  --color-muted: #6b6a73;
+  --color-faint: #77767f;
+  --color-gold: #e9a23b;
+  --color-gold-deep: #94590a;
+  --color-gold-fill: #fdecc8;
+  --color-gold-soft: #fff6e6;
+  --color-silver: #8296b3;
+  --color-silver-deep: #4c5f80;
+  --color-silver-fill: #e6edf7;
+  --color-lav: #7b61e8;
+  --color-lav-deep: #5b3fd0;
+  --color-lav-fill: #eeeafd;
+  --color-lav-fill-hover: #e3ddfb;
+  --color-mint: #2f9e6a;
+  --color-mint-fill: #e2f4ea;
+  --color-peach-fill: #fdebe1;
+  --color-peach-deep: #a64b1e;
+  --color-rose: #e0556b;
+  --color-rose-fill: #fce6ea;
+  --color-rose-fill-hover: #f9d5dc;
+  --color-danger: #d93a45;
+  --color-danger-deep: #b4232f;
+  --color-danger-fill: #fdecee;
+  --color-ok: #2f9e6a;
+  --color-ok-deep: #1d7a4e;
+  --color-ok-fill: #e2f4ea;
+  --color-warn: #d9861a;
+  --color-warn-fill: #fff3df;
+  --color-field-hover: #ecebe6;
+  --color-inverse: #1c1b22;
+  --color-on-ink: #ffffff;
+  --chart-gold: #c2700a;
+  --chart-silver: #3d6fb0;
+  --chart-c3: #12a37a;
+  --chart-c4: #8a5cc7;
+  --chart-c5: #d0527a;
+  --chart-c6: #5f8f1f;
+  --chart-c7: #1b7fb8;
+  --chart-ink: #2c2b33;
+  --chart-previous: #a3a1ab;
+  --chart-grid: #efede8;
+  --chart-axis: #8d8b94;
+  --chart-heat-0: #f1f0ec;
+  --chart-heat-1: #e0dafb;
+  --chart-heat-2: #c3b7f6;
+  --chart-heat-3: #a08ef0;
+  --chart-heat-4: #7b61e8;
+  --chart-heat-5: #5b3fd0;
+  --shadow-hair: 0 1px 2px rgba(28, 27, 34, 0.04), 0 4px 16px -8px rgba(28, 27, 34, 0.08);
+  --shadow-card: 0 1px 2px rgba(28, 27, 34, 0.04), 0 10px 30px -14px rgba(28, 27, 34, 0.12);
+  --shadow-pop: 0 18px 44px -12px rgba(28, 27, 34, 0.22), 0 3px 8px rgba(28, 27, 34, 0.06);
+  --shadow-dock: 0 18px 40px -12px rgba(28, 27, 34, 0.45), 0 4px 10px rgba(28, 27, 34, 0.12);
   }
 }
 

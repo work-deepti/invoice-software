@@ -52,7 +52,7 @@ export function InvoicePreviewDialog({
   return (
     <D.Root open={open} onOpenChange={onOpenChange}>
       <D.Portal>
-        <D.Overlay className="fixed inset-0 z-50 bg-ink/50 backdrop-blur-[2px] data-[state=open]:animate-overlay" />
+        <D.Overlay className="fixed inset-0 z-50 bg-night/60 backdrop-blur-[2px] data-[state=open]:animate-overlay" />
         <D.Content className="fixed inset-0 z-50 flex flex-col bg-sunken outline-none data-[state=open]:animate-enter tab:inset-4 tab:rounded-2xl tab:border tab:border-line tab:shadow-pop desk:inset-x-[max(16px,calc((100vw-920px)/2))]">
           <div className="flex flex-wrap items-center gap-x-4 gap-y-3 border-b border-line bg-surface px-4 py-3 tab:rounded-t-2xl tab:px-5">
             <div className="min-w-0 flex-1">

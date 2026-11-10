@@ -216,6 +216,15 @@ Categorical series keep the previously validated palette (gold `#c2700a`, silver
 - Gold-coloured text uses gold-deep; never put `#e9a23b` text on white.
 - Red is only for things the user must fix or money owed.
 
+## Dark mode
+
+- **Switch:** Light / Dark / Auto (match the device), in the account menu. The choice is stored per browser (`localStorage` key `gsb-theme`). A tiny script in `app/layout.tsx` sets `html[data-theme]` before first paint, so there is no flash. While on Auto it follows the device live.
+- **Tokens:** every colour is a CSS variable. Dark values live in `:root[data-theme="dark"]` in `globals.css`: warm charcoal canvas `#131216`, cards `#1d1c22`, fields `#26252c`, text `#f3f1ec`. Pastel fills become deep tints (gold `#3a2d16`, silver `#222b39`, rose `#3b1e25`…) with light "deep" text colours, so each tint keeps its meaning.
+- **Ink roles split in two:** `ink` is text and the primary pill (it flips to near-white in dark, with `on-ink` text). `inverse` is the floating surfaces (totals dock, hero tile, bottom bar, save bar, toasts). They stay dark with white text in both modes (`#393643` in dark, lifted with a 1 px light edge). `night` is the fixed dark text on white buttons that sit on inverse surfaces.
+- **Charts:** series colours are CSS variables with a second set validated for the dark surface (all checks pass, including colour-blind separation).
+- **Paper stays paper:** `.light-scope` pins a subtree to light values. The invoice document, print and PDF are always white.
+- **No glow:** dark depth comes from slightly lighter surfaces and hairline edges, never coloured glows.
+
 ## Typography
 
 **Figtree** for everything (UI and numbers), self-hosted from `src/fonts/figtree/` (SIL OFL). It has the ₹ sign and tabular figures; every number uses the `num` utility (`font-variant-numeric: tabular-nums`) so decimals align. The PDF uses a copy with tabular figures frozen in (`FigtreeTab`).

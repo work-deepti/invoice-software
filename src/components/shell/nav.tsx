@@ -6,6 +6,7 @@ import { usePathname } from "next/navigation";
 import { useSyncExternalStore, type ComponentType } from "react";
 import { formatDateDMY, formatIndianNumber, toDec } from "@/lib/calc-engine";
 import { api } from "@/lib/api-client";
+import { ThemeSwitch } from "./theme-switch";
 import { cn } from "@/lib/cn";
 import { LogoLockup, LogoMark } from "./logo";
 import { useSession } from "./session";
@@ -52,7 +53,6 @@ export function Sidebar() {
   const { settings, capabilities } = useSession();
   const pathname = usePathname();
   const items = useNavItems();
-  const onInvoice = pathname.startsWith("/invoices");
 
   return (
     <aside className="fixed inset-y-0 left-0 z-40 hidden w-[76px] flex-col bg-surface py-5 shadow-[1px_0_0_var(--color-line)] print:hidden lg:flex wide:w-[264px] wide:px-4">
@@ -66,7 +66,7 @@ export function Sidebar() {
           href="/invoices/new"
           title="New invoice"
           className={cn(
-            "mx-auto mt-6 flex size-12 items-center justify-center gap-2 rounded-full bg-ink text-[14.5px] font-semibold text-white shadow-[0_10px_24px_-10px_rgba(28,27,34,0.7)] transition-transform hover:bg-ink-2 active:scale-[0.98] wide:mx-0 wide:h-12 wide:w-full",
+            "mx-auto mt-6 flex size-12 items-center justify-center gap-2 rounded-full bg-ink text-[14.5px] font-semibold text-on-ink shadow-[0_10px_24px_-10px_rgba(28,27,34,0.7)] transition-transform hover:bg-ink-2 active:scale-[0.98] wide:mx-0 wide:h-12 wide:w-full",
           )}
         >
           <Plus className="size-5" strokeWidth={2.4} aria-hidden />
@@ -176,10 +176,15 @@ function UserMenu({ compact }: { compact?: boolean }) {
         <ChevronsUpDown className={cn("size-4 text-faint", compact ? "hidden wide:block" : "hidden")} aria-hidden />
       </DropdownMenu.Trigger>
       <DropdownMenu.Portal>
-        <DropdownMenu.Content side={compact ? "right" : "bottom"} align="end" sideOffset={8} className="z-50 min-w-52 animate-enter rounded-[20px] bg-surface p-1.5 text-ink shadow-pop">
+        <DropdownMenu.Content side={compact ? "right" : "bottom"} align="end" sideOffset={8} className="z-50 min-w-64 animate-enter rounded-[20px] bg-surface p-1.5 text-ink shadow-pop">
           <div className="px-3 py-2">
             <p className="text-[14px] font-semibold">{user.name}</p>
             <p className="text-[12.5px] text-muted">{role}</p>
+          </div>
+          <DropdownMenu.Separator className="mx-2 my-1 h-px bg-line" />
+          <div className="px-2 pt-1 pb-2">
+            <p className="px-1 pb-1.5 text-[12px] font-semibold text-muted">Appearance</p>
+            <ThemeSwitch />
           </div>
           <DropdownMenu.Separator className="mx-2 my-1 h-px bg-line" />
           <DropdownMenu.Item
@@ -227,7 +232,7 @@ export function MobileHeader() {
       {/* RATE-08 rate chips — one row that scrolls inside itself */}
       <div className="mt-3 flex gap-2 overflow-x-auto px-4 pb-1 [scrollbar-width:none] tab:px-6">
         {rates.status === "none" ? (
-          <Link href="/rates" className="shrink-0 rounded-full bg-ink px-3.5 py-1.5 text-[13px] font-semibold text-white">
+          <Link href="/rates" className="shrink-0 rounded-full bg-ink px-3.5 py-1.5 text-[13px] font-semibold text-on-ink">
             Set today&apos;s rates →
           </Link>
         ) : (
@@ -283,7 +288,7 @@ export function BottomBar() {
       aria-label="Main"
       className="pointer-events-none fixed inset-x-0 bottom-0 z-40 flex justify-center px-3 pb-[max(10px,env(safe-area-inset-bottom))] print:hidden lg:hidden"
     >
-      <div className="pointer-events-auto flex w-full max-w-md items-center gap-1 rounded-full bg-ink p-1.5 shadow-dock">
+      <div className="pointer-events-auto flex w-full max-w-md items-center gap-1 rounded-full bg-inverse p-1.5 shadow-dock">
         {left.map((it) => (
           <Item key={it.href} it={it} />
         ))}
@@ -292,7 +297,7 @@ export function BottomBar() {
             href="/invoices/new"
             aria-label="New invoice"
             className={cn(
-              "mx-1 grid h-12 w-16 shrink-0 place-items-center rounded-full bg-white text-ink shadow-[0_4px_12px_-4px_rgba(0,0,0,0.4)] transition-transform active:scale-95",
+              "mx-1 grid h-12 w-16 shrink-0 place-items-center rounded-full bg-white text-night shadow-[0_4px_12px_-4px_rgba(0,0,0,0.4)] transition-transform active:scale-95",
             )}
           >
             <Plus className="size-6" strokeWidth={2.4} aria-hidden />

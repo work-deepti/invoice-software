@@ -239,7 +239,7 @@ export function ShopSettings() {
 
       {/* Save bar */}
       <div className={cn("pointer-events-none fixed inset-x-0 bottom-[calc(76px+env(safe-area-inset-bottom))] z-30 px-3 transition-[transform,opacity] duration-150 ease-out-expo tab:px-6 lg:bottom-0 lg:left-[76px] lg:pb-4 wide:left-[264px] wide:px-8", !dirty && "pointer-events-none translate-y-[calc(100%+96px)] opacity-0")}>
-        <div className={cn("mx-auto flex max-w-[1456px] items-center justify-between gap-3 rounded-[24px] bg-ink py-2.5 pr-2.5 pl-5 text-white shadow-dock", dirty && "pointer-events-auto")}>
+        <div className={cn("mx-auto flex max-w-[1456px] items-center justify-between gap-3 rounded-[24px] bg-inverse py-2.5 pr-2.5 pl-5 text-white shadow-dock", dirty && "pointer-events-auto")}>
           <p className="text-[14px] font-semibold text-white/75">
             {submitted && validation.errors.length ? (
               <span className="text-[#ff9aa8]">{validation.errors.length === 1 ? "1 field needs fixing" : `${validation.errors.length} fields need fixing`}</span>
@@ -251,7 +251,7 @@ export function ShopSettings() {
             <Button variant="dock" onClick={() => setForm(settings)} disabled={busy}>
               Discard
             </Button>
-            <Button onClick={() => void save()} loading={busy} className="bg-white text-ink shadow-none hover:bg-sunken">
+            <Button onClick={() => void save()} loading={busy} className="bg-white text-night shadow-none hover:bg-white/90">
               Save settings
             </Button>
           </div>

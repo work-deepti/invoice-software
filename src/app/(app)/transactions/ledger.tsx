@@ -166,7 +166,7 @@ export function Ledger() {
               <button
                 key={k}
                 onClick={() => setParams({ [k]: null })}
-                className="inline-flex items-center gap-1.5 rounded-full bg-lav-fill px-3 py-1.5 text-[12.5px] font-medium text-lav-deep transition-colors hover:bg-[#e3ddfb]"
+                className="inline-flex items-center gap-1.5 rounded-full bg-lav-fill px-3 py-1.5 text-[12.5px] font-medium text-lav-deep transition-colors hover:bg-lav-fill-hover"
               >
                 {k === "purity" ? "Purity" : k === "mode" ? "Mode" : "Phone"}: <span className="font-medium text-ink">{get(k)}</span>
                 <X className="size-3" aria-label="Remove filter" />
@@ -203,7 +203,7 @@ export function Ledger() {
                 Clear filters
               </Button>
             ) : capabilities.canBill ? (
-              <Link href="/invoices/new" className="mt-4 inline-flex h-10 items-center rounded-full bg-ink px-5 text-[14px] font-semibold text-white">
+              <Link href="/invoices/new" className="mt-4 inline-flex h-10 items-center rounded-full bg-ink px-5 text-[14px] font-semibold text-on-ink">
                 Make the first invoice
               </Link>
             ) : null}
@@ -309,7 +309,7 @@ function SummaryStrip({ summary }: { summary?: LedgerSummary }) {
   if (!summary)
     return (
       <section aria-label="Totals for these filters" aria-busy className="grid gap-3 tab:grid-cols-2 desk:grid-cols-[1.5fr_repeat(4,minmax(0,1fr))]">
-        <div className="h-[132px] animate-pulse rounded-[24px] bg-ink/85" />
+        <div className="h-[132px] animate-pulse rounded-[24px] bg-inverse/85" />
         {Array.from({ length: 4 }, (_, i) => (
           <div key={i} className="h-[132px] animate-pulse rounded-[24px] bg-line/50" />
         ))}
@@ -319,7 +319,7 @@ function SummaryStrip({ summary }: { summary?: LedgerSummary }) {
   const tiles: { label: string; value: string; tone: string; ink: string; note?: string }[] = [
     { label: "Gold sold", value: formatWeight(summary.goldG), tone: "bg-gold-fill", ink: "text-gold-deep" },
     { label: "Silver sold", value: formatWeight(summary.silverG), tone: "bg-silver-fill", ink: "text-silver-deep" },
-    { label: "Old metal taken", value: formatINR(summary.exchange), tone: "bg-peach-fill", ink: "text-[#a64b1e]" },
+    { label: "Old metal taken", value: formatINR(summary.exchange), tone: "bg-peach-fill", ink: "text-peach-deep" },
     due
       ? { label: "Balance due", value: formatINR(summary.balanceDue), tone: "bg-rose-fill", ink: "text-danger-deep" }
       : { label: "Balance due", value: formatINR(summary.balanceDue), tone: "bg-mint-fill", ink: "text-ok-deep", note: "All paid" },
@@ -327,7 +327,7 @@ function SummaryStrip({ summary }: { summary?: LedgerSummary }) {
   return (
     <section aria-label="Totals for these filters" className="grid grid-cols-2 gap-3 desk:grid-cols-[1.5fr_repeat(4,minmax(0,1fr))]">
       {/* hero: the wallet-style balance card */}
-      <div className="col-span-2 flex flex-col justify-between rounded-[24px] bg-ink p-5 text-white shadow-dock desk:col-span-1">
+      <div className="col-span-2 flex flex-col justify-between rounded-[24px] bg-inverse p-5 text-white shadow-dock desk:col-span-1">
         <p className="text-[13px] font-semibold text-white/60">Total billed</p>
         <p className="num tight mt-1 truncate text-[30px] font-extrabold tracking-[-0.025em] desk:text-[26px] min-[1500px]:text-[30px]">{formatINR(summary.totalBilled)}</p>
         <div className="mt-3 flex flex-wrap gap-2 text-[12.5px]">
@@ -547,7 +547,7 @@ function CardAction({ icon, label, onClick, danger }: { icon: React.ReactNode; l
       onClick={onClick}
       className={cn(
         "flex h-10 items-center justify-center gap-1.5 rounded-full text-[12.5px] font-semibold transition-colors",
-        danger ? "bg-rose-fill text-danger-deep hover:bg-[#f9d5dc]" : "bg-sunken text-ink hover:bg-line",
+        danger ? "bg-rose-fill text-danger-deep hover:bg-rose-fill-hover" : "bg-sunken text-ink hover:bg-line",
       )}
     >
       {icon}

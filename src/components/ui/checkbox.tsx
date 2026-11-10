@@ -27,7 +27,7 @@ export function Checkbox({
         onCheckedChange={(v) => onCheckedChange(v === true)}
         className="mt-px grid size-5 shrink-0 place-items-center rounded-[7px] border-[1.5px] border-line-strong bg-surface transition-[background-color,border-color] group-hover:border-ink-3 data-[state=checked]:border-ink data-[state=checked]:bg-ink"
       >
-        <C.Indicator className="text-white">
+        <C.Indicator className="text-on-ink">
           <Check className="size-3.5" strokeWidth={3} aria-hidden />
         </C.Indicator>
       </C.Root>

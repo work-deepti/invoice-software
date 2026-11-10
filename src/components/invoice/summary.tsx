@@ -180,7 +180,7 @@ export function Dock({
           </div>
         ) : null}
 
-        <div className="flex items-center gap-3 rounded-[24px] bg-ink py-2.5 pr-2.5 pl-4 text-white shadow-dock tab:gap-5 tab:py-3 tab:pr-3 tab:pl-6">
+        <div className="flex items-center gap-3 rounded-[24px] bg-inverse py-2.5 pr-2.5 pl-4 text-white shadow-dock tab:gap-5 tab:py-3 tab:pr-3 tab:pl-6">
           <dl className="hidden items-center gap-5 text-[12.5px] lg:flex">
             <Metric dot="bg-gold" tone="text-gold" label="Gold" value={formatWeight(totals.goldNetG)} dim={totals.goldNetG === "0.000"} />
             <Metric dot="bg-silver" tone="text-[#c9d4e4]" label="Silver" value={formatWeight(totals.silverNetG)} dim={totals.silverNetG === "0.000"} />
@@ -214,14 +214,14 @@ export function Dock({
                 disabled={!!busy}
                 onClick={() => onSave("save")}
                 title="Ctrl+S"
-                className="rounded-r-none bg-white px-5 text-ink shadow-none hover:bg-sunken tab:rounded-r-full"
+                className="rounded-r-none bg-white px-5 text-night shadow-none hover:bg-white/90 tab:rounded-r-full"
               >
                 {verb}
               </Button>
               <DropdownMenu.Root>
                 <DropdownMenu.Trigger
                   aria-label="More save options"
-                  className="grid h-10 w-9 place-items-center rounded-r-full border-l border-ink/10 bg-white text-ink hover:bg-sunken tab:hidden"
+                  className="grid h-10 w-9 place-items-center rounded-r-full border-l border-night/10 bg-white text-night hover:bg-white/90 tab:hidden"
                 >
                   <ChevronUp className="size-4" aria-hidden />
                 </DropdownMenu.Trigger>

@@ -7,7 +7,7 @@ import { cn } from "@/lib/cn";
 export function LogoMark({ className, title }: { className?: string; title?: string }) {
   return (
     <svg viewBox="40 16 176 224" className={cn("shrink-0", className)} role={title ? "img" : undefined} aria-hidden={title ? undefined : true} aria-label={title}>
-      <rect x="56" y="24" width="42" height="208" rx="21" fill="#1C1B22" />
+      <rect x="56" y="24" width="42" height="208" rx="21" style={{ fill: "var(--color-ink)" }} />
       <path fill="#E9A23B" fillRule="evenodd" d="M138 24 a53 53 0 1 1 0 106 a53 53 0 1 1 0 -106 Z M138 57 a20 20 0 1 0 0 40 a20 20 0 1 0 0 -40 Z" />
       <path fill="#A3B1C6" fillRule="evenodd" d="M144 114 a59 59 0 1 1 0 118 a59 59 0 1 1 0 -118 Z M144 149 a24 24 0 1 0 0 48 a24 24 0 1 0 0 -48 Z" />
     </svg>

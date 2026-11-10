@@ -49,7 +49,7 @@ export function InvoiceDocument({
   return (
     <article
       className={cn(
-        "print-doc relative mx-auto w-[794px] bg-white px-[44px] pt-[40px] pb-[36px] text-[10.5px] leading-[1.45] text-ink",
+        "light-scope print-doc relative mx-auto w-[794px] bg-white px-[44px] pt-[40px] pb-[36px] text-[10.5px] leading-[1.45] text-ink",
         className,
       )}
       style={{ fontFeatureSettings: '"tnum"' }}

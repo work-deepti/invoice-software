@@ -13,7 +13,7 @@ export const toneClasses: Record<Tone, { fill: string; icon: string }> = {
   silver: { fill: "bg-silver-fill", icon: "text-silver-deep" },
   lav: { fill: "bg-lav-fill", icon: "text-lav-deep" },
   mint: { fill: "bg-mint-fill", icon: "text-ok-deep" },
-  peach: { fill: "bg-peach-fill", icon: "text-[#a64b1e]" },
+  peach: { fill: "bg-peach-fill", icon: "text-peach-deep" },
   rose: { fill: "bg-rose-fill", icon: "text-danger-deep" },
   neutral: { fill: "bg-sunken", icon: "text-ink-3" },
 };

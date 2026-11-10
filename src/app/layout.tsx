@@ -1,6 +1,7 @@
 import type { Metadata, Viewport } from "next";
 import localFont from "next/font/local";
 import "./globals.css";
+import { THEME_BOOT_SCRIPT, THEME_COLOR } from "@/lib/theme";
 
 /* Figtree (OFL), self-hosted from src/fonts — works offline (DEP-07) and includes the ₹ sign. */
 const figtree = localFont({
@@ -35,14 +36,21 @@ export const metadata: Metadata = {
 };
 
 export const viewport: Viewport = {
-  themeColor: "#f6f5f2",
+  themeColor: [
+    { media: "(prefers-color-scheme: light)", color: THEME_COLOR.light },
+    { media: "(prefers-color-scheme: dark)", color: THEME_COLOR.dark },
+  ],
   width: "device-width",
   initialScale: 1,
 };
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
-    <html lang="en-IN" className={`${figtree.variable} antialiased`}>
+    // data-theme is set by the boot script before React hydrates, hence suppressHydrationWarning
+    <html lang="en-IN" className={`${figtree.variable} antialiased`} data-theme="light" suppressHydrationWarning>
+      <head>
+        <script dangerouslySetInnerHTML={{ __html: THEME_BOOT_SCRIPT }} />
+      </head>
       <body className="min-h-dvh">{children}</body>
     </html>
   );

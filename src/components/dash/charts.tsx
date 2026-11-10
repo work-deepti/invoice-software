@@ -20,18 +20,19 @@ import { Flash } from "@/components/invoice/ticker";
 /* ── palette (validated with the dataviz validator: light + dark, adjacent pairs) ──
    1 amber = gold, 2 steel = silver (identity, never reused for anything else);
    3–7 for non-metal categories, always assigned in this fixed order. */
+/* Colours are CSS variables so charts follow the theme (values in globals.css; both sets validated). */
 export const SERIES = {
-  gold: "#c2700a",
-  silver: "#3d6fb0",
-  c3: "#12a37a",
-  c4: "#8a5cc7",
-  c5: "#d0527a",
-  c6: "#5f8f1f",
-  c7: "#1b7fb8",
-  ink: "#2c2b33",
-  previous: "#a3a1ab",
-  grid: "#efede8",
-  axis: "#8d8b94",
+  gold: "var(--chart-gold)",
+  silver: "var(--chart-silver)",
+  c3: "var(--chart-c3)",
+  c4: "var(--chart-c4)",
+  c5: "var(--chart-c5)",
+  c6: "var(--chart-c6)",
+  c7: "var(--chart-c7)",
+  ink: "var(--chart-ink)",
+  previous: "var(--chart-previous)",
+  grid: "var(--chart-grid)",
+  axis: "var(--chart-axis)",
 } as const;
 
 export const metalColor = (metal: string) => (metal === "Gold" ? SERIES.gold : metal === "Silver" ? SERIES.silver : SERIES.c4);
@@ -69,13 +70,13 @@ export function downloadCsv(name: string, rows: CsvRow[]) {
 export type KpiTone = "hero" | "plain" | "gold" | "silver" | "lav" | "mint" | "peach" | "rose";
 
 const KPI_TONE: Record<KpiTone, { card: string; label: string }> = {
-  hero: { card: "bg-ink text-white shadow-dock", label: "text-white/60" },
+  hero: { card: "bg-inverse text-white shadow-dock", label: "text-white/60" },
   plain: { card: "bg-surface shadow-card", label: "text-muted" },
   gold: { card: "bg-gold-fill", label: "text-gold-deep" },
   silver: { card: "bg-silver-fill", label: "text-silver-deep" },
   lav: { card: "bg-lav-fill", label: "text-lav-deep" },
   mint: { card: "bg-mint-fill", label: "text-ok-deep" },
-  peach: { card: "bg-peach-fill", label: "text-[#a64b1e]" },
+  peach: { card: "bg-peach-fill", label: "text-peach-deep" },
   rose: { card: "bg-rose-fill", label: "text-danger-deep" },
 };
 
@@ -139,10 +140,10 @@ export function KpiTile({
                   ? "bg-[#7fe0b0]/15 text-[#9be8c1]"
                   : "bg-white/10 text-white/70"
               : good === true
-                ? cn("text-ok-deep", pastel ? "bg-white/75" : "bg-ok-fill")
+                ? cn("text-ok-deep", pastel ? "bg-surface/70" : "bg-ok-fill")
                 : good === false
-                  ? cn("text-danger-deep", pastel ? "bg-white/75" : "bg-danger-fill")
-                  : cn("text-muted", pastel ? "bg-white/75" : "bg-sunken"),
+                  ? cn("text-danger-deep", pastel ? "bg-surface/70" : "bg-danger-fill")
+                  : cn("text-muted", pastel ? "bg-surface/70" : "bg-sunken"),
           )}
         >
           {flat ? <Minus className="size-3" aria-hidden /> : change === null ? null : up ? <ArrowUpRight className="size-3" aria-hidden /> : <ArrowDownRight className="size-3" aria-hidden />}
@@ -529,7 +530,7 @@ export function BarList({
 /* ── heatmap (day of week × hour) ───────────────────────────────────── */
 
 const DOW = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
-const HEAT = ["#f1f0ec", "#e0dafb", "#c3b7f6", "#a08ef0", "#7b61e8", "#5b3fd0"]; // one hue, light → dark
+const HEAT = [0, 1, 2, 3, 4, 5].map((i) => `var(--chart-heat-${i})`); // one hue, light → dark (per theme, see globals.css)
 
 export function Heatmap({ cells }: { cells: { dow: number; hour: number; count: number }[] }) {
   const max = Math.max(...cells.map((c) => c.count), 1);

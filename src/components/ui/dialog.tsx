@@ -27,7 +27,7 @@ export function Dialog({
   return (
     <D.Root open={open} onOpenChange={onOpenChange}>
       <D.Portal>
-        <D.Overlay className="fixed inset-0 z-50 bg-ink/30 data-[state=open]:animate-overlay" />
+        <D.Overlay className="fixed inset-0 z-50 bg-night/40 data-[state=open]:animate-overlay" />
         <D.Content
           // no description → tell Radix explicitly instead of repeating the title to screen readers
           {...(description ? {} : { "aria-describedby": undefined })}
