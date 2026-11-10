@@ -1,13 +1,15 @@
 "use client";
 import { Dialog as D } from "radix-ui";
-import { Ban, Download, Pencil, Printer, X } from "lucide-react";
+import { Ban, Download, Pencil, Printer, Send, X } from "lucide-react";
 import Link from "next/link";
-import { useLayoutEffect, useRef, useState } from "react";
+import { useLayoutEffect, useState } from "react";
 import { formatINR, pdfFileName, toDec } from "@/lib/calc-engine";
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
 import { InvoiceDocument } from "./invoice-document";
 import { usePrint } from "./print";
+import { shareInvoice } from "./share";
+import { useToast } from "@/components/ui/toast";
 import type { SavedInvoice } from "./types";
 
 const A4_WIDTH = 794;
@@ -25,18 +27,19 @@ export function InvoicePreviewDialog({
   onCancelInvoice?: (inv: SavedInvoice) => void;
 }) {
   const print = usePrint();
+  const toast = useToast();
   const [duplicate, setDuplicate] = useState(false);
-  const boxRef = useRef<HTMLDivElement>(null);
-  const docRef = useRef<HTMLDivElement>(null);
+  const [sharing, setSharing] = useState(false);
+  // Callback refs: the dialog content mounts in a portal after this component's first effects run,
+  // so measure once the box and the document actually exist (fixes phones staying at 100 %).
+  const [box, setBox] = useState<HTMLDivElement | null>(null);
+  const [doc, setDoc] = useState<HTMLDivElement | null>(null);
   const [fit, setFit] = useState({ scale: 1, height: 0 });
 
   useLayoutEffect(() => {
-    if (!open) return;
-    const box = boxRef.current;
-    const doc = docRef.current;
-    if (!box || !doc) return;
+    if (!open || !box || !doc) return;
     const measure = () => {
-      const scale = Math.min(1, (box.clientWidth - 2) / A4_WIDTH);
+      const scale = Math.min(1, (box.clientWidth - 2 - (parseFloat(getComputedStyle(box).paddingLeft) || 0) * 2) / A4_WIDTH);
       setFit({ scale, height: doc.offsetHeight * scale });
     };
     measure();
@@ -44,7 +47,7 @@ export function InvoicePreviewDialog({
     ro.observe(box);
     ro.observe(doc);
     return () => ro.disconnect();
-  }, [open, invoice]);
+  }, [open, invoice, box, doc]);
 
   if (!invoice) return null;
   const grand = toDec(invoice.grandTotal);
@@ -82,6 +85,27 @@ export function InvoicePreviewDialog({
                 <Download className="size-4" aria-hidden />
                 PDF
               </a>
+              <Button
+                size="sm"
+                variant="soft"
+                className="bg-mint-fill text-ok-deep hover:bg-mint-fill hover:brightness-95"
+                loading={sharing}
+                title="Send the invoice on WhatsApp"
+                onClick={async () => {
+                  setSharing(true);
+                  try {
+                    const r = await shareInvoice(invoice, { duplicate });
+                    if (r === "opened-whatsapp" && !matchMedia("(pointer: coarse)").matches) toast("PDF downloaded — attach it in the WhatsApp chat");
+                  } catch {
+                    toast("Couldn't share this invoice. Try PDF instead.", "error");
+                  } finally {
+                    setSharing(false);
+                  }
+                }}
+              >
+                {sharing ? null : <Send className="size-4" aria-hidden />}
+                WhatsApp
+              </Button>
               {invoice.permissions.canEdit ? (
                 <Link
                   href={`/invoices/${invoice.id}/edit`}
@@ -103,10 +127,10 @@ export function InvoicePreviewDialog({
               </D.Close>
             </div>
           </div>
-          <div ref={boxRef} className="min-h-0 flex-1 overflow-y-auto p-3 tab:p-6">
+          <div ref={setBox} className="min-h-0 flex-1 overflow-y-auto p-3 tab:p-6">
             <div style={{ height: fit.height || undefined, width: A4_WIDTH * fit.scale }} className="mx-auto">
               <div
-                ref={docRef}
+                ref={setDoc}
                 style={{ transform: `scale(${fit.scale})`, transformOrigin: "top left", width: A4_WIDTH }}
                 className="overflow-hidden rounded-sm shadow-[0_1px_3px_rgba(15,23,42,0.12),0_12px_40px_-12px_rgba(15,23,42,0.25)]"
               >
